@@ -44,6 +44,7 @@ def main(
 # Sub-commands are registered here as they land. Each command lives in its
 # own module to keep this file thin and to keep import cost low.
 from voice_eval_harness.cli import (  # noqa: E402
+    analyze_cmd,
     audit_cmd,
     diff_cmd,
     drift_cmd,
@@ -58,6 +59,7 @@ from voice_eval_harness.cli import (  # noqa: E402
 
 app.command("init", help="Scaffold a new voxeval project in the current directory.")(init_cmd.run)
 app.command("generate", help="Auto-generate a healthcare voxeval suite from an agent JSON (Retell or Vapi).")(generate_cmd.run)
+app.command("analyze", help="Mine historical Retell transcripts via Vertex Claude (BAA) and write clinic-specific suites.")(analyze_cmd.run)
 app.command("lint", help="Run the Retell structural linter on an agent JSON file.")(lint_cmd.run)
 app.command("run", help="Run a voxeval suite against the configured provider.")(run_cmd.run)
 app.command("diff", help="Diff two suite runs (or two voxeval.yaml configs) and surface per-case regressions / improvements.")(diff_cmd.run)
