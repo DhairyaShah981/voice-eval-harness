@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<testsuite name="voxeval" tests="5" failures="5" errors="0" time="2.213">
+  <testcase name="greeting_happy_path" classname="voxeval" time="0.409">
+    <failure message="HTTPStatusError: Client error '402 Payment Required' for url 'https://api.vapi.ai/chat'&#10;For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402" type="AssertionFailure">HTTPStatusError: Client error '402 Payment Required' for url 'https://api.vapi.ai/chat'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402
+contains: missing in agent text: ['help', 'appointment']</failure>
+  </testcase>
+  <testcase name="impatient_reschedule" classname="voxeval" time="0.502">
+    <failure message="HTTPStatusError: Client error '402 Payment Required' for url 'https://api.vapi.ai/chat'&#10;For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402" type="AssertionFailure">HTTPStatusError: Client error '402 Payment Required' for url 'https://api.vapi.ai/chat'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402
+llm_judge: judge_call_failed: ModuleNotFoundError: No module named 'openai'</failure>
+  </testcase>
+  <testcase name="insurance_intent_judge" classname="voxeval" time="0.429">
+    <failure message="HTTPStatusError: Client error '402 Payment Required' for url 'https://api.vapi.ai/chat'&#10;For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402" type="AssertionFailure">HTTPStatusError: Client error '402 Payment Required' for url 'https://api.vapi.ai/chat'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402
+llm_judge: judge_call_failed: ModuleNotFoundError: No module named 'openai'</failure>
+  </testcase>
+  <testcase name="book_slot_calls_tool" classname="voxeval" time="0.398">
+    <failure message="HTTPStatusError: Client error '402 Payment Required' for url 'https://api.vapi.ai/chat'&#10;For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402" type="AssertionFailure">HTTPStatusError: Client error '402 Payment Required' for url 'https://api.vapi.ai/chat'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402
+tool_called: expected tool 'get_available_slots', saw: []</failure>
+  </testcase>
+  <testcase name="spanish_english_code_switch" classname="voxeval" time="0.475">
+    <failure message="HTTPStatusError: Client error '402 Payment Required' for url 'https://api.vapi.ai/chat'&#10;For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402" type="AssertionFailure">HTTPStatusError: Client error '402 Payment Required' for url 'https://api.vapi.ai/chat'
+For more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402
+llm_judge: judge_call_failed: ModuleNotFoundError: No module named 'openai'</failure>
+  </testcase>
+</testsuite>

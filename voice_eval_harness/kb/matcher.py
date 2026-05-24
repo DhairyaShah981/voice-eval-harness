@@ -1,15 +1,19 @@
 """Match agent responses against expected KB answers.
 
-v0.1 default: reuse the LLM judge. For each (question, expected_answer)
-pair, we ask the judge whether the agent's response satisfies the expected
-answer's intent. This is more accurate than embedding similarity for
-domain-specific facts and inherits the judge's deterministic cache.
+Two backends:
+  - ``llm_judge`` (default): reuse the LLM judge with a fixed criterion.
+    Accurate for domain-specific facts; inherits the judge's disk cache.
+  - ``sentence_transformers``: offline cosine similarity using
+    all-MiniLM-L6-v2 from the ``[kb]`` extra. Free per call after the
+    one-time model download. Less precise on paraphrase-heavy answers.
 
-Sentence-transformer cosine similarity ships as an optional offline-batch
-mode in v0.2 (heavy 500MB model dep is opt-in via the ``[kb]`` extra).
+Backend is selected via the ``matcher`` field on the KBCoverageSpec
+(or programmatically by passing ``backend=``).
 """
 
 from __future__ import annotations
+
+from typing import Literal
 
 from voice_eval_harness.assertions.llm_judge import LLMJudgeAssertion
 from voice_eval_harness.core.models import (
@@ -19,13 +23,20 @@ from voice_eval_harness.core.models import (
     TranscriptEvent,
 )
 
+Backend = Literal["llm_judge", "sentence_transformers"]
+
 
 def agent_matches_answer(
     agent_reply: str,
     expected_answer: str,
     question: str,
+    *,
+    backend: Backend = "llm_judge",
 ) -> bool:
     """Return True iff the agent reply satisfies the expected answer."""
+    if backend == "sentence_transformers":
+        from voice_eval_harness.kb.st_matcher import cosine_match
+        return cosine_match(agent_reply, expected_answer)
     transcript = [
         TranscriptEvent(role=Role.USER, text=question, ts_ms=0),
         TranscriptEvent(role=Role.AGENT, text=agent_reply, ts_ms=100),

@@ -178,6 +178,9 @@ class SuiteResult(BaseModel):
 
     cases: list[RunResult] = Field(default_factory=list)
     total_cost_usd: float = 0.0
+    # Optional per-persona breakdown — populated by the engine when at least
+    # one case has a persona. Maps persona type ("impatient", ...) -> aggregate.
+    cost_by_persona: dict[str, dict[str, float | int]] = Field(default_factory=dict)
 
     @property
     def passed(self) -> int:

@@ -159,6 +159,10 @@ class LLMJudgeAssertion(Assertion):
                     kind=self.kind, passed=False,
                     detail=f"judge_call_failed: {type(exc).__name__}: {exc}",
                 )
+            # Persist BOTH the response and the prompt + model so
+            # ``voxeval drift-watch`` can replay it later.
+            data["_prompt"] = prompt
+            data["_model"] = self.model
             cache_file.write_text(json.dumps(data))
 
         verdict = (data.get("verdict") or "").lower()

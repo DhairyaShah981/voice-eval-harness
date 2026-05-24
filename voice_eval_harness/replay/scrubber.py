@@ -36,7 +36,15 @@ class ScrubResult:
         return sum(self.redactions.values())
 
 
-def scrub_text(text: str) -> ScrubResult:
+def scrub_text(text: str, *, use_presidio: bool = False) -> ScrubResult:
+    """Scrub PHI/PII from text.
+
+    Modes:
+      - ``use_presidio=False`` (default, v0.1): regex pack only.
+      - ``use_presidio=True``: NER-based scrubbing via Microsoft Presidio
+        (requires the ``[phi]`` extra). Catches name/location entities the
+        regex pack misses. Higher confidence score on success.
+    """
     redactions: dict[str, int] = {}
     out = text
     for kind, pattern in _PATTERNS.items():
@@ -48,7 +56,27 @@ def scrub_text(text: str) -> ScrubResult:
         out = pattern.sub(_sub, out)
         if n:
             redactions[kind] = n
-    # Confidence heuristic: 1.0 if no redactions needed, 0.9 if the regex
-    # pack handled them. Presidio would push this higher.
     confidence = 1.0 if not redactions else 0.9
+
+    if use_presidio:
+        try:
+            from presidio_analyzer import AnalyzerEngine
+            from presidio_anonymizer import AnonymizerEngine
+        except ImportError:
+            # Caller asked for Presidio but extra not installed — degrade
+            # gracefully with a warning rather than blow up the pipeline.
+            return ScrubResult(text=out, redactions=redactions,
+                               confidence=min(confidence, 0.75))
+        analyzer = AnalyzerEngine()
+        anonymizer = AnonymizerEngine()
+        results = analyzer.analyze(text=out, language="en")
+        if results:
+            anonymized = anonymizer.anonymize(text=out, analyzer_results=results)
+            out = anonymized.text
+            for r in results:
+                redactions[f"presidio:{r.entity_type}"] = (
+                    redactions.get(f"presidio:{r.entity_type}", 0) + 1
+                )
+            confidence = 0.95   # NER + regex pack together
+
     return ScrubResult(text=out, redactions=redactions, confidence=confidence)

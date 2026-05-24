@@ -185,6 +185,11 @@ BUILTIN_ASSERTIONS: dict[str, type[Assertion]] = {
     )
 }
 
+# Register tool_shape via its own module (keeps the file modular).
+from voice_eval_harness.assertions.tool_shape import register as _register_tool_shape  # noqa: E402
+
+_register_tool_shape(BUILTIN_ASSERTIONS)
+
 
 def build_assertion(spec: AssertionSpec) -> Assertion:
     # Lazy import to avoid a hard dependency on llm_judge module at import

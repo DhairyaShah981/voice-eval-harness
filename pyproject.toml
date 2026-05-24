@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "voice-eval-harness"
-version = "0.1.0"
+version = "1.0.0"
 description = "Open-source eval harness for voice AI agents (Retell, Vapi, LiveKit, Pipecat)."
 readme = "README.md"
 license = { text = "Apache-2.0" }
@@ -56,6 +56,9 @@ Issues = "https://github.com/DhairyaShah981/voice-eval-harness/issues"
 
 [tool.hatch.build.targets.wheel]
 packages = ["voice_eval_harness"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"voice_eval_harness/personas/prompts" = "voice_eval_harness/personas/prompts"
 
 [tool.ruff]
 line-length = 100

@@ -177,4 +177,25 @@ async def run_suite(
 
     total_cost = (budget.spent_usd if budget is not None
                   else sum(r.cost_usd for r in results))
-    return SuiteResult(cases=results, total_cost_usd=total_cost)
+
+    # Per-persona cost breakdown — only populated if any case has a persona.
+    cost_by_persona: dict[str, dict[str, float | int]] = {}
+    case_by_id = {c.id: c for c in suite.cases}
+    for r in results:
+        case = case_by_id.get(r.case_id)
+        persona_type = case.persona.type if case and case.persona else None
+        if persona_type is None:
+            continue
+        bucket = cost_by_persona.setdefault(
+            persona_type, {"cost_usd": 0.0, "cases": 0, "passed": 0},
+        )
+        bucket["cost_usd"] = float(bucket["cost_usd"]) + r.cost_usd
+        bucket["cases"] = int(bucket["cases"]) + 1
+        if r.passed:
+            bucket["passed"] = int(bucket["passed"]) + 1
+
+    return SuiteResult(
+        cases=results,
+        total_cost_usd=total_cost,
+        cost_by_persona=cost_by_persona,
+    )

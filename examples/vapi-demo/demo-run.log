@@ -1,0 +1,49 @@
+                                  voxeval run                                   
+┏━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Case                 ┃ Result ┃ Duration ┃ Assertions ┃ Notes                ┃
+┡━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━┩
+│ greeting_happy_path  │ FAIL   │ 409ms    │ 1/2        │ HTTPStatusError:     │
+│                      │        │          │            │ Client error '402    │
+│                      │        │          │            │ Payment Required'    │
+│                      │        │          │            │ for url              │
+│                      │        │          │            │ 'https://api.vapi.a… │
+│                      │        │          │            │ For more information │
+│                      │        │          │            │ check:               │
+│                      │        │          │            │ https://developer.m… │
+│ impatient_reschedule │ FAIL   │ 502ms    │ 2/3        │ HTTPStatusError:     │
+│                      │        │          │            │ Client error '402    │
+│                      │        │          │            │ Payment Required'    │
+│                      │        │          │            │ for url              │
+│                      │        │          │            │ 'https://api.vapi.a… │
+│                      │        │          │            │ For more information │
+│                      │        │          │            │ check:               │
+│                      │        │          │            │ https://developer.m… │
+│ insurance_intent_ju… │ FAIL   │ 429ms    │ 1/2        │ HTTPStatusError:     │
+│                      │        │          │            │ Client error '402    │
+│                      │        │          │            │ Payment Required'    │
+│                      │        │          │            │ for url              │
+│                      │        │          │            │ 'https://api.vapi.a… │
+│                      │        │          │            │ For more information │
+│                      │        │          │            │ check:               │
+│                      │        │          │            │ https://developer.m… │
+│ book_slot_calls_tool │ FAIL   │ 398ms    │ 1/2        │ HTTPStatusError:     │
+│                      │        │          │            │ Client error '402    │
+│                      │        │          │            │ Payment Required'    │
+│                      │        │          │            │ for url              │
+│                      │        │          │            │ 'https://api.vapi.a… │
+│                      │        │          │            │ For more information │
+│                      │        │          │            │ check:               │
+│                      │        │          │            │ https://developer.m… │
+│ spanish_english_cod… │ FAIL   │ 475ms    │ 2/3        │ HTTPStatusError:     │
+│                      │        │          │            │ Client error '402    │
+│                      │        │          │            │ Payment Required'    │
+│                      │        │          │            │ for url              │
+│                      │        │          │            │ 'https://api.vapi.a… │
+│                      │        │          │            │ For more information │
+│                      │        │          │            │ check:               │
+│                      │        │          │            │ https://developer.m… │
+└──────────────────────┴────────┴──────────┴────────────┴──────────────────────┘
+
+0 passed, 5 failed (cost: $0.0009)
+
+Budget: spent $0.0009 of $1.00 cap; 0 call(s) skipped.

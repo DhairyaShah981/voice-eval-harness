@@ -46,7 +46,16 @@ def run(
         False, "--skip-lint",
         help="Skip the Retell linter pre-flight even if provider.agent_json is set.",
     ),
+    allow_audio: bool = typer.Option(
+        False, "--allow-audio",
+        help="Permit audio-mode connectors to make real PSTN calls. "
+             "Required by Retell audio-mode; bill at provider rates. "
+             "Always combine with --max-cost.",
+    ),
 ) -> None:
+    import os as _os
+    if allow_audio:
+        _os.environ["VOXEVAL_ALLOW_AUDIO"] = "1"
     suite = load_suite(config)
 
     if not skip_lint:

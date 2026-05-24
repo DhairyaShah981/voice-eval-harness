@@ -172,7 +172,7 @@ class _RetellSession(Session):
 
 class RetellConnector(BaseConnector):
     name = "retell"
-    supports_audio = False  # audio-mode lands in v0.2
+    supports_audio = True  # audio-mode behind the --allow-audio gate
 
     def __init__(
         self,
@@ -191,6 +191,11 @@ class RetellConnector(BaseConnector):
         if not cfg.agent_id:
             raise ValueError("RetellConnector requires `agent_id` in provider config.")
         self._agent_id = cfg.agent_id
+        # Optional audio-mode wiring (read from extra fields on the provider
+        # spec). All audio fields are validated lazily on first audio call.
+        extra = cfg.model_dump()
+        self._from_number: str | None = extra.get("from_number")
+        self._to_number: str | None = extra.get("to_number")
         if http_client is None:
             http_client = httpx.AsyncClient(
                 base_url=base_url or DEFAULT_BASE_URL,
@@ -203,6 +208,8 @@ class RetellConnector(BaseConnector):
         self._client = http_client
 
     async def start_session(self, case: TestCase) -> Session:
+        if case.mode == "audio":
+            return await self._start_audio_session(case)
         resp = await self._client.post(
             "/create-chat",
             json={"agent_id": self._agent_id},
@@ -233,3 +240,110 @@ class RetellConnector(BaseConnector):
             chat_id=chat_id,
             agent_id=self._agent_id,
         )
+
+    async def _start_audio_session(self, case: TestCase) -> Session:
+        """Outbound phone-call session via Retell `/create-phone-call`.
+
+        Costs real money per minute. Gated behind ``--allow-audio`` in
+        ``voxeval run``; raises if the harness wasn't asked to use audio.
+        """
+        import os as _os
+        if _os.environ.get("VOXEVAL_ALLOW_AUDIO") != "1":
+            raise RuntimeError(
+                "Retell audio-mode requires the --allow-audio flag on "
+                "`voxeval run` (sets VOXEVAL_ALLOW_AUDIO=1) to acknowledge "
+                "that this WILL bill your Retell account per minute. "
+                "Combine with --max-cost to bound the spend."
+            )
+        if not (self._from_number and self._to_number):
+            raise RuntimeError(
+                "Retell audio-mode requires `from_number` and `to_number` "
+                "in provider config (Retell-purchased PSTN numbers)."
+            )
+        resp = await self._client.post("/create-phone-call", json={
+            "from_number": self._from_number,
+            "to_number": self._to_number,
+            "override_agent_id": self._agent_id,
+        })
+        resp.raise_for_status()
+        payload = resp.json()
+        call_id = payload.get("call_id")
+        if not call_id:
+            raise RuntimeError(
+                f"Retell /create-phone-call returned no call_id: {payload!r}"
+            )
+        return _RetellAudioSession(client=self._client, call_id=call_id)
+
+
+class _RetellAudioSession(Session):
+    """Wraps a live PSTN call; polls /get-call/{id} for the final transcript."""
+
+    POLL_INTERVAL_S = 5.0
+    MAX_WAIT_S = 600.0   # 10 minutes hard cap
+
+    def __init__(self, client: httpx.AsyncClient, call_id: str) -> None:
+        self._client = client
+        self._call_id = call_id
+        self._events: list[TranscriptEvent] = []
+        self._call: dict[str, Any] = {}
+
+    async def send_user_turn(
+        self, text: str, *, lang: str | None = None,
+        interrupt_at_ms: int | None = None,
+    ) -> TranscriptEvent:
+        # Audio-mode: the live caller drives the call, not the engine. The
+        # script in YAML is informational only.
+        raise NotImplementedError(
+            "Audio-mode sessions are passive — the live PSTN caller drives "
+            "the call. Drop the `script:` entries from your YAML or move to "
+            "text-mode for scripted multi-turn tests."
+        )
+
+    async def stream_events(self) -> AsyncIterator[TranscriptEvent]:
+        async def _gen() -> AsyncIterator[TranscriptEvent]:
+            if False:  # pragma: no cover
+                yield  # type: ignore[unreachable]
+        return _gen()
+
+    async def end(self) -> CallSummary:
+        import asyncio as _asyncio
+        import time as _time
+        deadline = _time.monotonic() + self.MAX_WAIT_S
+        call: dict[str, Any] = {}
+        while _time.monotonic() < deadline:
+            resp = await self._client.get(f"/get-call/{self._call_id}")
+            resp.raise_for_status()
+            call = resp.json()
+            if call.get("call_status") == "ended":
+                break
+            await _asyncio.sleep(self.POLL_INTERVAL_S)
+        self._call = call
+
+        transcript_text = call.get("transcript") or ""
+        # Parse the plain-text transcript into events (User:/Agent: lines).
+        for i, line in enumerate(transcript_text.splitlines()):
+            line = line.strip()
+            if not line:
+                continue
+            if line.lower().startswith("user:"):
+                self._events.append(TranscriptEvent(
+                    ts_ms=i, role=Role.USER, text=line.split(":", 1)[1].strip(),
+                ))
+            elif line.lower().startswith("agent:"):
+                self._events.append(TranscriptEvent(
+                    ts_ms=i, role=Role.AGENT, text=line.split(":", 1)[1].strip(),
+                ))
+
+        latency = call.get("latency") or {}
+        cost_block = call.get("call_cost") or {}
+        return CallSummary(
+            disconnect_reason=call.get("disconnection_reason"),
+            latency_p50_ms=latency.get("e2e_p50"),
+            latency_p95_ms=latency.get("e2e_p95"),
+            cost_usd=float(cost_block.get("combined_cost", 0)) / 100.0,
+            tool_invocations=call.get("tool_calls") or [],
+        )
+
+    @property
+    def transcript(self) -> list[TranscriptEvent]:
+        return list(self._events)

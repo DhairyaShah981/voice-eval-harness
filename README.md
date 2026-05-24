@@ -31,33 +31,45 @@ voxeval --version
 ## Quick start
 
 ```bash
-voxeval init --provider retell                # scaffolds voxeval.yaml + .env.example
-voxeval lint agents/my-agent.json             # structural linter (catches all known import-breaking bugs)
-voxeval pin-urls agents/my-agent.json --lock  # probe every tool/webhook URL; fails on ngrok rot
-voxeval run --max-cost 0.50 --junit out.xml   # full eval suite with cost guardrail + CI report
-voxeval replay --since 7d                     # regression cases from your last week of failed prod calls
-voxeval kb-coverage --kb 'kb/*.md'            # is your knowledge base actually answerable?
+voxeval init --provider retell                # scaffold voxeval.yaml + .env.example
+voxeval lint agents/my-agent.json             # 17-rule structural linter
+voxeval pin-urls agents/my-agent.json --lock  # probe tool/webhook URLs; fails on ngrok rot
+voxeval run --max-cost 0.50 --junit out.xml   # full eval suite with budget cap + CI report
+voxeval diff main.json feature.json           # per-case regression diff (exits 1 on regression)
+voxeval kb-coverage --kb 'kb/*.md'            # auto-Q&A your KB and verify agent answers
+voxeval replay --since 7d                     # regression fixtures from last week's failed prod calls
+voxeval audit --since 24h                     # score yesterday's prod calls against assert_* contracts
+voxeval drift-watch --sample 20               # check cached LLM-judge verdicts for model drift
 ```
 
 ## What's in v0.1
 
 | Feature | What it catches |
 |---|---|
-| **Retell JSON linter** (RTL-001 – RTL-017) | 13 rules ported from a battle-tested validator, plus RTL-016 (ngrok URL rot) and RTL-017 (KB empty but referenced in prompts) |
-| **Persona simulator** | Adversarial callers: impatient, accented, code-switching, KB-probing |
-| **KB coverage analyzer** | Auto-generates Q&A from your markdown KB, verifies the agent can actually answer |
-| **Production-call replay** | Pulls failed calls from Retell logs, scrubs PHI, turns them into regression cases |
-| **LLM-judge assertions** | Semantic intent checks, not brittle keyword matching |
-| **CI integration** | JUnit XML output, pre-commit hook, GitHub Action template |
-| **Connectors** | Retell (full), Vapi (full), LiveKit / Pipecat / Bland (stubs) |
+| **Retell JSON linter** (RTL-001 – RTL-017) | 15 rules ported from a battle-tested validator + RTL-016 (ngrok URL rot) + RTL-017 (KB empty but referenced in prompts) |
+| **Persona simulator** | 4 adversarial callers (impatient, accented, code-switching, KB-probing) with overridable Jinja prompts |
+| **KB coverage analyzer** | Auto-generates Q&A from your markdown KB, verifies the agent can actually answer (LLM-judge or sentence-transformers backend) |
+| **Production-call replay + audit** | Pulls failed calls from Retell logs, scrubs PHI (regex + optional Presidio), turns them into regression cases. `audit` scores yesterday's calls against your contracts. |
+| **LLM-judge with budget guardrail** | Semantic intent checks; `--max-cost USD` ceiling refuses calls past the limit instead of burning past |
+| **`assert_tool_shape`** | Runtime tool-args contract validator (type/enum/min/max/regex) |
+| **`voxeval diff`** | Per-case regression diff between two runs or two YAMLs (exits 1 on regression — CI gate) |
+| **`voxeval pin-urls`** | HEADs every tool/webhook URL, writes a lock file, fails on rot |
+| **CI integration** | JUnit XML output, `report.json`, pre-commit hook, GitHub Action template |
+| **Dashboard** | TypeScript / Next 15 / Recharts / Supabase under `dashboard/` |
+| **Connectors** | Retell (text + audio), Vapi (full), Mock (deterministic), LiveKit / Pipecat / Bland (stubs) |
 
-## v0.2 roadmap
+## Dashboard (TypeScript)
 
-- React + Recharts dashboard backed by Supabase (TypeScript)
-- LiveKit, Pipecat, Bland connectors fully implemented
-- Audio-mode (real WebRTC / PSTN) with cost guardrails
+Lives at `dashboard/` — Next.js 15 + React 19 + Recharts + Supabase. Drag-and-drop a `report.json` produced by `voxeval run --json out.json` and it lights up: pass-rate sparkline per suite, per-case grid with transcript drawer, ingest API (`POST /api/runs` with Bearer auth). One-time setup: paste `dashboard/supabase/schema.sql` into your Supabase SQL editor, copy three env vars into `dashboard/.env.local`, `pnpm dev`. ~10 minutes from clone to live.
+
+## v0.2 roadmap (post-v1.0)
+
+- Insurance-acceptance fact matrix (healthcare-vertical assertion)
 - Multi-judge cross-model evaluation
-- Per-test cost + carbon report
+- Carbon-cost report
+- Drift-watch with prompt replay (v1.0 ships verdict-distribution baseline only)
+- LiveKit, Pipecat, Bland connectors with their native test framework integrations
+- Diff view in the dashboard UI
 
 ## Real-world findings on day one
 

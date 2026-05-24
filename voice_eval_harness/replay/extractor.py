@@ -92,8 +92,12 @@ def fixture_to_yaml_dict(fix: ReplayFixture) -> dict[str, Any]:
             f"(disconnect={fix.disconnect_reason})"
         ),
         "script": [{"user_says": t} for t in fix.user_turns],
+        # `assert_no_crash` is parameterless — bare string is the canonical
+        # form the YAML loader normalizes correctly. (Dict form
+        # ``{"assert_no_crash": True}`` round-trips as ``{kind, value: True}``
+        # which leaves a stray field on the AssertionSpec.)
         "suite_asserts": [
-            {"assert_no_crash": True},
+            "assert_no_crash",
             {"assert_not_contains": [fix.failure_signature]},
         ],
     }

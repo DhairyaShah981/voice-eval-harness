@@ -18,6 +18,9 @@ from __future__ import annotations
 import os
 import random
 from collections.abc import Callable
+from pathlib import Path
+
+from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 from voice_eval_harness.connectors.base import Session
 from voice_eval_harness.core.models import Role, TranscriptEvent
@@ -30,11 +33,16 @@ DEFAULT_PERSONA_MODEL = os.environ.get(
     "VOXEVAL_PERSONA_MODEL", "gpt-4o-mini-2024-07-18",
 )
 
-_PROMPT = """\
+# Per-persona prompts live as Jinja templates so users can override them
+# by dropping a file at ``./personas/prompts/<type>.jinja`` in their project
+# root (precedence: cwd > package). The fallback template applies when no
+# persona-specific file exists.
+_PACKAGE_PROMPTS = Path(__file__).parent / "prompts"
+_FALLBACK_PROMPT = """\
 You are roleplaying a CALLER on a phone call with a voice AI agent.
 
-PERSONA ({type}):
-{goal}
+PERSONA ({{ type }}):
+{{ goal }}
 
 Adversarial style:
   - Stay in character at all times.
@@ -43,9 +51,39 @@ Adversarial style:
   - If you have accomplished your goal, end with the literal token <DONE>.
 
 Conversation so far (oldest to newest):
-{transcript}
+{{ transcript }}
 
-Your next utterance:"""
+Your next utterance:
+"""
+
+
+def _render_prompt(profile: PersonaProfile, transcript_text: str) -> str:
+    """Render the persona prompt — user override takes precedence over packaged."""
+    candidates = [
+        Path.cwd() / "personas" / "prompts" / f"{profile.type}.jinja",
+        _PACKAGE_PROMPTS / f"{profile.type}.jinja",
+    ]
+    template_dir: Path | None = None
+    for c in candidates:
+        if c.exists():
+            template_dir = c.parent
+            template_name = c.name
+            break
+    if template_dir is None:
+        # Use the inline fallback.
+        env = Environment(autoescape=select_autoescape([]))
+        tmpl = env.from_string(_FALLBACK_PROMPT)
+    else:
+        env = Environment(
+            loader=FileSystemLoader(str(template_dir)),
+            autoescape=select_autoescape([]),
+        )
+        tmpl = env.get_template(template_name)
+    return tmpl.render(
+        type=profile.type,
+        goal=profile.goal,
+        transcript=transcript_text,
+    )
 
 
 def _render_transcript(events: list[TranscriptEvent]) -> str:
@@ -121,11 +159,7 @@ async def run_persona(
     while turns < profile.max_turns:
         text = last_user
         if text is None:
-            prompt = _PROMPT.format(
-                type=profile.type,
-                goal=profile.goal,
-                transcript=_render_transcript(session.transcript),
-            )
+            prompt = _render_prompt(profile, _render_transcript(session.transcript))
             text = roller(prompt).strip()
 
         if "<DONE>" in text:

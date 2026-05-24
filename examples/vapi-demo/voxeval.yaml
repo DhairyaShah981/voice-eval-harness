@@ -9,7 +9,7 @@
 provider:
   name: vapi
   api_key: ${VAPI_API_KEY}
-  agent_id: REPLACE_WITH_VAPI_ASSISTANT_ID  # Vapi assistant UUID
+  agent_id: fca80c92-cbd1-4230-9a3a-48ed600edf22  # Vapi assistant UUID
 
 defaults:
   mode: text
