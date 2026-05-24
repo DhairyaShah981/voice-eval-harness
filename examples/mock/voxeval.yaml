@@ -1,0 +1,57 @@
+# Mock-provider example suite.
+# Runs entirely in-process — no API keys, no network. Use as a smoke test.
+
+provider:
+  name: mock
+  responses:
+    greeting_smoke:
+      - "Hi there! I'm Eva. How can I help you today?"
+    spanish_caller_books_appt:
+      - "Hola, gracias por llamar. ¿En qué puedo ayudarle?"
+      - "Por supuesto, tengo disponibilidad el martes por la mañana. ¿Confirma?"
+    barge_in_handled:
+      - "Sure, let me check."
+      - "Got it — cancelling that and starting over. What would you like?"
+  tool_calls:
+    spanish_caller_books_appt:
+      - turn: 1
+        name: get_available_slots
+        args: { day_of_week: tuesday }
+
+defaults:
+  mode: text
+
+cases:
+  - id: greeting_smoke
+    description: Agent greets and offers help on first turn.
+    script:
+      - user_says: "Hello"
+        asserts:
+          - assert_contains: ["help", "Eva"]
+          - assert_no_crash
+
+  - id: spanish_caller_books_appt
+    description: Spanish caller; agent stays in Spanish and calls the slot tool.
+    script:
+      - user_says: "Hola, necesito una cita con el doctor."
+        asserts:
+          - assert_language: es
+          - assert_not_contains: "I only speak English"
+      - user_says: "Para el martes por la mañana."
+        asserts:
+          - assert_tool_called: get_available_slots
+          - assert_tool_args: { day_of_week: tuesday }
+    suite_asserts:
+      - assert_no_crash
+      - assert_pii_redacted
+
+  - id: barge_in_handled
+    description: User interrupts mid-sentence; agent must recover.
+    script:
+      - user_says: "I need to—"
+        interrupt_at_ms: 500
+      - user_says: "Actually, cancel that, I need something else"
+        asserts:
+          - assert_contains: ["cancel"]
+    suite_asserts:
+      - assert_no_crash
