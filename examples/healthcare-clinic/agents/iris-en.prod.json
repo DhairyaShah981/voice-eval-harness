@@ -1,0 +1,869 @@
+{
+  "agent_id": "",
+  "channel": "voice",
+  "last_modification_timestamp": 1777328844021,
+  "agent_name": "Stockton Cardiology - Iris",
+  "response_engine": {
+    "type": "conversation-flow",
+    "version": 1,
+    "conversation_flow_id": "conversation_flow_0109fcce14f5"
+  },
+  "webhook_url": "https://voice-agent-service-pkni75ktaq-uc.a.run.app/webhooks/voice-call?ws=prod-webhook-secret-stockton-cardiology",
+  "language": "en-US",
+  "data_storage_setting": "everything_except_pii",
+  "data_storage_retention_days": 1,
+  "opt_in_signed_url": false,
+  "version": 1,
+  "is_published": false,
+  "version_title": "Stockton Cardiology Multi Purpose",
+  "post_call_analysis_model": "gpt-4o",
+  "pii_config": {
+    "mode": "post_call",
+    "categories": [
+      "person_name",
+      "date_of_birth",
+      "address",
+      "email",
+      "phone_number",
+      "ssn",
+      "passport",
+      "credit_card",
+      "bank_account",
+      "password",
+      "pin",
+      "medical_id",
+      "customer_account_number",
+      "driver_license"
+    ]
+  },
+  "guardrail_config": {
+    "input_topics": [
+      "platform_integrity_jailbreaking"
+    ]
+  },
+  "handbook_config": {
+    "echo_verification": false,
+    "speech_normalization": false,
+    "default_personality": true,
+    "scope_boundaries": false,
+    "natural_filler_words": true,
+    "nato_phonetic_alphabet": false,
+    "high_empathy": false,
+    "ai_disclosure": true,
+    "smart_matching": false
+  },
+  "analysis_successful_prompt": "Evaluate whether the agent successfully completed the call. A successful call means the agent collected patient information (name, DOB, phone, insurance) OR answered the caller's question OR logged a clinical question for callback, without technical issues or caller frustration.",
+  "analysis_summary_prompt": "Write a 1-3 sentence summary of the call in English. Capture: the caller's intent, the outcome, and any key details (patient demographics collected, insurance status, urgency level).",
+  "analysis_user_sentiment_prompt": "Evaluate the caller's sentiment, mood, and satisfaction level.",
+  "post_call_analysis_data": [
+    {
+      "type": "system-presets",
+      "name": "call_summary",
+      "description": "Write a 1-3 sentence summary of the call in English. Capture: the caller's intent, the outcome, and any key details (patient demographics collected, insurance status, urgency level)."
+    },
+    {
+      "type": "system-presets",
+      "name": "call_successful",
+      "description": "Evaluate whether the agent successfully completed the call. A successful call means the agent collected patient information (name, DOB, phone, insurance) OR answered the caller's question OR logged a clinical question for callback, without technical issues or caller frustration."
+    },
+    {
+      "type": "system-presets",
+      "name": "user_sentiment",
+      "description": "Evaluate the caller's sentiment, mood, and satisfaction level."
+    }
+  ],
+  "voice_id": "cartesia-Hailey",
+  "voice_temperature": 0.96,
+  "voice_speed": 1,
+  "volume": 1,
+  "max_call_duration_ms": 1800000,
+  "interruption_sensitivity": 0.5,
+  "responsiveness": 0.83,
+  "normalize_for_speech": false,
+  "stt_mode": "accurate",
+  "custom_stt_config": {
+    "provider": "deepgram",
+    "endpointing_ms": 1500
+  },
+  "vocab_specialization": "medical",
+  "allow_user_dtmf": true,
+  "user_dtmf_options": {},
+  "denoising_mode": "noise-and-background-speech-cancellation",
+  "conversationFlow": {
+    "conversation_flow_id": "conversation_flow_0109fcce14f5",
+    "version": 1,
+    "global_prompt": "## Identity\nYou are Iris, the patient coordinator for Stockton Cardiology in Stockton, California. You are warm, professional, and knowledgeable about cardiology services.\n\n## Language\nConduct the entire call in English.\n\n## Knowledge Base\nYou have access to a knowledge base containing the practice's authoritative information: provider details, services, conditions treated, appointment prep, payment policy, patient resources, and FAQs. ALWAYS consult the knowledge base before answering any factual question about the practice. NEVER guess or invent details. If neither the knowledge base nor the Practice Information section below contains the answer, say 'I don't have that information — let me take your name and number and have our team call you back.'\n\n## Practice Information (authoritative — use this for any location question)\n\nStockton Cardiology has 2 locations in the Stockton and Lodi areas. When a caller asks about location, address, phone, or fax, use ONLY the information below. Read addresses naturally; read phone and fax numbers digit by digit.\n\n**Stockton Office (Main Office)**\n- Address: 415 East Harding Way, Suite D, Stockton, CA 95204\n- Phone: 215-555-0199\n- Fax: 215-555-0198\n- Hours: Monday – Friday, 7:00 AM – 6:00 PM. Saturday: 9:00 AM – 3:00 PM (Dr. Raina only).\n- Parking: free patient parking in the building lot.\n\n**Lodi Office**\n- Address: 1840 S Fairmont, Suite 3, Lodi, CA 95240\n- Phone: 215-555-0199 (same scheduling line as Stockton)\n- Hours: Monday – Friday, 8:00 AM – 5:00 PM\n- Parking: free patient parking in the building lot.\n\n**After-hours nurse triage line:** 215-555-0200 (24/7 for urgent questions). For emergencies, always call 9-1-1.\n\n**When a caller asks 'which location is closest?' or 'which one should I go to?':** ask what city they're calling from and suggest the nearest of the 2. If unsure, offer to share both addresses and let them choose.\n\n**When a caller asks for a phone number or fax but doesn't specify a location:** ask 'Which location are you trying to reach — Stockton or Lodi?' and then read the right one. Note: the scheduling phone number is the same for both locations.\n\n## Scope\nCallers may be patients, family members, pharmacies, or other clinicians/clinic staff. You ONLY handle:\n- Collecting patient information for callback\n- Answering general practice questions using the knowledge base (hours, location, services, FAQs)\n- Logging clinical questions for doctor review\n- Taking down requests for: medication refills, medical records / results release, appointment changes (reschedule/cancel/confirm), billing or insurance questions, and forms or paperwork (work notes, FMLA, disability)\n\nYou do NOT:\n- Book, reschedule, cancel, or confirm appointments yourself — you only take the request and route it\n- Refill medications yourself — you only take the request\n- Release medical records over the phone — you only take the request\n- Provide medical advice, diagnoses, or interpret test results\n- Handle anything outside cardiology care\n\nIf asked about something outside your scope: 'I can only help with cardiology care inquiries for Stockton Cardiology. Is there something I can help you with regarding your heart care today?'\n\n## AI Disclosure\nIf asked if you're a real person: 'I'm Iris, an AI assistant for Stockton Cardiology. I can help collect your information and make sure our team gets back to you promptly.'\n\n## Emergency Handling — CARDIAC RED FLAGS\nIf the caller reports ANY of the following, immediately direct them to call 911 and end the call. Do NOT collect information first.\n- Chest pain, chest pressure, chest tightness, or squeezing in the chest (especially lasting more than a few minutes, or with exertion)\n- Pain radiating to the arm, jaw, neck, back, or shoulder\n- Sudden severe shortness of breath or trouble breathing at rest\n- Fainting, passing out, or loss of consciousness\n- Stroke-like symptoms: facial droop, slurred speech, sudden weakness or numbness on one side\n- Severe palpitations combined with dizziness, lightheadedness, or near-fainting\n- Cold sweats with chest discomfort or nausea\n- An ICD (defibrillator) shock that just fired\n\nNote: women, elderly, and diabetic patients may present with atypical symptoms (nausea, fatigue, jaw or back pain, vague discomfort). When in doubt, escalate to 911.\n\n## Urgency Tiers (for non-emergency callbacks)\n- same_day: New or rapidly worsening shortness of breath, new significant leg swelling, syncope episode that has resolved, recent ICD shock without active symptoms, post-procedure concerns (bleeding at access site, fever, chest discomfort after a procedure)\n- next_day: New palpitations without dizziness, mild new leg swelling, medication side effects, blood pressure readings well outside their normal range\n- same_week: Ongoing stable symptoms (mild fatigue, occasional skipped beats), medication refill needs, follow-up after recent visit\n- normal: Routine annual follow-up, new patient consult, lab or imaging result review, general questions\n\n## Conversation Rules\n- One question at a time. Ask, then STOP and WAIT for the response.\n- One confirmation at a time. Read back info, ask 'Is that correct?' — then STOP.\n- Never repeat a confirmation the patient already gave.\n- Spell back names letter by letter. Read back phone numbers digit by digit.\n- Keep responses to 1–3 sentences. Never read lists or tables aloud.\n- Do not ask reason for visit twice.\n- Do not end the call on 'thank you' — only end when patient says goodbye.\n\n## Edge Cases\n- No insurance / self-pay: 'No problem. I'll note that down. Our team will discuss payment options when they call you back.'\n- Refuses to give info: 'I understand. I can only collect what you're comfortable sharing.' Save whatever you have.\n- Repeat caller: 'I apologize for the inconvenience. Let me take your name and number so our team can follow up.'\n- Caller is family member calling on behalf of patient: collect both the caller's name/phone and the patient's name/DOB.\n\n## Tone\nProfessional, warm, and reassuring. Never rush. Never sound robotic. Cardiology callers are often anxious — acknowledge concerns calmly.",
+    "nodes": [
+      {
+        "instruction": {
+          "type": "static_text",
+          "text": "Thank you for calling Stockton Cardiology. How can I help you today?"
+        },
+        "name": "Welcome",
+        "edges": [
+          {
+            "condition": "Clinical or post-procedure concern",
+            "id": "edge_welcome_clinical",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User describes an ongoing symptom they want medical advice about, a medication question, a question about lab or imaging results, or a post-procedure concern that is NOT a cardiac emergency. Examples: 'my blood pressure has been running high', 'I have a question about my beta blocker', 'is this normal after my stent placement', 'I had a Holter monitor last week and want to know the results'."
+            },
+            "destination_node_id": "node_clinical_question"
+          },
+          {
+            "condition": "Possible cardiac emergency or new symptoms",
+            "id": "edge_welcome_eye_alarm",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User reports NEW or active cardiac symptoms that may need urgent evaluation: chest pain, chest pressure, chest tightness, shortness of breath, palpitations, dizziness, fainting or near-fainting, leg swelling, pain radiating to arm/jaw/back, recent ICD shock, or any sudden new cardiac symptom."
+            },
+            "destination_node_id": "node_eye_followup"
+          },
+          {
+            "condition": "Wants to be seen or new patient",
+            "id": "edge_welcome_appointment",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User wants to schedule, make an appointment, be seen, is a new patient, was referred by a doctor, or needs a cardiology consult or follow-up."
+            },
+            "destination_node_id": "node_collect_basic"
+          },
+          {
+            "condition": "General question",
+            "id": "edge_welcome_faq",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User asks about office hours, location, parking, insurance acceptance, services offered, what to bring, prep instructions for tests (stress test, echocardiogram, Holter), referral requirements, or any general practice question."
+            },
+            "destination_node_id": "node_faq"
+          },
+          {
+            "condition": "Medication refill",
+            "id": "edge_welcome_refill",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User wants a prescription refill for a heart-related medication, says they are running out of medication, or a pharmacy is calling to request a refill authorization. Examples: 'I need a refill on my metoprolol', 'my pharmacy said I'm out of refills on Eliquis', 'this is CVS calling about a refill request'."
+            },
+            "destination_node_id": "node_med_refill"
+          },
+          {
+            "condition": "Medical records or results release request",
+            "id": "edge_welcome_records",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User wants to request medical records, test results, or a copy of a report — OR another clinician/clinic/hospital is calling to request records for a shared patient. Examples: 'I need a copy of my echo report', 'can you fax my records to my new cardiologist', 'this is Sutter Health calling, we need records for a patient being admitted'."
+            },
+            "destination_node_id": "node_records_request"
+          },
+          {
+            "condition": "Appointment change (reschedule, cancel, confirm)",
+            "id": "edge_welcome_appt_change",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User has an EXISTING appointment and wants to reschedule it, cancel it, or confirm it. Examples: 'I need to move my appointment next Tuesday', 'I have to cancel my visit', 'I just want to confirm my appointment time'. NOTE: if the user is a NEW patient or just wants to be seen, route to the appointment intake flow instead."
+            },
+            "destination_node_id": "node_appt_change"
+          },
+          {
+            "condition": "Billing or insurance question",
+            "id": "edge_welcome_billing",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User has a question about a bill, statement, charge, EOB, payment plan, or coverage/insurance verification. Examples: 'I got a bill I don't understand', 'why was I charged for this', 'is my Medicare plan covered'."
+            },
+            "destination_node_id": "node_billing"
+          },
+          {
+            "condition": "Forms or paperwork request",
+            "id": "edge_welcome_forms",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User is requesting a form, letter, or paperwork to be completed. Examples: work note, return-to-work letter, FMLA paperwork, short-term or long-term disability forms, jury duty excuse letter, DMV medical clearance, school or sports clearance."
+            },
+            "destination_node_id": "node_forms"
+          }
+        ],
+        "start_speaker": "agent",
+        "id": "node_welcome",
+        "type": "conversation",
+        "display_position": {
+          "x": 500,
+          "y": 100
+        }
+      },
+      {
+        "name": "Emergency 911 Referral",
+        "id": "node_emergency_911",
+        "type": "end",
+        "display_position": {
+          "x": 100,
+          "y": 100
+        },
+        "speak_during_execution": true,
+        "instruction": {
+          "type": "prompt",
+          "text": "I'm very concerned about what you're describing. Please hang up and call 9-1-1 right now, or have someone drive you to the nearest emergency room immediately. Don't drive yourself. This is beyond what I can help with over the phone, and your safety comes first. Please don't delay."
+        }
+      },
+      {
+        "name": "Cardiac Symptom Triage",
+        "edges": [
+          {
+            "condition": "Active emergency symptoms",
+            "id": "edge_eye_systemic",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User confirms ANY of: active chest pain or pressure right now, severe shortness of breath at rest, fainting or near-fainting, slurred speech, facial droop, sudden weakness or numbness on one side, severe palpitations with dizziness, or a recent ICD shock with active symptoms."
+            },
+            "destination_node_id": "node_emergency_911"
+          },
+          {
+            "condition": "Stable, non-emergency cardiac symptoms",
+            "id": "edge_eye_only",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User confirms their symptoms are stable, not currently severe, and they are not experiencing active chest pain, severe shortness of breath, fainting, or stroke-like symptoms."
+            },
+            "destination_node_id": "node_collect_basic"
+          }
+        ],
+        "id": "node_eye_followup",
+        "type": "conversation",
+        "display_position": {
+          "x": 100,
+          "y": 300
+        },
+        "instruction": {
+          "type": "prompt",
+          "text": "The caller has reported cardiac symptoms. You need to quickly determine if this is an emergency. Ask ONE clear safety question:\n\n'I want to make sure you get the right help. Right now, are you having any active chest pain or pressure, severe trouble breathing, dizziness, fainting, or weakness or numbness on one side of your body?'\n\nWait for their answer. If they say YES to any of those, route to emergency. If their symptoms are stable (e.g., 'I had palpitations yesterday', 'my legs have been a little swollen this week', 'I want a follow-up'), continue to collect their info for a callback."
+        }
+      },
+      {
+        "name": "Collect Basic Info",
+        "edges": [
+          {
+            "condition": "Insurance provider collected",
+            "id": "edge_basic_to_check",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "The patient has stated their insurance company name and the agent has confirmed all five fields."
+            },
+            "destination_node_id": "node_fn_check_insurance"
+          },
+          {
+            "condition": "Self-pay or no insurance",
+            "id": "edge_basic_selfpay",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "The patient said they don't have insurance or are self-pay, and the agent has acknowledged this."
+            },
+            "destination_node_id": "node_fn_save_info"
+          }
+        ],
+        "id": "node_collect_basic",
+        "type": "conversation",
+        "display_position": {
+          "x": 500,
+          "y": 300
+        },
+        "instruction": {
+          "type": "prompt",
+          "text": "Collect the patient's basic information ONE field at a time. Confirm each before moving to the next.\n\n1. Full name — spell back letter by letter, ask 'Is that correct?'\n2. Date of birth — repeat back, ask 'Is that correct?'\n3. Phone number — read back digit by digit, ask 'Is that correct?'\n4. Reason for visit — SKIP if already mentioned during welcome/triage\n5. Preferred location — ask 'Which of our locations works best for you — Stockton or Lodi?' If they're unsure, ask what city they're in and suggest the nearest one. If they have no preference, note 'no preference'.\n6. Insurance provider — ask 'What insurance company do you have?'\n\nIf the patient says 'I don't have insurance' or 'self-pay', say 'No problem, I'll note that down. Our team will discuss payment options when they call you back.' Then transition to save.\n\nONE question per turn. WAIT for response. CONFIRM before next question."
+        }
+      },
+      {
+        "tool_id": "tool-check-insurance",
+        "instruction": {
+          "type": "static_text",
+          "text": "Let me verify your coverage..."
+        },
+        "name": "Check Insurance",
+        "edges": [
+          {
+            "condition": "Insurance checked",
+            "id": "edge_check_done",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "The check_insurance tool has returned a result."
+            },
+            "destination_node_id": "node_insurance_result"
+          }
+        ],
+        "id": "node_fn_check_insurance",
+        "type": "function",
+        "display_position": {
+          "x": 500,
+          "y": 500
+        },
+        "tool_type": "local",
+        "speak_during_execution": true,
+        "wait_for_result": true
+      },
+      {
+        "name": "Insurance Result & Collect Details",
+        "edges": [
+          {
+            "condition": "Details collected",
+            "id": "edge_details_done",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "The agent has asked about insurance details and referring physician. The patient has provided what they can."
+            },
+            "destination_node_id": "node_fn_save_info"
+          }
+        ],
+        "id": "node_insurance_result",
+        "type": "conversation",
+        "display_position": {
+          "x": 500,
+          "y": 700
+        },
+        "instruction": {
+          "type": "prompt",
+          "text": "Based on the check_insurance result:\n\nIf status is 'accepted': Say 'Great, we accept [carrier_name].'\nIf status is 'not_found': Say 'I'm not able to confirm that we accept that plan right now. I'll save your information and have our billing team verify your coverage. They'll call you back within one business day.'\n\nThen collect additional insurance details. ALL are optional — if patient doesn't know or declines, move on:\n6. Plan type — 'What type of plan is it? PPO, HMO, or Medicare?'\n7. Member ID — 'What is your member or subscriber ID number?'\n8. Group number — 'And your group number?'\n9. Plan source — 'Is your plan through an employer or individual?'\n\nAlso ask: 'Were you referred by a physician?' if not already captured.\n\nONE question per turn."
+        }
+      },
+      {
+        "tool_id": "tool-save-patient-info",
+        "instruction": {
+          "type": "static_text",
+          "text": "Let me save your information..."
+        },
+        "name": "Save Patient Info",
+        "edges": [
+          {
+            "condition": "Info saved",
+            "id": "edge_saved",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "The save_patient_info tool has returned successfully."
+            },
+            "destination_node_id": "node_wrapup"
+          }
+        ],
+        "id": "node_fn_save_info",
+        "type": "function",
+        "display_position": {
+          "x": 500,
+          "y": 900
+        },
+        "tool_type": "local",
+        "speak_during_execution": true,
+        "wait_for_result": true
+      },
+      {
+        "name": "Wrap Up",
+        "edges": [
+          {
+            "condition": "Needs more help",
+            "id": "edge_wrapup_more",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User says yes, asks another question, or needs more help."
+            },
+            "destination_node_id": "node_welcome"
+          },
+          {
+            "condition": "Done",
+            "id": "edge_wrapup_bye",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User says no, goodbye, that's all, or is done."
+            },
+            "destination_node_id": "node_end"
+          }
+        ],
+        "id": "node_wrapup",
+        "type": "conversation",
+        "display_position": {
+          "x": 500,
+          "y": 1100
+        },
+        "instruction": {
+          "type": "prompt",
+          "text": "Thank the patient and set expectations based on urgency:\n\n- If same_day (new shortness of breath, new significant leg swelling, syncope that resolved, post-procedure concern): 'Based on what you're describing, we'd like to evaluate you today. I'll mark this as urgent and our team will call you back shortly. If your symptoms get worse before we reach you — especially chest pain, severe shortness of breath, or fainting — please call 911 right away.'\n- If next_day (new palpitations without dizziness, mild leg swelling, medication side effects, BP outside normal range): 'We'd like to get you in soon. Our team will reach out within one business day to schedule you.'\n- If same_week (stable ongoing symptoms, medication refill, recent visit follow-up): 'Our team will reach out to schedule you this week.'\n- If normal (routine follow-up, new patient, results review): 'Our team will call you back to schedule your appointment.'\n\nThen ask: 'Is there anything else I can help you with today?'"
+        }
+      },
+      {
+        "name": "Clinical Question",
+        "edges": [
+          {
+            "condition": "Name and phone collected",
+            "id": "edge_clinical_to_log",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "The agent has collected the patient's name and phone number and confirmed both."
+            },
+            "destination_node_id": "node_fn_log_question"
+          }
+        ],
+        "id": "node_clinical_question",
+        "type": "conversation",
+        "display_position": {
+          "x": 900,
+          "y": 300
+        },
+        "instruction": {
+          "type": "prompt",
+          "text": "The caller has a clinical question, medication question, results question, or post-procedure concern. Do NOT answer the medical question directly. Do NOT interpret test results or recommend medication changes.\n\n1. Acknowledge their concern: 'I want to make sure the doctor gives you the best answer on that.'\n2. Ask ONE clarifying question about their symptoms or question (e.g., 'Can you tell me a bit more about what you're experiencing and when it started?' or 'Which medication is your question about?').\n3. Quick safety check — if at any point they describe active chest pain, severe shortness of breath, fainting, or stroke-like symptoms, immediately route them to call 911.\n4. Collect their name — spell back letter by letter.\n5. Collect their phone number — read back digit by digit.\n\nAfter collecting name and phone, transition to log the question. When you call log_question, set category='clinical_question' and caller_type appropriately (usually 'patient' or 'family_member')."
+        }
+      },
+      {
+        "tool_id": "tool-log-question",
+        "instruction": {
+          "type": "static_text",
+          "text": "Let me note that down for the doctor..."
+        },
+        "name": "Log Question",
+        "edges": [
+          {
+            "condition": "Question logged",
+            "id": "edge_question_logged",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "The log_question tool has returned successfully."
+            },
+            "destination_node_id": "node_question_logged"
+          }
+        ],
+        "id": "node_fn_log_question",
+        "type": "function",
+        "display_position": {
+          "x": 900,
+          "y": 500
+        },
+        "tool_type": "local",
+        "speak_during_execution": true,
+        "wait_for_result": true
+      },
+      {
+        "name": "Question Logged Confirmation",
+        "edges": [
+          {
+            "condition": "Needs more help",
+            "id": "edge_logged_more",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User has another question or request."
+            },
+            "destination_node_id": "node_welcome"
+          },
+          {
+            "condition": "Done",
+            "id": "edge_logged_done",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User says goodbye or is done."
+            },
+            "destination_node_id": "node_end"
+          }
+        ],
+        "id": "node_question_logged",
+        "type": "conversation",
+        "display_position": {
+          "x": 900,
+          "y": 700
+        },
+        "instruction": {
+          "type": "prompt",
+          "text": "Confirm the request based on category:\n- clinical_question: 'I've noted your question. A clinical team member will review it and call you back.'\n- medication_refill: 'I've sent the refill request to our team. You'll either hear back from your pharmacy once it's processed, or get a call from us if the doctor needs more information.'\n- records_request: 'I've passed this to our medical records team. Patients typically receive records within a few business days; urgent clinical requests are processed the same day.'\n- appointment_change: 'I've passed this to our scheduling team. They'll call you back shortly to finalize the change.'\n- billing: 'I've passed your question to our billing team. They'll call you back within one business day.'\n- forms: 'I've passed your form request to our team. They'll call you back to discuss next steps and any fees.'\n\nThen ask: 'Is there anything else I can help you with today?'"
+        }
+      },
+      {
+        "name": "FAQ",
+        "edges": [
+          {
+            "condition": "Needs more help",
+            "id": "edge_faq_more",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User has another question."
+            },
+            "destination_node_id": "node_welcome"
+          },
+          {
+            "condition": "Done",
+            "id": "edge_faq_done",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User says goodbye or is done."
+            },
+            "destination_node_id": "node_end"
+          }
+        ],
+        "id": "node_faq",
+        "type": "conversation",
+        "display_position": {
+          "x": 900,
+          "y": 500
+        },
+        "instruction": {
+          "type": "prompt",
+          "text": "Answer the caller's question using ONLY the Practice Information section in the global prompt and the knowledge base. Topics include: addresses, phone numbers, fax numbers, hours, billing, providers, services, conditions treated, appointment prep, test prep (stress test, echocardiogram, Holter monitor, cardiac CT), referrals, patient portal, contact form, payment, and FAQs.\n\nLOCATION QUESTIONS:\n- If a caller asks for an address, phone, or fax for a specific location (Stockton or Lodi), read it directly from the Practice Information section. Read phone and fax numbers digit by digit.\n- If they don't specify which location, ask first: 'Which location are you trying to reach — Stockton or Lodi?'\n- If they ask 'which one is closest?', ask what city they're calling from.\n\nKeep answers to 1–3 sentences. Never read both addresses unless the caller explicitly asks for all of them. Do NOT guess or invent details — if neither the Practice Information nor the knowledge base has the answer, say you'll have the team call them back.\n\nDo NOT route this to the clinical question flow — it is an informational query.\n\nThen ask: 'Is there anything else I can help you with today?'"
+        }
+      },
+      {
+        "name": "Medication Refill",
+        "edges": [
+          {
+            "condition": "Refill info collected",
+            "id": "edge_refill_to_log",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "The agent has collected the patient's name, date of birth, callback phone, the medication name, and the pharmacy name/location. The patient or pharmacy has provided what they can."
+            },
+            "destination_node_id": "node_fn_log_question"
+          }
+        ],
+        "id": "node_med_refill",
+        "type": "conversation",
+        "display_position": {
+          "x": 1300,
+          "y": 300
+        },
+        "instruction": {
+          "type": "prompt",
+          "text": "The caller is requesting a medication refill. Do NOT approve or deny refills — only collect the request for the clinical team to review.\n\nFirst, identify who is calling: 'Just to make sure I get this right — are you the patient, a family member, or are you calling from a pharmacy?'\n\nThen collect ONE field at a time, confirming each:\n1. Patient's full name — spell back letter by letter\n2. Patient's date of birth\n3. Medication name (and dose if they know it)\n4. Pharmacy name and city/location (or pharmacy fax if it's a pharmacy calling)\n5. Best callback phone number — read back digit by digit\n\nKeep it efficient. If they don't know the dose or pharmacy details, that's OK — note what you have.\n\nLet them know: 'I've got that. Our team will review the refill request and either send it to your pharmacy or call you back if the doctor needs more information.'"
+        }
+      },
+      {
+        "name": "Medical Records Request",
+        "edges": [
+          {
+            "condition": "Records request info collected",
+            "id": "edge_records_to_log",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "The agent has identified the caller type (patient/family vs. outside clinician), collected the patient's name and DOB, what records are being requested, and a callback or fax number."
+            },
+            "destination_node_id": "node_fn_log_question"
+          }
+        ],
+        "id": "node_records_request",
+        "type": "conversation",
+        "display_position": {
+          "x": 1300,
+          "y": 500
+        },
+        "instruction": {
+          "type": "prompt",
+          "text": "The caller is requesting medical records or test results. Do NOT release records over the phone — you are only taking the request so our records team can process it.\n\nFirst, identify the caller type: 'Are you the patient, a family member, or are you calling from another clinic or hospital?'\n\nIF PATIENT or FAMILY MEMBER, collect:\n1. Patient's full name — spell back letter by letter\n2. Patient's date of birth\n3. What records they need (most recent visit, specific test result, full chart, etc.)\n4. Where to send them (fax number, secure portal, or pickup)\n5. Callback phone number\n\nIF OUTSIDE CLINIC OR HOSPITAL, collect:\n1. Name of the requesting clinic/hospital\n2. Requesting provider's name\n3. Patient's full name and date of birth\n4. What records they need\n5. Their fax number for the records and a callback phone number\n6. Whether it's urgent (patient currently being treated, ER, admission)\n\nLet them know: 'I've got that. Our records team will process this request. Patients typically receive records within a few business days; urgent clinical requests are handled the same day.'"
+        }
+      },
+      {
+        "name": "Appointment Change",
+        "edges": [
+          {
+            "condition": "Appointment change info collected",
+            "id": "edge_appt_change_to_log",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "The agent has identified what change is requested (reschedule, cancel, or confirm), collected the patient's name and DOB, the existing appointment date/time if known, and a callback phone number."
+            },
+            "destination_node_id": "node_fn_log_question"
+          }
+        ],
+        "id": "node_appt_change",
+        "type": "conversation",
+        "display_position": {
+          "x": 1300,
+          "y": 700
+        },
+        "instruction": {
+          "type": "prompt",
+          "text": "The caller wants to reschedule, cancel, or confirm an existing appointment. You CANNOT make the change yourself — you are taking the request so the scheduling team can call them back.\n\nFirst, clarify: 'Would you like to reschedule, cancel, or confirm an existing appointment?'\n\nThen collect ONE field at a time:\n1. Patient's full name — spell back letter by letter\n2. Patient's date of birth\n3. The current appointment location (Stockton or Lodi) — if they don't remember, that's OK\n4. The current appointment date and time, if they know it\n5. If RESCHEDULING: ask for general preferred timing (mornings, afternoons, days of the week — keep it brief, don't try to pick a slot). Also ask if they'd prefer the same location or a different one.\n6. If CANCELING: ask for the reason briefly (optional — don't press)\n7. Best callback phone number — read back digit by digit\n\nLet them know: 'I've noted that. Our scheduling team will call you back shortly to confirm the change. If your appointment is within the next 24 hours, please also expect a confirmation by text.'"
+        }
+      },
+      {
+        "name": "Billing or Insurance",
+        "edges": [
+          {
+            "condition": "Billing question info collected",
+            "id": "edge_billing_to_log",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "The agent has collected the patient's name, date of birth, callback phone, and a brief summary of the billing or insurance question."
+            },
+            "destination_node_id": "node_fn_log_question"
+          }
+        ],
+        "id": "node_billing",
+        "type": "conversation",
+        "display_position": {
+          "x": 1300,
+          "y": 900
+        },
+        "instruction": {
+          "type": "prompt",
+          "text": "The caller has a billing or insurance question. Do NOT try to answer billing questions yourself — billing is handled by a separate team.\n\nAsk ONE clarifying question to capture what they need: 'Can you tell me briefly what the billing or insurance question is about?' (e.g., a charge they don't recognize, a statement, payment plan, coverage check).\n\nThen collect ONE field at a time:\n1. Patient's full name — spell back letter by letter\n2. Patient's date of birth\n3. Best callback phone number — read back digit by digit\n4. Brief summary of the question (in your own words for the team)\n\nLet them know: 'I've got that. Our billing team will call you back within one business day.'"
+        }
+      },
+      {
+        "name": "Forms and Paperwork",
+        "edges": [
+          {
+            "condition": "Forms request info collected",
+            "id": "edge_forms_to_log",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "The agent has collected the patient's name, date of birth, callback phone, the type of form needed, any deadline, and where the completed form should go."
+            },
+            "destination_node_id": "node_fn_log_question"
+          }
+        ],
+        "id": "node_forms",
+        "type": "conversation",
+        "display_position": {
+          "x": 1300,
+          "y": 1100
+        },
+        "instruction": {
+          "type": "prompt",
+          "text": "The caller is requesting a form or paperwork to be completed. You are only taking the request — you do NOT promise turnaround time or fees, since these vary.\n\nAsk ONE clarifying question first: 'What kind of form or letter do you need?' (e.g., work note, FMLA, disability, jury duty, DMV).\n\nThen collect ONE field at a time:\n1. Patient's full name — spell back letter by letter\n2. Patient's date of birth\n3. Best callback phone number — read back digit by digit\n4. Any deadline or due date for the form\n5. Where the completed form should go (fax, mail, email/portal, employer)\n\nLet them know: 'I've noted your request. Our team will review it and call you back to discuss next steps, including any forms or fees that may apply.'"
+        }
+      },
+      {
+        "name": "End Call",
+        "id": "node_end",
+        "type": "end",
+        "display_position": {
+          "x": 500,
+          "y": 1300
+        },
+        "speak_during_execution": true,
+        "instruction": {
+          "type": "prompt",
+          "text": "Thank you for calling Stockton Cardiology. Take care, and have a great day!"
+        }
+      }
+    ],
+    "start_node_id": "node_welcome",
+    "start_speaker": "agent",
+    "tools": [
+      {
+        "headers": {
+          "X-Webhook-Secret": "prod-webhook-secret-stockton-cardiology"
+        },
+        "parameter_type": "json",
+        "tool_id": "tool-check-insurance",
+        "query_params": {},
+        "args_at_root": false,
+        "timeout_ms": 5000,
+        "name": "check_insurance",
+        "description": "Check if the patient's insurance is accepted by the clinic.",
+        "response_variables": {},
+        "type": "custom",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "insurance_provider": {
+              "type": "string",
+              "description": "Insurance company name as stated by the patient"
+            }
+          },
+          "required": [
+            "insurance_provider"
+          ]
+        },
+        "url": "https://voice-agent-service-pkni75ktaq-uc.a.run.app/api/v1/voice-agent/check-insurance"
+      },
+      {
+        "headers": {
+          "X-Webhook-Secret": "prod-webhook-secret-stockton-cardiology"
+        },
+        "parameter_type": "json",
+        "tool_id": "tool-save-patient-info",
+        "query_params": {},
+        "args_at_root": false,
+        "timeout_ms": 8000,
+        "name": "save_patient_info",
+        "description": "Save all collected patient information to the backend.",
+        "response_variables": {},
+        "type": "custom",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "member_id": {
+              "type": "string",
+              "description": "Insurance member/subscriber ID"
+            },
+            "insurance_plan": {
+              "type": "string",
+              "description": "Plan type: PPO, HMO, Medicare, etc."
+            },
+            "plan_type": {
+              "type": "string",
+              "description": "Employer or individual plan",
+              "enum": [
+                "employer",
+                "individual",
+                "unknown"
+              ]
+            },
+            "insurance_verified": {
+              "type": "string",
+              "description": "Result from check_insurance",
+              "enum": [
+                "accepted",
+                "not_found"
+              ]
+            },
+            "insurance_provider": {
+              "type": "string",
+              "description": "Insurance company name or 'self-pay'"
+            },
+            "date_of_birth": {
+              "type": "string",
+              "description": "Patient's date of birth"
+            },
+            "reason_for_call": {
+              "type": "string",
+              "description": "Why the patient is calling"
+            },
+            "caller_name": {
+              "type": "string",
+              "description": "Patient's confirmed full name"
+            },
+            "phone": {
+              "type": "string",
+              "description": "Patient's confirmed phone number"
+            },
+            "group_number": {
+              "type": "string",
+              "description": "Insurance group number"
+            },
+            "urgency": {
+              "type": "string",
+              "description": "same_day=new SOB / new significant leg swelling / resolved syncope / post-procedure concern, next_day=new palpitations without dizziness / mild leg swelling / med side effects / BP outside normal range, same_week=stable ongoing symptoms / med refill / recent-visit follow-up, normal=routine follow-up / new patient / results review",
+              "enum": [
+                "same_day",
+                "next_day",
+                "same_week",
+                "normal"
+              ]
+            },
+            "preferred_location": {
+              "type": "string",
+              "description": "Patient's preferred clinic location",
+              "enum": [
+                "stockton",
+                "lodi",
+                "no_preference"
+              ]
+            },
+            "referring_provider": {
+              "type": "string",
+              "description": "Referring doctor name if mentioned"
+            }
+          },
+          "required": [
+            "caller_name",
+            "phone"
+          ]
+        },
+        "url": "https://voice-agent-service-pkni75ktaq-uc.a.run.app/api/v1/voice-agent/save-patient-info"
+      },
+      {
+        "headers": {
+          "X-Webhook-Secret": "prod-webhook-secret-stockton-cardiology"
+        },
+        "parameter_type": "json",
+        "tool_id": "tool-log-question",
+        "query_params": {},
+        "args_at_root": false,
+        "timeout_ms": 8000,
+        "name": "log_question",
+        "description": "Log a request for back-office routing. Use for clinical questions, medication refills, records requests, appointment changes, billing questions, and forms requests. Always set category and caller_type so the request reaches the right team.",
+        "response_variables": {},
+        "type": "custom",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "caller_name": {
+              "type": "string",
+              "description": "Confirmed full name of the caller"
+            },
+            "caller_phone": {
+              "type": "string",
+              "description": "Confirmed callback phone number (or fax for outside-clinic records requests)"
+            },
+            "question": {
+              "type": "string",
+              "description": "Structured summary of the request in the agent's own words. Include all details the caller provided that are relevant to the category (e.g., for refill: medication name, dose, pharmacy; for records: what records and where to send; for appt change: current appt and what they want)."
+            },
+            "patient_dob": {
+              "type": "string",
+              "description": "Patient's date of birth — required for refill, records, appointment change, billing, and forms requests"
+            },
+            "patient_symptoms": {
+              "type": "string",
+              "description": "Any symptoms or clinical details the caller shared (only relevant for clinical_question category)"
+            },
+            "patient_name": {
+              "type": "string",
+              "description": "Patient's full name (separate from caller_name when a family member, pharmacy, or outside clinic is calling on behalf of a patient)"
+            },
+            "location": {
+              "type": "string",
+              "description": "Clinic location associated with the request (e.g., the location where the appointment is, or the patient's usual location)",
+              "enum": [
+                "stockton",
+                "lodi",
+                "unknown"
+              ]
+            },
+            "category": {
+              "type": "string",
+              "description": "Type of request — used for routing to the correct team",
+              "enum": [
+                "clinical_question",
+                "medication_refill",
+                "records_request",
+                "appointment_change",
+                "billing",
+                "forms"
+              ]
+            },
+            "caller_type": {
+              "type": "string",
+              "description": "Who is calling — affects how the request is processed",
+              "enum": [
+                "patient",
+                "family_member",
+                "outside_clinician",
+                "pharmacy",
+                "other"
+              ]
+            }
+          },
+          "required": [
+            "caller_name",
+            "caller_phone",
+            "question",
+            "category",
+            "caller_type"
+          ]
+        },
+        "url": "https://voice-agent-service-pkni75ktaq-uc.a.run.app/api/v1/voice-agent/log-question"
+      }
+    ],
+    "model_choice": {
+      "type": "cascading",
+      "model": "gpt-4.1",
+      "high_priority": true
+    },
+    "tool_call_strict_mode": true,
+    "knowledge_base_ids": [],
+    "kb_config": {
+      "top_k": 3,
+      "filter_score": 0.7
+    },
+    "begin_tag_display_position": {
+      "x": 0,
+      "y": 0
+    },
+    "is_published": false,
+    "flex_mode": true,
+    "is_transfer_cf": false
+  }
+}

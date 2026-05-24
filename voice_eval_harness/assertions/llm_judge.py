@@ -17,12 +17,15 @@ import json
 import os
 from collections.abc import Callable
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from voice_eval_harness.assertions.base import (
     Assertion,
     _agent_text,
 )
+
+if TYPE_CHECKING:
+    from voice_eval_harness.core.budget import BudgetTracker
 from voice_eval_harness.core.models import (
     AssertionResult,
     AssertionSpec,
@@ -105,6 +108,8 @@ class LLMJudgeAssertion(Assertion):
     # Class-level injection points so tests can swap the judge and cache.
     judge_fn: JudgeFn | None = None
     cache_dir: Path | None = None  # default: ./.voxeval_cache/
+    # Set by the engine before run_suite kicks off (None = unlimited).
+    budget: BudgetTracker | None = None
 
     def __init__(self, spec: AssertionSpec) -> None:
         super().__init__(spec)
@@ -135,6 +140,17 @@ class LLMJudgeAssertion(Assertion):
         if cache_file.exists():
             data = json.loads(cache_file.read_text())
         else:
+            # Charge the budget BEFORE the call so a runaway suite never
+            # makes the API hit. Cache hits are free.
+            if self.budget is not None:
+                from voice_eval_harness.core.budget import DEFAULT_JUDGE_COST_USD
+                if not self.budget.try_spend_sync(DEFAULT_JUDGE_COST_USD):
+                    return AssertionResult(
+                        kind=self.kind, passed=False,
+                        detail=("skipped_budget: --max-cost ceiling "
+                                f"${self.budget.max_cost_usd:.2f} would be "
+                                f"exceeded (spent ${self.budget.spent_usd:.4f})"),
+                    )
             fn = self.judge_fn or _openai_judge
             try:
                 data = fn(prompt, self.model)

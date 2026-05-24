@@ -1,0 +1,58 @@
+# Drop this file into .github/workflows/voxeval.yml inside YOUR voice-agent
+# repo to run voxeval on every push and PR. The lint step has no external
+# dependencies and runs in <2 seconds; the suite run requires RETELL_API_KEY
+# (and OPENAI_API_KEY for LLM-judge assertions) as repository secrets.
+
+name: voxeval
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install voice-eval-harness
+      - name: voxeval lint every agent.json
+        run: |
+          find . -name "*.json" -path "*/voice-agent/*" | while read f; do
+            echo "::group::lint $f"
+            voxeval lint "$f" || exit 1
+            echo "::endgroup::"
+          done
+
+  suite:
+    runs-on: ubuntu-latest
+    needs: lint
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install voice-eval-harness
+      - name: voxeval run with cost guardrail + JUnit
+        env:
+          RETELL_API_KEY: ${{ secrets.RETELL_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          voxeval run voxeval.yaml \
+            --concurrency 4 \
+            --max-cost 0.50 \
+            --junit report.junit.xml \
+            --json   report.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: voxeval-report
+          path: |
+            report.junit.xml
+            report.json

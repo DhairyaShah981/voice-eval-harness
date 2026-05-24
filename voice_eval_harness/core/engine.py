@@ -2,7 +2,11 @@
 
 Walks each ``TestCase`` script turn-by-turn against the configured connector,
 records the transcript, resolves every assertion, and returns a ``SuiteResult``.
-Concurrency is bounded by a semaphore so large suites don't blast a provider.
+
+Adds for v0.1.1:
+  - Optional `BudgetTracker` ceiling on judge spend (--max-cost).
+  - Per-case retries with exponential backoff (read from TestCase.retries).
+  - Linter pre-flight when EvalSuite.provider.agent_json is set.
 """
 
 from __future__ import annotations
@@ -12,6 +16,7 @@ import time
 
 from voice_eval_harness.assertions.base import build_assertion
 from voice_eval_harness.connectors.base import BaseConnector
+from voice_eval_harness.core.budget import BudgetTracker
 from voice_eval_harness.core.models import (
     AssertionResult,
     EvalSuite,
@@ -21,15 +26,22 @@ from voice_eval_harness.core.models import (
 )
 
 
-async def _run_case(connector: BaseConnector, case: TestCase) -> RunResult:
+async def _run_once(connector: BaseConnector, case: TestCase) -> RunResult:
+    """One attempt at a case. Returns a RunResult (passed True or False)."""
     start = time.monotonic()
-    session = await connector.start_session(case)
     error: str | None = None
     persona_result = None
+    session: object | None = None
+    try:
+        session = await connector.start_session(case)
+    except Exception as exc:  # noqa: BLE001 — connector failure = case failure
+        return RunResult(
+            case_id=case.id, passed=False,
+            duration_ms=int((time.monotonic() - start) * 1000),
+            error=f"start_session failed: {type(exc).__name__}: {exc}",
+        )
     try:
         if case.persona is not None:
-            # Persona simulator drives the conversation; the YAML script is
-            # ignored. The first user turn defaults to a persona opener.
             from voice_eval_harness.personas.profiles import get_profile
             from voice_eval_harness.personas.simulator import run_persona
             profile = get_profile(case.persona.type)
@@ -44,15 +56,13 @@ async def _run_case(connector: BaseConnector, case: TestCase) -> RunResult:
                     interrupt_at_ms=turn.interrupt_at_ms,
                 )
         summary = await session.end()
-    except Exception as exc:  # noqa: BLE001 — surface any connector blowup as case failure
+    except Exception as exc:  # noqa: BLE001 — surface any blowup as failure
         error = f"{type(exc).__name__}: {exc}"
         summary = await session.end() if hasattr(session, "end") else None  # type: ignore[assignment]
 
     transcript = list(session.transcript)
     assertion_results: list[AssertionResult] = []
 
-    # Per-turn asserts: evaluate against the transcript-so-far at the turn boundary.
-    # v0.1 simplification: per-turn asserts see the full transcript at the end.
     all_specs = list(case.suite_asserts)
     for turn in case.script:
         all_specs.extend(turn.asserts)
@@ -72,8 +82,6 @@ async def _run_case(connector: BaseConnector, case: TestCase) -> RunResult:
         assertion_results.append(res)
 
     passed = error is None and all(r.passed for r in assertion_results)
-    # A persona run that failed its own exit conditions is a case-level failure
-    # even if no explicit assertion fired.
     if persona_result is not None and not persona_result.passed:
         passed = False
         if not error:
@@ -90,20 +98,83 @@ async def _run_case(connector: BaseConnector, case: TestCase) -> RunResult:
     )
 
 
+async def _run_case_with_retries(
+    connector: BaseConnector, case: TestCase,
+) -> RunResult:
+    """Wrap _run_once with `case.retries` retries + exp backoff. Marks the
+    final result as `flaky` (via assertion detail string) when the case
+    passed on some attempts but failed on others."""
+    attempts: list[RunResult] = []
+    for attempt in range(case.retries + 1):
+        res = await _run_once(connector, case)
+        attempts.append(res)
+        if res.passed:
+            break
+        if attempt < case.retries:
+            await asyncio.sleep(0.5 * (2 ** attempt))
+
+    final = attempts[-1]
+    pass_count = sum(1 for a in attempts if a.passed)
+    if 0 < pass_count < len(attempts):
+        flake_note = (
+            f"flaky: passed {pass_count}/{len(attempts)} attempts"
+        )
+        final.assertion_results.append(AssertionResult(
+            kind="meta_flake", passed=final.passed, detail=flake_note,
+        ))
+    return final
+
+
+def lint_preflight(suite: EvalSuite) -> tuple[bool, list[str]]:
+    """If suite.provider.agent_json points at a real file, run the Retell
+    linter against it. Returns (ok, messages)."""
+    agent_path = suite.provider.agent_json
+    if not agent_path:
+        return True, []
+    from pathlib import Path
+    p = Path(agent_path)
+    if not p.exists():
+        return True, [f"agent_json {agent_path!r} not found, skipping linter pre-flight"]
+    from voice_eval_harness.linters.retell import RETELL_RULES
+    from voice_eval_harness.linters.runner import lint_file
+    report = lint_file(p, RETELL_RULES)
+    if not report.fatals:
+        return True, [f"linter pre-flight ✅ ({len(report.warnings)} warning(s))"]
+    msgs = [f"linter pre-flight ❌ {len(report.fatals)} fatal(s):"]
+    for issue in report.fatals[:10]:
+        msgs.append(f"   {issue.render()}")
+    return False, msgs
+
+
 async def run_suite(
     suite: EvalSuite,
     *,
     concurrency: int = 4,
     connector: BaseConnector | None = None,
+    budget: BudgetTracker | None = None,
 ) -> SuiteResult:
+    """Run the suite. If ``budget`` is provided, the LLM judge will refuse
+    further calls once the spend ceiling is hit (result marked
+    ``skipped_budget`` rather than burning past the limit)."""
+    from voice_eval_harness.assertions.llm_judge import LLMJudgeAssertion
     from voice_eval_harness.core.registry import get_connector
+
     conn = connector or get_connector(suite.provider)
+    # Thread the budget tracker into the judge assertion class-var. The
+    # whole engine runs in one event loop so this is safe for v0.1.
+    LLMJudgeAssertion.budget = budget
+
     sem = asyncio.Semaphore(max(1, concurrency))
 
     async def _bounded(case: TestCase) -> RunResult:
         async with sem:
-            return await _run_case(conn, case)
+            return await _run_case_with_retries(conn, case)
 
-    results = await asyncio.gather(*(_bounded(c) for c in suite.cases))
-    total_cost = sum(r.cost_usd for r in results)
+    try:
+        results = await asyncio.gather(*(_bounded(c) for c in suite.cases))
+    finally:
+        LLMJudgeAssertion.budget = None
+
+    total_cost = (budget.spent_usd if budget is not None
+                  else sum(r.cost_usd for r in results))
     return SuiteResult(cases=results, total_cost_usd=total_cost)

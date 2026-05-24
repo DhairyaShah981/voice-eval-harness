@@ -7,11 +7,16 @@ import sys
 from pathlib import Path
 
 import typer
+from rich.console import Console
 
+from voice_eval_harness.core.budget import BudgetTracker
 from voice_eval_harness.core.config import load_suite
-from voice_eval_harness.core.engine import run_suite
+from voice_eval_harness.core.engine import lint_preflight, run_suite
+from voice_eval_harness.report.json_writer import write_json
 from voice_eval_harness.report.junit import write_junit
 from voice_eval_harness.report.terminal import render
+
+console = Console()
 
 
 def run(
@@ -26,12 +31,47 @@ def run(
                                  help="Print full transcripts after the table."),
     junit: Path | None = typer.Option(
         None, "--junit",
-        help="Also write a JUnit XML report to this path (for CI integration).",
+        help="Also write a JUnit XML report (CI integration).",
+    ),
+    json_report: Path | None = typer.Option(
+        None, "--json",
+        help="Also write a full JSON report (downstream tooling).",
+    ),
+    max_cost: float | None = typer.Option(
+        None, "--max-cost",
+        help="Hard ceiling on LLM-judge spend in USD. Assertions over the "
+             "ceiling are marked skipped_budget and fail.",
+    ),
+    skip_lint: bool = typer.Option(
+        False, "--skip-lint",
+        help="Skip the Retell linter pre-flight even if provider.agent_json is set.",
     ),
 ) -> None:
     suite = load_suite(config)
-    result = asyncio.run(run_suite(suite, concurrency=concurrency))
+
+    if not skip_lint:
+        ok, msgs = lint_preflight(suite)
+        for m in msgs:
+            console.print(m)
+        if not ok:
+            console.print(
+                "[red bold]Aborting: fix linter fatals before running the suite "
+                "(or pass --skip-lint to override).[/red bold]"
+            )
+            sys.exit(2)
+
+    budget = BudgetTracker(max_cost_usd=max_cost) if max_cost is not None else None
+    result = asyncio.run(run_suite(
+        suite, concurrency=concurrency, budget=budget,
+    ))
     render(result, verbose=verbose)
+    if budget is not None:
+        console.print(
+            f"\nBudget: spent [bold]${budget.spent_usd:.4f}[/bold] of "
+            f"${budget.max_cost_usd:.2f} cap; {budget.skipped} call(s) skipped.",
+        )
     if junit:
         write_junit(result, junit)
+    if json_report:
+        write_json(result, json_report)
     sys.exit(0 if result.ok else 1)

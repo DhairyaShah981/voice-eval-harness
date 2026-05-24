@@ -1,0 +1,71 @@
+# Vapi demo suite — exercises VapiConnector against a real Vapi assistant.
+#
+# 1) Create an assistant in the Vapi dashboard using ./assistant-config.json
+#    (or POST it to https://api.vapi.ai/assistant). Copy the returned UUID.
+# 2) Replace REPLACE_WITH_VAPI_ASSISTANT_ID below.
+# 3) Export VAPI_API_KEY (or put it in ../../.env) and run:
+#        voxeval run examples/vapi-demo/voxeval.yaml
+
+provider:
+  name: vapi
+  api_key: ${VAPI_API_KEY}
+  agent_id: REPLACE_WITH_VAPI_ASSISTANT_ID  # Vapi assistant UUID
+
+defaults:
+  mode: text
+  judge_model: gpt-4o-mini-2024-07-18
+
+cases:
+  # 1. Happy path — greet + offer help.
+  - id: greeting_happy_path
+    description: Agent greets the caller and offers to help on the first turn.
+    script:
+      - user_says: "Hi, I'm calling about my appointment."
+        asserts:
+          - assert_contains: ["help", "appointment"]
+          - assert_no_crash
+
+  # 2. Persona-driven — impatient caller still gets routed correctly.
+  - id: impatient_reschedule
+    description: Impatient caller wants to reschedule fast; agent should not stall.
+    persona:
+      type: impatient
+      params:
+        goal: "Reschedule my Tuesday 10am appointment to Thursday afternoon."
+        max_turns: 6
+    suite_asserts:
+      - assert_no_crash
+      - assert_latency_ms: { p95_lt: 4000 }
+      - assert_llm_judge: "Agent acknowledged urgency and proposed a Thursday afternoon slot without unnecessary small talk."
+
+  # 3. LLM-judge — semantic intent check on a refund-ish edge case.
+  - id: insurance_intent_judge
+    description: Caller asks about insurance coverage; agent must defer to a human or KB, not invent policy.
+    script:
+      - user_says: "Does my Blue Cross PPO cover the wellness visit?"
+        asserts:
+          - assert_llm_judge: "Agent does NOT invent a coverage answer. It either checks a tool/KB, asks for member ID, or offers to transfer to billing."
+          - assert_no_crash
+
+  # 4. Tool-call assertion — agent must invoke get_available_slots.
+  - id: book_slot_calls_tool
+    description: Booking intent must trigger the get_available_slots function tool.
+    script:
+      - user_says: "I'd like to book a new patient visit next week."
+        asserts:
+          - assert_tool_called: get_available_slots
+          - assert_no_crash
+
+  # 5. Multilingual / code-switching persona.
+  - id: spanish_english_code_switch
+    description: Caller switches between Spanish and English; agent must stay coherent.
+    persona:
+      type: code_switching
+      params:
+        goal: "Book an appointment for my mother who only speaks Spanish."
+        languages: [en, es]
+        max_turns: 6
+    suite_asserts:
+      - assert_no_crash
+      - assert_not_contains: "I only speak English"
+      - assert_llm_judge: "Agent handled both Spanish and English turns without refusing or repeating itself."

@@ -1,0 +1,47 @@
+# Iris — Cal Retina Fremont multilingual ophthalmology scheduling.
+# Maps to: trifetch-voice-service/clients/cal-retina-fremont/voice-agent/agent-prompts/iris-{en,es,zh}.json
+#
+# IMPORTANT: voxeval lint will fail FATAL on all three iris-{en,es,zh}.json
+# files today (2026-05-24) because of RTL-004 (is_transfer_cf missing) and
+# RTL-017 (knowledge_base_ids empty but global_prompt references "KB doc").
+# Fix those before pushing — see the suite output for fix_hint text.
+
+provider:
+  name: retell
+  api_key: ${RETELL_API_KEY}
+  agent_id: REPLACE_WITH_IRIS_EN_AGENT_ID
+  agent_json: ./agents/iris-en.json
+
+defaults:
+  mode: text
+  judge_model: gpt-4o-mini-2024-07-18
+
+cases:
+  - id: english_happy_path
+    description: English caller, standard appointment booking.
+    script:
+      - user_says: "Hi, I need to book an eye exam."
+        asserts:
+          - assert_no_crash
+          - assert_llm_judge: "agent greets the caller and begins booking flow"
+      - user_says: "My name is Sarah Lee, DOB January 12 1982. I'd like next Friday."
+        asserts:
+          - assert_tool_called: check_availability
+    suite_asserts:
+      - assert_no_crash
+
+  - id: spanish_caller_iris_es
+    description: Spanish caller; verify Spanish reply (no language="en-US" regression).
+    persona:
+      type: code_switching
+      params: { primary: es, secondary: en }
+    suite_asserts:
+      - assert_no_crash
+      - assert_language: es
+
+  - id: kb_provider_name_check
+    description: KB-driven check — does Iris know the actual provider names?
+    script:
+      - user_says: "I'd like to see whichever doctor specializes in retina detachment surgery."
+        asserts:
+          - assert_llm_judge: "agent either names a specific provider from the practice (e.g. by surname) or offers to look it up; agent does NOT invent a provider name not in the knowledge base"

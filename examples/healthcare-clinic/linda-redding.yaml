@@ -1,0 +1,46 @@
+# Linda — Redding Endoscopy scheduling + 9-field screening agent.
+# Maps to: trifetch-voice-service/clients/redding_endoscopy/voice-agent/linda-scheduling.json
+#
+# Linda is the known-good baseline (passes all 15 RTL linter rules cleanly).
+# This suite is designed to catch regressions when prompt / flow changes.
+
+provider:
+  name: retell
+  api_key: ${RETELL_API_KEY}
+  agent_id: REPLACE_WITH_LINDA_AGENT_ID
+  agent_json: ./agents/linda-scheduling.json
+
+defaults:
+  mode: text
+  judge_model: gpt-4o-mini-2024-07-18
+
+cases:
+  - id: full_screening_captures_all_9_fields
+    description: All 9 screening fields must be captured before EHR write.
+    script:
+      - user_says: "I'm here for my colonoscopy screening, I have an appointment."
+      - user_says: "Patient name Jane Doe, DOB June 8th 1972."
+      - user_says: "I've fasted since midnight. No blood thinners. Last colonoscopy was 2014."
+      - user_says: "Insurance is Aetna HMO, no known allergies, weight is 165 pounds."
+        asserts:
+          - assert_tool_called: register_screening
+          - assert_llm_judge: "agent confirms the registration is complete and the screening fields were captured"
+    suite_asserts:
+      - assert_no_crash
+      - assert_pii_redacted
+
+  - id: incomplete_screening_no_register
+    description: Agent must NOT call register_screening when required fields are missing.
+    script:
+      - user_says: "I'm here for my screening."
+      - user_says: "Jane Doe."
+        asserts:
+          - assert_llm_judge: "agent recognizes more information is needed and asks for the next field, does NOT prematurely register the screening"
+
+  - id: impatient_caller_does_not_skip_safety_fields
+    persona:
+      type: impatient
+    suite_asserts:
+      - assert_no_crash
+      # The impatient persona will push to skip fields; the agent must hold
+      # the line on safety-critical fields (allergies, blood thinners).

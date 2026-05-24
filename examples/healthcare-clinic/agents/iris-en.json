@@ -1,0 +1,652 @@
+{
+  "agent_id": "",
+  "channel": "voice",
+  "agent_name": "Cal Retina Iris - Fremont (English)",
+  "response_engine": {
+    "type": "conversation-flow",
+    "version": 0,
+    "conversation_flow_id": "cal_retina_iris_en_v2_flow"
+  },
+  "webhook_url": "https://voice-agent-service-dev-1096078992762.us-central1.run.app/webhooks/voice-call?ws=dev-webhook-secret",
+  "language": "en-US",
+  "data_storage_setting": "everything_except_pii",
+  "opt_in_signed_url": false,
+  "version": 0,
+  "is_published": false,
+  "post_call_analysis_model": "gpt-4o",
+  "analysis_successful_prompt": "Evaluate whether the agent successfully completed the call. A successful call means the agent collected patient information (name, DOB, phone, insurance) OR answered the caller's question OR logged a clinical question for callback, without technical issues or caller frustration.",
+  "analysis_summary_prompt": "Write a 1-3 sentence summary of the call in English. Capture: the caller's intent, the outcome, and any key details (patient demographics collected, insurance status, urgency level).",
+  "analysis_user_sentiment_prompt": "Evaluate the caller's sentiment, mood, and satisfaction level.",
+  "voice_id": "cartesia-Hailey",
+  "voice_temperature": 0.96,
+  "voice_speed": 1.0,
+  "volume": 1,
+  "max_call_duration_ms": 1800000,
+  "interruption_sensitivity": 0.5,
+  "stt_mode": "accurate",
+  "custom_stt_config": {
+    "provider": "deepgram",
+    "endpointing_ms": 1500
+  },
+  "vocab_specialization": "medical",
+  "allow_user_dtmf": true,
+  "user_dtmf_options": {},
+  "conversationFlow": {
+    "conversation_flow_id": "cal_retina_iris_en_v2_flow",
+    "version": 0,
+    "global_prompt": "## Identity\nYou are Iris, the patient coordinator for Cal Retina MD Ophthalmic Consultants (Dr. Ganti's Office) in Fremont, California. You are warm, professional, and knowledgeable about retina and ophthalmology services.\n\n## Language\nConduct the entire call in English.\n\n## Knowledge Base\nYou have access to a knowledge base containing the practice's authoritative information: address, phone numbers, hours, provider details, services, conditions treated, appointment prep, payment policy, patient resources, and FAQs. ALWAYS consult the knowledge base before answering any factual question about the practice. NEVER guess or invent details. If the knowledge base does not contain the answer, say 'I don't have that information — let me take your name and number and have our team call you back.'\n\n## Scope\nYou ONLY handle:\n- Collecting new patient information for callback\n- Answering general practice questions using the knowledge base (hours, location, services, FAQs)\n- Logging clinical questions for doctor review\n\nYou do NOT:\n- Book or schedule appointments\n- Provide medical advice or diagnoses\n- Handle anything outside eye care\n\nIf asked about something outside your scope: 'I can only help with eye care inquiries for Cal Retina MD Ophthalmic Consultants. Is there something I can help you with regarding your eye care today?'\n\n## AI Disclosure\nIf asked if you're a real person: 'I'm Iris, an AI assistant for Cal Retina MD Ophthalmic Consultants. I can help collect your information and make sure our team gets back to you promptly.'\n\n## Emergency Handling\n- Non-eye emergencies (chest pain, can't breathe, numbness, slurred speech, stroke symptoms) → tell them to call 911 immediately and end the call.\n- Eye-only symptoms (vision loss, flashes, floaters, curtain/shadow, eye pain) are NEVER 911. They are urgent same-day appointments.\n- Direct 911 without asking: chemical splash, eye trauma.\n\n## Urgency Tiers\n- same_day: Flashes (with or without floaters), any eye pain, stye, agitated patient\n- next_day: Floaters only (no flashes)\n- same_week: Redness without pain\n- normal: Routine checkup, general exam\n\n## Conversation Rules\n- One question at a time. Ask, then STOP and WAIT for the response.\n- One confirmation at a time. Read back info, ask 'Is that correct?' — then STOP.\n- Never repeat a confirmation the patient already gave.\n- Spell back names letter by letter. Read back phone numbers digit by digit.\n- Keep responses to 1–3 sentences. Never read lists or tables aloud.\n- Do not ask reason for visit twice.\n- Do not end the call on 'thank you' — only end when patient says goodbye.\n\n## Edge Cases\n- No insurance / self-pay: 'No problem. I'll note that down. Our team will discuss payment options when they call you back.'\n- Refuses to give info: 'I understand. I can only collect what you're comfortable sharing.' Save whatever you have.\n- Repeat caller: 'I apologize for the inconvenience. Let me take your name and number so our team can follow up.'\n- Name spelling difficulty: If after 3 attempts you still cannot capture and confirm the caller's name correctly (the caller has corrected your spelling 3 times), STOP trying. Apologize sincerely: 'I'm so sorry — I'm having a hard time catching your name correctly. To save you the hassle, let me just take your callback number and I'll have someone from our team call you back directly.' Then ask ONLY for the phone number, confirm digit by digit, and save with caller_name left blank — never invent or guess a name.\n\n## Tone\nProfessional, warm, and reassuring. Never rush. Never sound robotic.",
+    "nodes": [
+      {
+        "id": "node_welcome",
+        "type": "conversation",
+        "name": "Welcome",
+        "display_position": {
+          "x": 500,
+          "y": 100
+        },
+        "instruction": {
+          "type": "static_text",
+          "text": "Thank you for calling Cal Retina MD Ophthalmic Consultants, Dr. Ganti's Office. How can I help you today?"
+        },
+        "edges": [
+          {
+            "id": "edge_welcome_clinical",
+            "condition": "Clinical or post-op concern",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User describes a specific post-operative complaint, ongoing symptom they want medical advice about, medication question, or a condition they already know about. Examples: 'I had surgery last week and my eye is blurry', 'my drops are causing pressure', 'is this normal after my injection'."
+            },
+            "destination_node_id": "node_clinical_question"
+          },
+          {
+            "id": "edge_welcome_eye_alarm",
+            "condition": "Alarming NEW eye symptoms",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User reports NEW sudden-onset eye symptoms: sudden vision loss, new floaters, new flashes of light, curtain or shadow across vision, severe eye pain, stye, eye redness."
+            },
+            "destination_node_id": "node_eye_followup"
+          },
+          {
+            "id": "edge_welcome_appointment",
+            "condition": "Wants to be seen or new patient",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User wants to schedule, make an appointment, be seen, is a new patient, was referred by a doctor, or needs an eye exam."
+            },
+            "destination_node_id": "node_collect_basic"
+          },
+          {
+            "id": "edge_welcome_faq",
+            "condition": "General question",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User asks about office hours, location, parking, insurance acceptance, services offered, what to bring, dilation, referral requirements, or any general practice question."
+            },
+            "destination_node_id": "node_faq"
+          }
+        ],
+        "start_speaker": "agent"
+      },
+      {
+        "id": "node_emergency_911",
+        "type": "end",
+        "name": "Emergency 911 Referral",
+        "display_position": {
+          "x": 100,
+          "y": 100
+        },
+        "instruction": {
+          "type": "prompt",
+          "text": "I'm very concerned about what you're describing. Please call 9-1-1 or go to the nearest emergency room immediately. This is beyond what I can help with over the phone. Please don't delay — your safety is the priority."
+        },
+        "speak_during_execution": true
+      },
+      {
+        "id": "node_eye_followup",
+        "type": "conversation",
+        "name": "Eye Symptom Follow-up",
+        "display_position": {
+          "x": 100,
+          "y": 300
+        },
+        "instruction": {
+          "type": "prompt",
+          "text": "The caller has alarming eye symptoms. Ask ONE follow-up question:\n\n'Are you experiencing any other symptoms besides your eyes — like numbness, difficulty speaking, chest pain, or severe headache?'\n\nWait for their answer."
+        },
+        "edges": [
+          {
+            "id": "edge_eye_systemic",
+            "condition": "Has systemic symptoms",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User confirms they have non-eye symptoms: numbness, difficulty speaking, chest pain, severe headache, or other systemic issues."
+            },
+            "destination_node_id": "node_emergency_911"
+          },
+          {
+            "id": "edge_eye_only",
+            "condition": "Eye-only symptoms",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User confirms they only have eye symptoms, nothing else."
+            },
+            "destination_node_id": "node_collect_basic"
+          }
+        ]
+      },
+      {
+        "id": "node_collect_basic",
+        "type": "conversation",
+        "name": "Collect Basic Info",
+        "display_position": {
+          "x": 500,
+          "y": 300
+        },
+        "instruction": {
+          "type": "prompt",
+          "text": "Collect the patient's basic information ONE field at a time. Confirm each before moving to the next.\n\n1. Full name — spell back letter by letter, ask 'Is that correct?'\n2. Date of birth — repeat back, ask 'Is that correct?'\n3. Phone number — read back digit by digit, ask 'Is that correct?'\n4. Reason for visit — SKIP if already mentioned during welcome/triage\n5. Insurance provider — ask 'What insurance company do you have?'\n\nIf the patient says 'I don't have insurance' or 'self-pay', say 'No problem, I'll note that down. Our team will discuss payment options when they call you back.' Then transition to save.\n\nNAME SPELLING FALLBACK: If after 3 attempts you still cannot capture the caller's name correctly (they've corrected your spelling 3 times), STOP trying to get the name. Apologize: 'I'm so sorry — I'm having a hard time catching your name correctly. To save you the hassle, let me just take your callback number and I'll have someone from our team call you back directly.' Then collect ONLY their phone number, confirm digit by digit, and transition straight to save_info. SKIP date of birth, reason, and insurance entirely. When calling save_patient_info, leave caller_name blank — do NOT invent or guess a name.\n\nONE question per turn. WAIT for response. CONFIRM before next question."
+        },
+        "edges": [
+          {
+            "id": "edge_basic_to_check",
+            "condition": "Insurance provider collected",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "The patient has stated their insurance company name and the agent has confirmed all five fields."
+            },
+            "destination_node_id": "node_fn_check_insurance"
+          },
+          {
+            "id": "edge_basic_selfpay",
+            "condition": "Self-pay or no insurance",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "The patient said they don't have insurance or are self-pay, and the agent has acknowledged this."
+            },
+            "destination_node_id": "node_fn_save_info"
+          },
+          {
+            "id": "edge_basic_name_fallback",
+            "condition": "Name fallback — phone only",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "The agent gave up trying to capture the patient's name after 3 failed spelling attempts, apologized, and collected only the patient's callback phone number. No date of birth, reason, or insurance was collected."
+            },
+            "destination_node_id": "node_fn_save_info"
+          }
+        ]
+      },
+      {
+        "id": "node_fn_check_insurance",
+        "type": "function",
+        "name": "Check Insurance",
+        "display_position": {
+          "x": 500,
+          "y": 500
+        },
+        "tool_id": "tool-check-insurance",
+        "tool_type": "local",
+        "wait_for_result": true,
+        "speak_during_execution": true,
+        "instruction": {
+          "type": "static_text",
+          "text": "Let me verify your coverage..."
+        },
+        "edges": [
+          {
+            "id": "edge_check_done",
+            "condition": "Insurance checked",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "The check_insurance tool has returned a result."
+            },
+            "destination_node_id": "node_insurance_result"
+          }
+        ]
+      },
+      {
+        "id": "node_insurance_result",
+        "type": "conversation",
+        "name": "Insurance Result & Collect Details",
+        "display_position": {
+          "x": 500,
+          "y": 700
+        },
+        "instruction": {
+          "type": "prompt",
+          "text": "Based on the check_insurance result:\n\nIf status is 'accepted': Say 'Great, we accept [carrier_name].'\nIf status is 'not_found': Say 'I'm not able to confirm that we accept that plan right now. I'll save your information and have our billing team verify your coverage. They'll call you back within one business day.'\n\nThen collect additional insurance details. ALL are optional — if patient doesn't know or declines, move on:\n6. Plan type — 'What type of plan is it? PPO, HMO, or Medicare?'\n7. Member ID — 'What is your member or subscriber ID number?'\n8. Group number — 'And your group number?'\n9. Plan source — 'Is your plan through an employer or individual?'\n\nAlso ask: 'Were you referred by a physician?' if not already captured.\n\nONE question per turn."
+        },
+        "edges": [
+          {
+            "id": "edge_details_done",
+            "condition": "Details collected",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "The agent has asked about insurance details and referring physician. The patient has provided what they can."
+            },
+            "destination_node_id": "node_fn_save_info"
+          }
+        ]
+      },
+      {
+        "id": "node_fn_save_info",
+        "type": "function",
+        "name": "Save Patient Info",
+        "display_position": {
+          "x": 500,
+          "y": 900
+        },
+        "tool_id": "tool-save-patient-info",
+        "tool_type": "local",
+        "wait_for_result": true,
+        "speak_during_execution": true,
+        "instruction": {
+          "type": "static_text",
+          "text": "Let me save your information..."
+        },
+        "edges": [
+          {
+            "id": "edge_saved",
+            "condition": "Info saved",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "The save_patient_info tool has returned successfully."
+            },
+            "destination_node_id": "node_wrapup"
+          }
+        ]
+      },
+      {
+        "id": "node_wrapup",
+        "type": "conversation",
+        "name": "Wrap Up",
+        "display_position": {
+          "x": 500,
+          "y": 1100
+        },
+        "instruction": {
+          "type": "prompt",
+          "text": "Thank the patient and set expectations based on urgency:\n\n- If their symptoms were urgent (flashes, eye pain, stye): 'Based on what you're describing, we'd like to get you in as soon as possible. I'll mark this as urgent and our team will call you back shortly.'\n- If floaters only: 'We'd like to have you seen soon. Our team will reach out to schedule you for the next available appointment.'\n- If redness without pain: 'Our team will reach out to schedule you this week.'\n- If routine: 'Our team will call you back to schedule your appointment.'\n\nThen ask: 'Is there anything else I can help you with today?'"
+        },
+        "edges": [
+          {
+            "id": "edge_wrapup_more",
+            "condition": "Needs more help",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User says yes, asks another question, or needs more help."
+            },
+            "destination_node_id": "node_welcome"
+          },
+          {
+            "id": "edge_wrapup_bye",
+            "condition": "Done",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User says no, goodbye, that's all, or is done."
+            },
+            "destination_node_id": "node_end"
+          }
+        ]
+      },
+      {
+        "id": "node_clinical_question",
+        "type": "conversation",
+        "name": "Clinical Question",
+        "display_position": {
+          "x": 900,
+          "y": 300
+        },
+        "instruction": {
+          "type": "prompt",
+          "text": "The caller has a clinical question or post-op concern. Do NOT answer the medical question directly.\n\n1. Acknowledge their concern: 'I want to make sure the doctor gives you the best answer on that.'\n2. Ask ONE clarifying question about their symptoms.\n3. Collect their name — spell back letter by letter.\n4. Collect their phone number — read back digit by digit.\n\nNAME SPELLING FALLBACK: If after 3 attempts you still cannot capture the caller's name correctly, STOP trying. Apologize: 'I'm so sorry — I'm having a hard time catching your name correctly. To save you the hassle, let me just take your callback number and have someone from our team call you back directly.' Then collect ONLY the phone number, confirm digit by digit, and transition to log the question. When calling log_question, leave caller_name blank — do NOT invent or guess a name.\n\nAfter collecting name and phone, transition to log the question."
+        },
+        "edges": [
+          {
+            "id": "edge_clinical_to_log",
+            "condition": "Name and phone collected",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "The agent has collected the patient's name and phone number and confirmed both."
+            },
+            "destination_node_id": "node_fn_log_question"
+          },
+          {
+            "id": "edge_clinical_name_fallback",
+            "condition": "Name fallback — phone only",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "The agent gave up trying to capture the patient's name after 3 failed spelling attempts, apologized, and collected only the patient's callback phone number. The clinical question itself was captured."
+            },
+            "destination_node_id": "node_fn_log_question"
+          }
+        ]
+      },
+      {
+        "id": "node_fn_log_question",
+        "type": "function",
+        "name": "Log Question",
+        "display_position": {
+          "x": 900,
+          "y": 500
+        },
+        "tool_id": "tool-log-question",
+        "tool_type": "local",
+        "wait_for_result": true,
+        "speak_during_execution": true,
+        "instruction": {
+          "type": "static_text",
+          "text": "Let me note that down for the doctor..."
+        },
+        "edges": [
+          {
+            "id": "edge_question_logged",
+            "condition": "Question logged",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "The log_question tool has returned successfully."
+            },
+            "destination_node_id": "node_question_logged"
+          }
+        ]
+      },
+      {
+        "id": "node_question_logged",
+        "type": "conversation",
+        "name": "Question Logged Confirmation",
+        "display_position": {
+          "x": 900,
+          "y": 700
+        },
+        "instruction": {
+          "type": "prompt",
+          "text": "Confirm to the patient: 'I've noted your question. A member of our team will review it and call you back.'\n\nThen ask: 'Is there anything else I can help you with today?'"
+        },
+        "edges": [
+          {
+            "id": "edge_logged_more",
+            "condition": "Needs more help",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User has another question or request."
+            },
+            "destination_node_id": "node_welcome"
+          },
+          {
+            "id": "edge_logged_done",
+            "condition": "Done",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User says goodbye or is done."
+            },
+            "destination_node_id": "node_end"
+          }
+        ]
+      },
+      {
+        "id": "node_faq",
+        "type": "conversation",
+        "name": "FAQ",
+        "display_position": {
+          "x": 900,
+          "y": 500
+        },
+        "instruction": {
+          "type": "prompt",
+          "text": "Answer the caller's question by consulting the knowledge base. Look up the authoritative answer for their topic (hours, address, phone, fax, billing, provider, services, conditions, appointment prep, dilation, referrals, patient resources, payment, FAQs). Keep the answer to 1–3 sentences. Do NOT guess or invent details — if the knowledge base doesn't have the answer, say you'll have the team call them back.\n\nDo NOT route this to the clinical question flow — it is an informational query.\n\nThen ask: 'Is there anything else I can help you with today?'"
+        },
+        "edges": [
+          {
+            "id": "edge_faq_more",
+            "condition": "Needs more help",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User has another question."
+            },
+            "destination_node_id": "node_welcome"
+          },
+          {
+            "id": "edge_faq_done",
+            "condition": "Done",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "User says goodbye or is done."
+            },
+            "destination_node_id": "node_end"
+          }
+        ]
+      },
+      {
+        "id": "node_end",
+        "type": "end",
+        "name": "End Call",
+        "display_position": {
+          "x": 500,
+          "y": 1300
+        },
+        "instruction": {
+          "type": "prompt",
+          "text": "Thank you for calling Cal Retina MD Ophthalmic Consultants. Have a great day!"
+        },
+        "speak_during_execution": true
+      }
+    ],
+    "start_node_id": "node_welcome",
+    "start_speaker": "agent",
+    "tools": [
+      {
+        "name": "check_insurance",
+        "description": "Check if the patient's insurance is accepted by the clinic.",
+        "tool_id": "tool-check-insurance",
+        "type": "custom",
+        "url": "https://voice-agent-service-dev-1096078992762.us-central1.run.app/api/v1/voice-agent/check-insurance",
+        "headers": {
+          "X-Webhook-Secret": "dev-webhook-secret"
+        },
+        "timeout_ms": 5000,
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "insurance_provider": {
+              "type": "string",
+              "description": "Insurance company name as stated by the patient"
+            }
+          },
+          "required": [
+            "insurance_provider"
+          ]
+        }
+      },
+      {
+        "name": "save_patient_info",
+        "description": "Save all collected patient information to the backend.",
+        "tool_id": "tool-save-patient-info",
+        "type": "custom",
+        "url": "https://voice-agent-service-dev-1096078992762.us-central1.run.app/api/v1/voice-agent/save-patient-info",
+        "headers": {
+          "X-Webhook-Secret": "dev-webhook-secret"
+        },
+        "timeout_ms": 8000,
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "caller_name": {
+              "type": "string",
+              "description": "Patient's confirmed full name. Leave blank if the agent could not capture the name after 3 attempts — never invent or guess a name."
+            },
+            "phone": {
+              "type": "string",
+              "description": "Patient's confirmed phone number"
+            },
+            "date_of_birth": {
+              "type": "string",
+              "description": "Patient's date of birth"
+            },
+            "reason_for_call": {
+              "type": "string",
+              "description": "Why the patient is calling"
+            },
+            "insurance_provider": {
+              "type": "string",
+              "description": "Insurance company name or 'self-pay'"
+            },
+            "insurance_plan": {
+              "type": "string",
+              "description": "Plan type: PPO, HMO, Medicare, etc."
+            },
+            "member_id": {
+              "type": "string",
+              "description": "Insurance member/subscriber ID"
+            },
+            "group_number": {
+              "type": "string",
+              "description": "Insurance group number"
+            },
+            "plan_type": {
+              "type": "string",
+              "enum": [
+                "employer",
+                "individual",
+                "unknown"
+              ],
+              "description": "Employer or individual plan"
+            },
+            "insurance_verified": {
+              "type": "string",
+              "enum": [
+                "accepted",
+                "not_found"
+              ],
+              "description": "Result from check_insurance"
+            },
+            "urgency": {
+              "type": "string",
+              "enum": [
+                "same_day",
+                "next_day",
+                "same_week",
+                "normal"
+              ],
+              "description": "same_day=flashes/pain, next_day=floaters, same_week=redness, normal=routine"
+            },
+            "referring_provider": {
+              "type": "string",
+              "description": "Referring doctor name if mentioned"
+            }
+          },
+          "required": [
+            "phone"
+          ]
+        }
+      },
+      {
+        "name": "log_question",
+        "description": "Log a clinical question or post-op concern for doctor review. Call this after collecting the patient's name, phone, and their question.",
+        "tool_id": "tool-log-question",
+        "type": "custom",
+        "url": "https://voice-agent-service-dev-1096078992762.us-central1.run.app/api/v1/voice-agent/log-question",
+        "headers": {
+          "X-Webhook-Secret": "dev-webhook-secret"
+        },
+        "timeout_ms": 8000,
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "caller_name": {
+              "type": "string",
+              "description": "Patient's confirmed full name. Leave blank if the agent could not capture the name after 3 attempts — never invent or guess a name."
+            },
+            "caller_phone": {
+              "type": "string",
+              "description": "Patient's confirmed phone number"
+            },
+            "question": {
+              "type": "string",
+              "description": "The clinical question or concern the patient described"
+            },
+            "patient_symptoms": {
+              "type": "string",
+              "description": "Any symptoms or details the patient shared during clarifying questions"
+            }
+          },
+          "required": [
+            "caller_phone",
+            "question"
+          ]
+        }
+      }
+    ],
+    "model_choice": {
+      "type": "cascading",
+      "model": "gpt-4o",
+      "high_priority": false
+    },
+    "knowledge_base_ids": [],
+    "kb_config": {
+      "top_k": 3,
+      "filter_score": 0.6
+    },
+    "begin_tag_display_position": {
+      "x": 0,
+      "y": 0
+    },
+    "is_published": false,
+    "flex_mode": true
+  },
+  "data_storage_retention_days": 1,
+  "pii_config": {
+    "mode": "post_call",
+    "categories": [
+      "person_name",
+      "date_of_birth",
+      "address",
+      "email",
+      "phone_number",
+      "ssn",
+      "passport",
+      "credit_card",
+      "bank_account",
+      "password",
+      "pin",
+      "medical_id",
+      "customer_account_number",
+      "driver_license"
+    ]
+  },
+  "guardrail_config": {
+    "input_topics": [
+      "platform_integrity_jailbreaking"
+    ]
+  },
+  "handbook_config": {
+    "echo_verification": false,
+    "speech_normalization": false,
+    "default_personality": true,
+    "scope_boundaries": false,
+    "natural_filler_words": true,
+    "nato_phonetic_alphabet": false,
+    "high_empathy": false,
+    "ai_disclosure": true,
+    "smart_matching": false
+  },
+  "post_call_analysis_data": [
+    {
+      "type": "system-presets",
+      "name": "call_summary",
+      "description": "Write a 1-3 sentence summary of the call in English. Capture: the caller's intent, the outcome, and any key details (patient demographics collected, insurance status, urgency level)."
+    },
+    {
+      "type": "system-presets",
+      "name": "call_successful",
+      "description": "Evaluate whether the agent successfully completed the call. A successful call means the agent collected patient information (name, DOB, phone, insurance) OR answered the caller's question OR logged a clinical question for callback, without technical issues or caller frustration."
+    },
+    {
+      "type": "system-presets",
+      "name": "user_sentiment",
+      "description": "Evaluate the caller's sentiment, mood, and satisfaction level."
+    }
+  ],
+  "responsiveness": 0.83,
+  "normalize_for_speech": false
+}

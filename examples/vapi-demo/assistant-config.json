@@ -1,0 +1,58 @@
+{
+  "name": "voxeval-demo-clinic",
+  "firstMessage": "Hi, this is Eva from Bayview Family Clinic. How can I help you today?",
+  "model": {
+    "provider": "openai",
+    "model": "gpt-4o-mini",
+    "temperature": 0.4,
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are Eva, a friendly front-desk agent for Bayview Family Clinic. You help callers book, reschedule, or cancel appointments and answer basic clinic questions (hours, address, accepted insurances). Hours: Mon-Fri 8am-6pm. Address: 221 Bayview Ave. If a caller asks about specific insurance coverage, do NOT guess — either call check_insurance_coverage or offer to transfer them to billing. When a caller wants to book, ALWAYS call get_available_slots first before proposing times. Mirror the caller's language (English or Spanish). Keep replies under 2 sentences when possible."
+      }
+    ],
+    "tools": [
+      {
+        "type": "function",
+        "function": {
+          "name": "get_available_slots",
+          "description": "Return open appointment slots for a given day or week.",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "day_of_week": { "type": "string", "description": "monday..sunday, or 'next_week'" },
+              "time_of_day": { "type": "string", "enum": ["morning", "afternoon", "evening", "any"] }
+            },
+            "required": ["day_of_week"]
+          }
+        }
+      },
+      {
+        "type": "function",
+        "function": {
+          "name": "check_insurance_coverage",
+          "description": "Look up whether the clinic accepts a given insurance plan and whether a service is covered.",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "plan_name": { "type": "string" },
+              "service": { "type": "string" }
+            },
+            "required": ["plan_name"]
+          }
+        }
+      }
+    ]
+  },
+  "voice": {
+    "provider": "11labs",
+    "voiceId": "burt"
+  },
+  "transcriber": {
+    "provider": "deepgram",
+    "model": "nova-2",
+    "language": "multi"
+  },
+  "silenceTimeoutSeconds": 20,
+  "maxDurationSeconds": 300
+}

@@ -207,6 +207,20 @@ class RetellConnector(BaseConnector):
             "/create-chat",
             json={"agent_id": self._agent_id},
         )
+        if resp.status_code == 422:
+            # The most common cause: agent is registered with channel=voice
+            # and Retell rejects text-chat sessions against it. Voxeval text
+            # mode needs a chat-channel agent (or a duplicate of the voice
+            # agent registered with channel=chat in the Retell dashboard).
+            raise RuntimeError(
+                f"Retell rejected text-chat session for agent {self._agent_id!r} "
+                f"(HTTP 422). Most common cause: the agent is registered as "
+                f"channel=voice and does not accept text chat. "
+                f"Fix options: (1) register a parallel chat-channel agent in "
+                f"the Retell dashboard with the same prompt/tools, or "
+                f"(2) wait for voxeval v0.2 audio-mode. Server said: "
+                f"{resp.text[:300]}"
+            )
         resp.raise_for_status()
         payload = resp.json()
         chat_id = payload.get("chat_id")

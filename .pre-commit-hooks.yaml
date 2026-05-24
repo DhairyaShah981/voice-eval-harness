@@ -1,0 +1,8 @@
+- id: voxeval-lint
+  name: voxeval Retell agent linter
+  description: Lint Retell agent JSON files for known import-breaking bugs.
+  entry: voxeval lint
+  language: python
+  files: '\.json$'
+  exclude: '(^|/)(node_modules|\.venv|build|dist)/'
+  require_serial: false

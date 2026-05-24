@@ -1,0 +1,30 @@
+# Router — Cal Retina DTMF language router (1=English, 2=Spanish, 3=Mandarin).
+# Maps to: trifetch-voice-service/clients/cal-retina-fremont/voice-agent/agent-prompts/router-agent.json
+#
+# WARNING: voxeval lint reports 4 FATAL findings on this agent today
+# (RTL-001 missing top_level keys, RTL-002 response_engine shape,
+# RTL-005 conversationFlow required keys). This suite is here as a
+# "what we want it to do once fixed" reference.
+
+provider:
+  name: retell
+  api_key: ${RETELL_API_KEY}
+  agent_id: REPLACE_WITH_ROUTER_AGENT_ID
+  agent_json: ./agents/router-agent.json
+
+cases:
+  - id: silent_caller_no_dtmf
+    description: P6 — caller says nothing / presses no DTMF; router must re-prompt, not silently default to English.
+    script:
+      - user_says: " "    # simulate silence
+        asserts:
+          - assert_llm_judge: "agent re-prompts for language selection, mentions options 1/2/3, and does NOT silently default to English"
+
+  - id: spanish_caller_no_dtmf
+    description: Spanish caller misses the DTMF prompt; router must catch the language anyway.
+    persona:
+      type: code_switching
+      params: { primary: es, secondary: en }
+    suite_asserts:
+      - assert_no_crash
+      - assert_language: es

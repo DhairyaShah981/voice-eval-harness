@@ -47,6 +47,7 @@ from voice_eval_harness.cli import (  # noqa: E402
     init_cmd,
     kb_cmd,
     lint_cmd,
+    pin_urls_cmd,
     replay_cmd,
     run_cmd,
 )
@@ -56,6 +57,7 @@ app.command("lint", help="Run the Retell structural linter on an agent JSON file
 app.command("run", help="Run a voxeval suite against the configured provider.")(run_cmd.run)
 app.command("kb-coverage", help="Generate Q&A from a markdown KB and verify the agent answers them.")(kb_cmd.run)
 app.command("replay", help="Generate regression fixtures from real prod call failures.")(replay_cmd.run)
+app.command("pin-urls", help="Probe every tool/webhook URL in an agent JSON; fails if any are unreachable.")(pin_urls_cmd.run)
 
 
 if __name__ == "__main__":

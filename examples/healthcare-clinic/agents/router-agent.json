@@ -1,0 +1,82 @@
+{
+  "agent_id": "",
+  "channel": "voice",
+  "agent_name": "Cal Retina Router - Fremont",
+  "response_engine": {
+    "type": "retell-llm",
+    "llm_id": "",
+    "version": 0
+  },
+  "webhook_url": "https://voice-agent-service-dev-1096078992762.us-central1.run.app/webhooks/voice-call?ws=dev-webhook-secret",
+  "language": "en-US",
+  "data_storage_setting": "everything",
+  "opt_in_signed_url": false,
+  "version": 0,
+  "is_published": false,
+  "post_call_analysis_model": "gpt-4o",
+  "analysis_successful_prompt": "Evaluate whether the router correctly played the disclaimer and routed the caller to the appropriate language agent.",
+  "analysis_summary_prompt": "Summarize what language the caller selected and whether they were successfully routed.",
+  "analysis_user_sentiment_prompt": "Evaluate the caller's comfort level during the routing process.",
+  "voice_id": "11labs-Charlotte",
+  "voice_temperature": 0.3,
+  "voice_speed": 1.0,
+  "volume": 1,
+  "max_call_duration_ms": 60000,
+  "interruption_sensitivity": 0.2,
+  "stt_mode": "accurate",
+  "custom_stt_config": {
+    "provider": "deepgram",
+    "endpointing_ms": 1500
+  },
+  "vocab_specialization": "medical",
+  "allow_user_dtmf": true,
+  "user_dtmf_options": { "digit_limit": 1 },
+  "retellLlmData": {
+    "llm_id": "",
+    "version": 0,
+    "model": "gpt-4o",
+    "model_high_priority": false,
+    "general_prompt": "You are a phone routing system for Cal Retina MD Ophthalmic Consultants (Dr. Ganti's Office) in Fremont, California.\n\nYour ONLY job is to route the caller to the correct language-specific agent. Do NOT engage in any medical, scheduling, or practice conversation.\n\n## Flow\n\n1. The opening message (begin_message) plays the disclaimer and language options automatically. Do NOT repeat them.\n2. Listen for the caller's language choice.\n3. Route immediately:\n   - English (press 1, says 'English', or speaks in English) → call `transfer_to_english`\n   - Spanish (press 2, says 'español', or speaks in Spanish) → call `transfer_to_spanish`\n   - Mandarin (press 3, says '普通话', or speaks in Mandarin/Chinese) → call `transfer_to_mandarin`\n4. If unclear or no response, say: 'For English, press 1. Para español, presione 2. 普通话请按3。' and wait again.\n5. If still unclear after a second attempt, default to English: call `transfer_to_english`.\n\n## Rules\n- Ignore any DTMF tones that don't map to 1, 2, or 3.\n- Do NOT answer any questions — just route.\n- Do NOT say 'call transfer failed' under any circumstances.\n- Keep responses to 1 sentence maximum.",
+    "general_tools": [
+      {
+        "type": "agent_swap",
+        "name": "transfer_to_english",
+        "description": "Transfer the caller to Iris, the English-speaking patient coordinator.",
+        "agent_id": "agent_d1da602b4847bec45ecc1331ce",
+        "speak_during_execution": false,
+        "post_call_analysis_setting": "both_agents",
+        "webhook_setting": "both_agents",
+        "keep_current_voice": false
+      },
+      {
+        "type": "agent_swap",
+        "name": "transfer_to_spanish",
+        "description": "Transfer the caller to Iris, the Spanish-speaking patient coordinator.",
+        "agent_id": "agent_270b7e47af4420f17bad366319",
+        "speak_during_execution": false,
+        "post_call_analysis_setting": "both_agents",
+        "webhook_setting": "both_agents",
+        "keep_current_voice": false
+      },
+      {
+        "type": "agent_swap",
+        "name": "transfer_to_mandarin",
+        "description": "Transfer the caller to Iris, the Mandarin-speaking patient coordinator.",
+        "agent_id": "agent_3c172091efa61f20b7ba1ec402",
+        "speak_during_execution": false,
+        "post_call_analysis_setting": "both_agents",
+        "webhook_setting": "both_agents",
+        "keep_current_voice": false
+      }
+    ],
+    "states": [],
+    "start_speaker": "agent",
+    "begin_message": "This call is being recorded. If this is a medical emergency, please hang up and call 9-1-1. For English, press 1 or say English. Para español, presione 2 o diga español. 普通话请按3。",
+    "knowledge_base_ids": [],
+    "kb_config": {
+      "top_k": 3,
+      "filter_score": 0.6
+    },
+    "is_published": false
+  }
+}
