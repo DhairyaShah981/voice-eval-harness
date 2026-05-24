@@ -10,6 +10,7 @@ import typer
 
 from voice_eval_harness.core.config import load_suite
 from voice_eval_harness.core.engine import run_suite
+from voice_eval_harness.report.junit import write_junit
 from voice_eval_harness.report.terminal import render
 
 
@@ -23,8 +24,14 @@ def run(
                                     help="Max concurrent test cases."),
     verbose: bool = typer.Option(False, "--verbose", "-v",
                                  help="Print full transcripts after the table."),
+    junit: Path | None = typer.Option(
+        None, "--junit",
+        help="Also write a JUnit XML report to this path (for CI integration).",
+    ),
 ) -> None:
     suite = load_suite(config)
     result = asyncio.run(run_suite(suite, concurrency=concurrency))
     render(result, verbose=verbose)
+    if junit:
+        write_junit(result, junit)
     sys.exit(0 if result.ok else 1)
