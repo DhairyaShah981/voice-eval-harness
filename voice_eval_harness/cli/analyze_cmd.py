@@ -75,10 +75,14 @@ def run(
         help="GCP project for Vertex Claude (BAA-covered).",
     ),
     vertex_location: str = typer.Option(
-        "us-central1", "--vertex-location",
+        "us-east5", "--vertex-location",
+        help="GCP region for Vertex (us-east5 has widest Claude coverage; "
+             "us-central1 may NOT have Anthropic models enabled).",
     ),
     vertex_model: str = typer.Option(
-        "claude-opus-4-1@20250805", "--vertex-model",
+        "claude-haiku-4-5@20251001", "--vertex-model",
+        help="Default matches the trifetch-os backend; switch to "
+             "claude-sonnet-4-6 for richer derived scenarios at higher cost.",
     ),
     transcripts_file: Path | None = typer.Option(
         None, "--transcripts-file",

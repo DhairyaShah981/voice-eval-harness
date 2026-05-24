@@ -60,20 +60,22 @@ class AnalyzeClient(ABC):
 
 # ── Vertex Claude backend (BAA-covered) ────────────────────────────────────
 
-# Vertex Claude pricing is published per million tokens. Update these
-# when the user pins a different model; rough Opus-4.1 figures used here
-# for cost estimation only.
-_VERTEX_PRICE_IN_PER_MTOK = 15.0
-_VERTEX_PRICE_OUT_PER_MTOK = 75.0
+# Vertex Claude pricing (per million tokens, Haiku 4.5 snapshot).
+# Cost estimation only — billing of record is the GCP invoice.
+_VERTEX_PRICE_IN_PER_MTOK = 1.0
+_VERTEX_PRICE_OUT_PER_MTOK = 5.0
 
 
 class VertexClaudeClient(AnalyzeClient):
     backend_name = "vertex"
 
     def __init__(
-        self, *, project_id: str, location: str = "us-central1",
-        model: str = "claude-opus-4-1@20250805",
+        self, *, project_id: str, location: str = "us-east5",
+        model: str = "claude-haiku-4-5@20251001",
     ) -> None:
+        # Defaults match the trifetch-os backend (claude_client.py): haiku
+        # snapshot for fast analysis tasks, region us-east5 where Anthropic
+        # publisher models are enabled by default on most BAA accounts.
         try:
             from anthropic import AnthropicVertex  # type: ignore
         except ImportError as e:
@@ -188,8 +190,8 @@ def get_analyze_client(
     backend: str | None = None,
     *,
     vertex_project: str | None = None,
-    vertex_location: str = "us-central1",
-    vertex_model: str = "claude-opus-4-1@20250805",
+    vertex_location: str = "us-east5",
+    vertex_model: str = "claude-haiku-4-5@20251001",
     anthropic_model: str = "claude-opus-4-7",
     openai_model: str = "gpt-4o-2024-08-06",
 ) -> AnalyzeClient:
@@ -200,10 +202,21 @@ def get_analyze_client(
       2. ``VOXEVAL_ANALYZE_BACKEND`` env var
       3. auto: vertex if VOXEVAL_VERTEX_PROJECT set, else anthropic if
          ANTHROPIC_API_KEY set, else openai.
+
+    PHI safety: if ``VOXEVAL_REQUIRE_BAA=1`` is set in the env, ANY backend
+    other than ``vertex`` raises immediately rather than risk sending
+    BAA-covered PHI to an OpenAI / Anthropic-direct endpoint.
     """
     backend = (backend
                or os.environ.get("VOXEVAL_ANALYZE_BACKEND")
                or _auto_pick())
+
+    if os.environ.get("VOXEVAL_REQUIRE_BAA") == "1" and backend != "vertex":
+        raise RuntimeError(
+            f"VOXEVAL_REQUIRE_BAA=1 in env; backend={backend!r} is NOT "
+            f"covered by your GCP BAA. Switch to --backend vertex (or unset "
+            f"VOXEVAL_REQUIRE_BAA to allow non-BAA backends)."
+        )
 
     if backend == "vertex":
         project = vertex_project or os.environ.get("VOXEVAL_VERTEX_PROJECT")

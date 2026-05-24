@@ -61,8 +61,11 @@ def analyze_clinic(
         corpus_text=corpus_text,
         kb_text=kb_text,
     )
+    # haiku/sonnet 4.5+ both support 16K+ output. Cap generously so the
+    # structured JSON (which can grow with many derived_scenarios) is
+    # never truncated mid-array.
     data = client.generate_json(
-        system=SYSTEM_PROMPT, user=user_prompt, max_tokens=6000,
+        system=SYSTEM_PROMPT, user=user_prompt, max_tokens=16000,
     )
     return ClinicAnalysis(
         agent_id=corpus.agent_id,
