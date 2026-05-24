@@ -32,8 +32,9 @@ voxeval --version
 
 ```bash
 voxeval init --provider retell                # scaffold voxeval.yaml + .env.example
-voxeval lint agents/my-agent.json             # 17-rule structural linter
-voxeval pin-urls agents/my-agent.json --lock  # probe tool/webhook URLs; fails on ngrok rot
+voxeval generate --agent agents/eva.json      # 🪄 auto-generate 20+ healthcare test cases from one agent JSON
+voxeval lint agents/eva.json                  # 17-rule structural linter
+voxeval pin-urls agents/eva.json --lock       # probe tool/webhook URLs; fails on ngrok rot
 voxeval run --max-cost 0.50 --junit out.xml   # full eval suite with budget cap + CI report
 voxeval diff main.json feature.json           # per-case regression diff (exits 1 on regression)
 voxeval kb-coverage --kb 'kb/*.md'            # auto-Q&A your KB and verify agent answers
@@ -41,6 +42,42 @@ voxeval replay --since 7d                     # regression fixtures from last we
 voxeval audit --since 24h                     # score yesterday's prod calls against assert_* contracts
 voxeval drift-watch --sample 20               # check cached LLM-judge verdicts for model drift
 ```
+
+## New-clinic onboarding in 60 seconds
+
+`voxeval generate` turns one agent JSON into a complete eval suite covering
+every healthcare scenario you'd otherwise script by hand:
+
+```bash
+voxeval generate --agent agents/eva-scheduling.json --out voxeval.yaml
+```
+
+Output: a 20-30 case suite with **one happy-path test per tool the agent
+declares** (auto-derived `assert_tool_called` + `assert_tool_shape` from the
+JSONSchema parameters) plus 19 curated healthcare scenarios:
+
+- New patient happy-path booking, returning-patient flow (no redundant intake)
+- **Urgent symptom triage** — chest pain, stroke symptoms (FAST) → must escalate, not schedule
+- **Insurance verification** — known plan (KB-driven), unknown plan (must hedge, not fabricate)
+- **Provider preference** — caller asks for a doctor; agent must verify they exist
+- Reschedule/cancel with tool-call enforcement
+- **Wrong-number callers** — agent MUST NOT collect PHI
+- After-hours queries, prescription refills (must defer)
+- Transfer-to-human, referral inbound capture
+- Spanish language drift detection
+- 4 persona stress tests (impatient, accented, code-switching, KB-probing)
+
+Real numbers from this repo's `examples/healthcare-clinic/`:
+
+| Agent                                | Auto-generated cases |
+|--------------------------------------|---------------------:|
+| eva-scheduling (ENT)                 | **24** (5 tool-calls + 19 scenarios) |
+| linda-scheduling (Endoscopy)         | **22** (3 tool-calls + 19 scenarios) |
+| iris-en (Ophthalmology)              | **20** (1 tool-call + 19 scenarios)  |
+| iris-en.prod (Cardiology)            | **20** (1 tool-call + 19 scenarios)  |
+| router-agent (multilingual router)   | **17** (0 tool-calls + 17 scenarios) |
+
+**Total: 103 test cases generated from 5 production agents — 5 commands, 0 hand-written YAML.**
 
 ## What's in v0.1
 
