@@ -5,10 +5,12 @@ from __future__ import annotations
 
 from voice_eval_harness.connectors.base import BaseConnector
 from voice_eval_harness.connectors.mock import MockConnector
+from voice_eval_harness.connectors.retell import RetellConnector
 from voice_eval_harness.core.models import ProviderSpec
 
 CONNECTORS: dict[str, type[BaseConnector]] = {
     MockConnector.name: MockConnector,
+    RetellConnector.name: RetellConnector,
 }
 
 

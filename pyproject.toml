@@ -74,3 +74,7 @@ ignore = ["E501", "B008", "UP042"]
 asyncio_mode = "auto"
 testpaths = ["tests"]
 python_files = ["test_*.py"]
+filterwarnings = [
+    # `TestCase` is a Pydantic model in our domain, not a unittest class.
+    "ignore::pytest.PytestCollectionWarning",
+]
