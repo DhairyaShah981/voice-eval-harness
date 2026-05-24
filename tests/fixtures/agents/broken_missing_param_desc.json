@@ -1,0 +1,87 @@
+{
+  "agent_id": "agent_minimal_clean",
+  "agent_name": "Minimal Clean Test Agent",
+  "channel": "voice",
+  "language": "en-US",
+  "voice_id": "11labs-Cimo",
+  "webhook_url": "https://example.com/webhook",
+  "response_engine": {
+    "type": "conversation-flow",
+    "version": 0,
+    "conversation_flow_id": "flow_minimal_clean"
+  },
+  "post_call_analysis_data": [
+    {
+      "type": "system-presets",
+      "name": "call_summary"
+    },
+    {
+      "type": "string",
+      "name": "patient_first_name",
+      "description": "First name of the caller as captured during the call."
+    }
+  ],
+  "conversationFlow": {
+    "conversation_flow_id": "flow_minimal_clean",
+    "is_transfer_cf": false,
+    "start_node_id": "node_welcome",
+    "model_choice": {
+      "type": "openai",
+      "model": "gpt-4o"
+    },
+    "global_prompt": "You are a helpful scheduling assistant. Be polite and concise.",
+    "nodes": [
+      {
+        "id": "node_welcome",
+        "name": "Welcome",
+        "type": "conversation",
+        "instruction": {
+          "type": "prompt",
+          "text": "Greet the caller and ask how you can help."
+        },
+        "edges": [
+          {
+            "id": "edge_welcome_to_book",
+            "condition": "User wants to book",
+            "transition_condition": {
+              "type": "prompt",
+              "prompt": "Caller asked to schedule an appointment."
+            },
+            "destination_node_id": "node_book"
+          }
+        ]
+      },
+      {
+        "id": "node_book",
+        "name": "Booking",
+        "type": "function",
+        "tool_id": "tool-check-availability",
+        "instruction": {
+          "type": "prompt",
+          "text": "Call the availability tool with the requested day."
+        },
+        "edges": []
+      }
+    ],
+    "tools": [
+      {
+        "tool_id": "tool-check-availability",
+        "name": "check_availability",
+        "description": "Look up open appointment slots.",
+        "type": "custom",
+        "url": "https://api.example.com/check-availability",
+        "parameters": {
+          "type": "object",
+          "required": [
+            "day_of_week"
+          ],
+          "properties": {
+            "day_of_week": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    ]
+  }
+}

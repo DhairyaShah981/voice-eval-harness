@@ -43,9 +43,10 @@ def main(
 
 # Sub-commands are registered here as they land. Each command lives in its
 # own module to keep this file thin and to keep import cost low.
-from voice_eval_harness.cli import init_cmd  # noqa: E402
+from voice_eval_harness.cli import init_cmd, lint_cmd  # noqa: E402
 
 app.command("init", help="Scaffold a new voxeval project in the current directory.")(init_cmd.run)
+app.command("lint", help="Run the Retell structural linter on an agent JSON file.")(lint_cmd.run)
 
 
 if __name__ == "__main__":
