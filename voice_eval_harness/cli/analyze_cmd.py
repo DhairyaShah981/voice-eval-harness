@@ -40,15 +40,12 @@ console = Console()
 async def _pull_all_calls(
     since: str, max_calls: int,
 ) -> list[dict]:
-    """Pull a broad window of calls (not just failures). list_failed_calls
-    accepts a permissive status set so we can reuse it for the full window."""
-    # Use a permissive status set so we get happy + failure calls.
-    statuses = [
-        "user_hangup", "agent_hangup", "ended", "completed",
-        "agent_error", "dial_busy", "error_user_not_joined",
-        "voicemail", "no_answer",
-    ]
-    return await list_failed_calls(since=since, statuses=statuses, limit=max_calls)
+    """Pull the broadest possible window — pass statuses=[] (empty list)
+    so list_failed_calls omits the disconnection_reason filter entirely.
+    Analyzer needs happy + failure calls together to derive scenarios."""
+    return await list_failed_calls(
+        since=since, statuses=[], limit=max_calls,
+    )
 
 
 def run(

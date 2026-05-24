@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "voice-eval-harness"
-version = "1.0.0"
+version = "1.2.1"
 description = "Open-source eval harness for voice AI agents (Retell, Vapi, LiveKit, Pipecat)."
 readme = "README.md"
 license = { text = "Apache-2.0" }

@@ -77,19 +77,29 @@ def test_extract_fixture_phi_scrubbed_in_yaml() -> None:
 
 
 def test_list_failed_calls_posts_correct_body() -> None:
-    captured: dict[str, dict] = {}
+    """list_failed_calls hits /v3/list-calls AND enriches each call via
+    /v2/get-call/{id} to pull the transcript (the list view is metadata-only)."""
+    paths_hit: list[str] = []
+    bodies_sent: list[bytes] = []
 
     def respond(request: httpx.Request) -> httpx.Response:
-        captured["path"] = request.url.path
-        captured["body"] = httpx.Request("POST", "x", content=request.content).content
-        return httpx.Response(200, json={
-            "pagination_key": None,
-            "has_more": False,
-            "items": [
-                {"call_id": "c1", "disconnection_reason": "agent_error",
-                 "transcript": "User: hi\nAgent: oh no\n"},
-            ],
-        })
+        paths_hit.append(request.url.path)
+        bodies_sent.append(request.content)
+        if request.url.path == "/v3/list-calls":
+            return httpx.Response(200, json={
+                "pagination_key": None,
+                "has_more": False,
+                "items": [
+                    {"call_id": "c1", "disconnection_reason": "user_hangup"},
+                ],
+            })
+        if request.url.path.startswith("/v2/get-call/"):
+            return httpx.Response(200, json={
+                "call_id": "c1",
+                "transcript": "User: hi\nAgent: oh no\n",
+                "disconnection_reason": "user_hangup",
+            })
+        return httpx.Response(404)
 
     async def run() -> None:
         client = httpx.AsyncClient(
@@ -98,11 +108,19 @@ def test_list_failed_calls_posts_correct_body() -> None:
             headers={"Authorization": "Bearer test"},
         )
         items = await list_failed_calls(
-            since="3d", statuses=["agent_error"], limit=5, http_client=client,
+            since="3d", statuses=["user_hangup"], limit=5, http_client=client,
         )
         await client.aclose()
         assert len(items) == 1
         assert items[0]["call_id"] == "c1"
-        assert captured["path"] == "/v3/list-calls"
+        # transcript came from the /v2/get-call enrichment step
+        assert "User: hi" in items[0].get("transcript", "")
+        assert "/v3/list-calls" in paths_hit
+        assert any(p.startswith("/v2/get-call/") for p in paths_hit)
+        # Verify the typed-filter shape made it onto the wire.
+        list_body = next(b for p, b in zip(paths_hit, bodies_sent, strict=True)
+                         if p == "/v3/list-calls")
+        assert b'"type":"enum"' in list_body
+        assert b'"op":"in"' in list_body
 
     asyncio.run(run())

@@ -73,14 +73,9 @@ async def _run(
         return 1
 
     console.print(f"Pulling calls (since={since}, statuses={statuses or 'all'}) from Retell...")
-    # When statuses=None, we still want all calls -> use a permissive set.
+    # statuses=[] -> no disconnection_reason filter, pull every call in window.
     calls = await list_failed_calls(
-        since=since,
-        statuses=statuses or [
-            "user_hangup", "agent_hangup", "ended", "completed",
-            "agent_error", "dial_busy",
-        ],
-        limit=max_calls,
+        since=since, statuses=statuses or [], limit=max_calls,
     )
     console.print(f"  -> got {len(calls)} call(s)")
 
