@@ -187,10 +187,15 @@ BUILTIN_ASSERTIONS: dict[str, type[Assertion]] = {
 
 
 def build_assertion(spec: AssertionSpec) -> Assertion:
+    # Lazy import to avoid a hard dependency on llm_judge module at import
+    # of this file (which is hot-loaded by the engine on every run).
+    if spec.kind == "llm_judge":
+        from voice_eval_harness.assertions.llm_judge import LLMJudgeAssertion
+        return LLMJudgeAssertion(spec)
     cls = BUILTIN_ASSERTIONS.get(spec.kind)
     if cls is None:
         raise ValueError(
             f"unknown assertion kind {spec.kind!r}; "
-            f"known: {sorted(BUILTIN_ASSERTIONS)}"
+            f"known: {sorted([*BUILTIN_ASSERTIONS, 'llm_judge'])}"
         )
     return cls(spec)

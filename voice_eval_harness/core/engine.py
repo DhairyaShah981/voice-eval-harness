@@ -25,15 +25,24 @@ async def _run_case(connector: BaseConnector, case: TestCase) -> RunResult:
     start = time.monotonic()
     session = await connector.start_session(case)
     error: str | None = None
+    persona_result = None
     try:
-        for turn in case.script:
-            if turn.user_says is None:
-                continue
-            await session.send_user_turn(
-                turn.user_says,
-                lang=turn.language,
-                interrupt_at_ms=turn.interrupt_at_ms,
-            )
+        if case.persona is not None:
+            # Persona simulator drives the conversation; the YAML script is
+            # ignored. The first user turn defaults to a persona opener.
+            from voice_eval_harness.personas.profiles import get_profile
+            from voice_eval_harness.personas.simulator import run_persona
+            profile = get_profile(case.persona.type)
+            persona_result = await run_persona(session, profile)
+        else:
+            for turn in case.script:
+                if turn.user_says is None:
+                    continue
+                await session.send_user_turn(
+                    turn.user_says,
+                    lang=turn.language,
+                    interrupt_at_ms=turn.interrupt_at_ms,
+                )
         summary = await session.end()
     except Exception as exc:  # noqa: BLE001 — surface any connector blowup as case failure
         error = f"{type(exc).__name__}: {exc}"
@@ -63,6 +72,12 @@ async def _run_case(connector: BaseConnector, case: TestCase) -> RunResult:
         assertion_results.append(res)
 
     passed = error is None and all(r.passed for r in assertion_results)
+    # A persona run that failed its own exit conditions is a case-level failure
+    # even if no explicit assertion fired.
+    if persona_result is not None and not persona_result.passed:
+        passed = False
+        if not error:
+            error = f"persona[{case.persona.type}] failed: {persona_result.reason}"  # type: ignore[union-attr]
     duration_ms = int((time.monotonic() - start) * 1000)
     return RunResult(
         case_id=case.id,
