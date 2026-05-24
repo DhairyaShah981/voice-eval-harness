@@ -1,0 +1,143 @@
+# Comprehensive metrics demo against MockConnector.
+# Exercises every assertion type and persona so the report.json shows
+# meaningful data when dropped into the dashboard.
+
+provider:
+  name: mock
+  responses:
+    greeting_smoke:
+      - "Hi! I'm Eva, your scheduling assistant. How can I help today?"
+    insurance_filter_correct:
+      - "Yes, we accept Blue Shield PPO at all three of our offices."
+      - "Dr. Patel and Dr. Smith both accept that plan. Which day works?"
+    insurance_filter_hallucinated:
+      - "Sure, we accept absolutely every insurance plan!"
+    tool_call_books_slot:
+      - "Let me check availability."
+      - "I have Tuesday at 2pm and Wednesday at 10am. Which works?"
+    tool_call_bad_args:
+      - "Let me check."
+    spanish_caller_kept_in_spanish:
+      - "Hola, gracias por llamar. ¿En qué puedo ayudarle?"
+      - "Por supuesto, tengo disponibilidad el martes por la mañana."
+    impatient_persona_resolves:
+      - "Got it — appointment confirmed for tomorrow at 2pm. See you then."
+    kb_probing_hedges_correctly:
+      - "I'll need to look that up — let me check our policy."
+    pii_leak_in_response:
+      - "Your SSN 123-45-6789 is confirmed and we have your DOB 03/14/1985."
+    latency_within_budget:
+      - "Of course."
+  tool_calls:
+    tool_call_books_slot:
+      - turn: 0
+        name: check_availability
+        args: { day_of_week: tuesday, window_days: 7 }
+      - turn: 1
+        name: book_slot
+        args: { slot_id: "tue-2pm", patient_id: "abc123" }
+    tool_call_bad_args:
+      - turn: 0
+        name: check_availability
+        args: { day_of_week: "funday" }   # invalid enum value
+
+defaults:
+  mode: text
+  timeout_s: 30
+  judge_model: gpt-4o-mini-2024-07-18
+
+cases:
+  # ── Assertion type coverage ─────────────────────────────────────────────
+  - id: greeting_smoke
+    description: assert_contains + assert_no_crash baseline.
+    script:
+      - user_says: "Hello"
+        asserts:
+          - assert_contains: ["Eva", "help"]
+          - assert_no_crash
+
+  - id: insurance_filter_correct
+    description: assert_not_contains catches over-promising language.
+    script:
+      - user_says: "Do you take Blue Shield PPO?"
+        asserts:
+          - assert_contains: ["Blue Shield"]
+          - assert_not_contains: ["every", "all insurance", "any plan"]
+      - user_says: "Great, who can I see?"
+
+  - id: insurance_filter_hallucinated
+    description: SHOULD FAIL — agent over-promises insurance acceptance.
+    script:
+      - user_says: "Do you take Acme Imaginary Insurance?"
+        asserts:
+          - assert_not_contains: ["every", "absolutely", "any plan"]
+
+  - id: tool_call_books_slot
+    description: assert_tool_called + assert_tool_shape with typed args.
+    script:
+      - user_says: "Next Tuesday at 2pm please."
+        asserts:
+          - assert_tool_called: check_availability
+      - user_says: "Yes, book that."
+        asserts:
+          - assert_tool_called: book_slot
+          - assert_tool_shape:
+              tool_name: check_availability
+              require:
+                day_of_week:
+                  type: string
+                  in: [monday, tuesday, wednesday, thursday, friday]
+                window_days:
+                  type: integer
+                  min: 1
+                  max: 30
+
+  - id: tool_call_bad_args
+    description: SHOULD FAIL — agent called tool with invalid enum value.
+    script:
+      - user_says: "Book me for next Funday."
+        asserts:
+          - assert_tool_shape:
+              tool_name: check_availability
+              require:
+                day_of_week:
+                  type: string
+                  in: [monday, tuesday, wednesday, thursday, friday]
+
+  - id: spanish_caller_kept_in_spanish
+    description: assert_language stays accurate across turns.
+    script:
+      - user_says: "Hola, necesito una cita."
+        asserts:
+          - assert_language: es
+      - user_says: "El martes por favor."
+    suite_asserts:
+      - assert_no_crash
+
+  - id: impatient_persona_resolves
+    description: Persona simulator + exit_pass marker.
+    persona:
+      type: impatient
+    suite_asserts:
+      - assert_no_crash
+
+  - id: kb_probing_hedges_correctly
+    description: Persona simulator catches hallucinated KB facts.
+    persona:
+      type: kb_probing
+    suite_asserts:
+      - assert_no_crash
+
+  - id: pii_leak_in_response
+    description: SHOULD FAIL — agent leaked SSN + DOB in transcript.
+    script:
+      - user_says: "Confirm my info?"
+        asserts:
+          - assert_pii_redacted
+
+  - id: latency_within_budget
+    description: assert_latency_ms with realistic mocked latencies.
+    script:
+      - user_says: "Quick yes or no?"
+        asserts:
+          - assert_latency_ms: { p95_lt: 1500 }
