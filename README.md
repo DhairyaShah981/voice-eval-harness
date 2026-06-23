@@ -4,6 +4,8 @@
 >
 > `voice-eval-harness` is the open-source eval harness for voice agents — Retell-first, Vapi next, every other platform via plugin. Lint your agent config before it crashes Retell's importer. Replay last week's failed prod calls as deterministic regression cases. Stress-test with adversarial caller personas. Verify your knowledge base is actually wired and answerable. Gate CI on pass-rate, latency, and cost.
 
+**🚀 Live demo:** [**voice-eval-harness.vercel.app**](https://voice-eval-harness.vercel.app/) — click **"Load demo run ▶"** to see a real 5-case evaluation against a Vapi front-desk assistant. Click any case for the transcript + assertion-level results.
+
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 ![Status](https://img.shields.io/badge/status-alpha-orange.svg)
 
