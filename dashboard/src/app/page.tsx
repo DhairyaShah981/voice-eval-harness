@@ -50,20 +50,21 @@ export default function HomePage() {
     <div className="space-y-6">
       <div className="flex items-baseline justify-between">
         <div>
-          <h1 className="text-2xl font-semibold">Runs</h1>
+          <h1 className="text-2xl font-semibold">voice-eval-harness · live demo</h1>
           <p className="text-sm text-neutral-500">
             {remoteMode
               ? "Connected to Supabase."
-              : "Local mode — uploads stay in this browser tab."}
+              : "The Promptfoo-equivalent for voice agents — Retell, Vapi, every other platform via plugin. Open-source (Apache-2.0). Click \"Load demo run\" below to see a real evaluation across 5 cases."}
           </p>
         </div>
-        <select
-          disabled
-          className="rounded border border-neutral-300 bg-neutral-50 px-2 py-1 text-xs text-neutral-400"
-          title="Diff view ships in v0.2.1"
+        <a
+          href="https://github.com/DhairyaShah981/voice-eval-harness"
+          target="_blank"
+          rel="noreferrer"
+          className="rounded border border-neutral-300 bg-white px-3 py-1.5 text-xs font-medium text-neutral-700 hover:bg-neutral-100"
         >
-          <option>Diff with… (coming soon)</option>
-        </select>
+          GitHub ↗
+        </a>
       </div>
 
       <UploadDropzone onParsed={handleParsed} />
