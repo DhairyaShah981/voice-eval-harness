@@ -85,7 +85,7 @@ export default function HomePage() {
       {loading ? (
         <div className="text-sm text-neutral-400">Loading…</div>
       ) : (
-        <RunsTable rows={rows} />
+        <RunsTable rows={rows} remoteMode={remoteMode} />
       )}
 
       <TranscriptDrawer

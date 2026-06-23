@@ -14,13 +14,27 @@ export default function RunDetailPage({
   const { id } = use(params);
   const [run, setRun] = useState<RunRow | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [notFound, setNotFound] = useState(false);
   const [selectedCase, setSelectedCase] = useState<string | null>(null);
 
+  // Local-mode IDs were never persisted, so /api/runs/[id] will 404.
+  // Short-circuit + render a clear message instead of triggering a fetch error.
+  const isLocalId =
+    id.startsWith("local-") ||
+    id.startsWith("demo-") ||
+    id.startsWith("vapi-demo-") ||
+    id.startsWith("retell-audit-");
+
   useEffect(() => {
+    if (isLocalId) return;
     let cancelled = false;
     (async () => {
       try {
         const res = await fetch(`/api/runs/${id}`);
+        if (res.status === 404) {
+          if (!cancelled) setNotFound(true);
+          return;
+        }
         if (!res.ok) throw new Error(`api/runs/${id} ${res.status}`);
         const data = (await res.json()) as { run: RunRow };
         if (!cancelled) setRun(data.run);
@@ -32,7 +46,28 @@ export default function RunDetailPage({
     return () => {
       cancelled = true;
     };
-  }, [id]);
+  }, [id, isLocalId]);
+
+  if (isLocalId || notFound) {
+    return (
+      <div className="space-y-4">
+        <Link href="/" className="text-sm text-blue-600 hover:underline">
+          ← back to dashboard
+        </Link>
+        <div className="rounded border border-neutral-200 bg-white p-6">
+          <h2 className="text-lg font-semibold">
+            {isLocalId ? "This run lives only in your browser tab" : "Run not found"}
+          </h2>
+          <p className="mt-2 text-sm text-neutral-600">
+            {isLocalId
+              ? <>The dashboard is in local mode &mdash; the report you uploaded (<code className="font-mono text-xs">{id}</code>) isn&apos;t persisted to a database, so this detail page can&apos;t fetch it. Reload it via &quot;<strong>Load demo run</strong>&quot; on the home page.</>
+              : <>No run with id <code className="font-mono text-xs">{id}</code> was found.</>
+            }
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   if (error) {
     return (

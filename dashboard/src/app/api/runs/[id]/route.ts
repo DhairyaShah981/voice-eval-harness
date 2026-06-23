@@ -10,9 +10,11 @@ export async function GET(
   const { id } = await ctx.params;
   const sb = getSupabaseAdmin();
   if (!sb) {
+    // Local mode: no persisted runs exist. Treat as not-found rather than 503,
+    // so the /runs/[id] page can render a friendly "go back home" message.
     return NextResponse.json(
-      { error: "supabase not configured" },
-      { status: 503 },
+      { error: "local mode; no persisted runs" },
+      { status: 404 },
     );
   }
   const { data, error } = await sb

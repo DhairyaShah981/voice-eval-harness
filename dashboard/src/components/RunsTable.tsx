@@ -6,14 +6,28 @@ import type { RunRow } from "@/lib/types";
 
 interface Props {
   rows: RunRow[];
+  remoteMode?: boolean;
 }
 
-export function RunsTable({ rows }: Props) {
+function isLocalRow(id: string): boolean {
+  // Local-mode rows are not persisted to Supabase; their detail page would
+  // 404 on /api/runs/[id]. Render as plain text instead of a link.
+  return (
+    id.startsWith("local-") ||
+    id.startsWith("demo-") ||
+    id.startsWith("vapi-demo-") ||
+    id.startsWith("retell-audit-")
+  );
+}
+
+export function RunsTable({ rows, remoteMode = false }: Props) {
   if (!rows.length) {
     return (
       <div className="rounded-lg border border-dashed border-neutral-300 p-8 text-center text-sm text-neutral-500">
-        No runs yet. Upload a <code>report.json</code> above or POST one to{" "}
-        <code>/api/runs</code>.
+        {remoteMode
+          ? <>No runs persisted yet. Upload a <code>report.json</code> above or POST one to <code>/api/runs</code>.</>
+          : <>This dashboard is in <strong>local mode</strong> &mdash; in-memory only. Click <strong>Vapi live demo</strong> or <strong>Retell prod audit</strong> above to load a real eval.</>
+        }
       </div>
     );
   }
@@ -44,12 +58,21 @@ export function RunsTable({ rows }: Props) {
             return (
               <tr key={r.id} className="hover:bg-neutral-50">
                 <td className="px-4 py-3">
-                  <Link
-                    href={`/runs/${r.id}`}
-                    className="text-blue-600 hover:underline"
-                  >
-                    {new Date(r.started_at).toLocaleString()}
-                  </Link>
+                  {isLocalRow(r.id) ? (
+                    <span className="text-neutral-700">
+                      {new Date(r.started_at).toLocaleString()}
+                      <span className="ml-2 inline-block rounded bg-neutral-100 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wide text-neutral-500">
+                        local
+                      </span>
+                    </span>
+                  ) : (
+                    <Link
+                      href={`/runs/${r.id}`}
+                      className="text-blue-600 hover:underline"
+                    >
+                      {new Date(r.started_at).toLocaleString()}
+                    </Link>
+                  )}
                 </td>
                 <td className="px-4 py-3 font-mono text-xs text-neutral-600">
                   {r.suite_hash.slice(0, 12)}
