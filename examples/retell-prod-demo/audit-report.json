@@ -8,7 +8,7 @@
         {
           "ts_ms": 0,
           "role": "agent",
-          "text": "Welcome to Metro Dermatology, this call may be",
+          "text": "Welcome to Sunnyvale Dermatology, this call may be",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
@@ -108,7 +108,7 @@
         {
           "ts_ms": 0,
           "role": "agent",
-          "text": "Hi, this is Eva calling from San Diego ENT Associates. This call may be recorded for quality assurance purposes. May I please speak with Sama?",
+          "text": "Hi, this is Eva calling from Bayview ENT Specialty Clinic. This call may be recorded for quality assurance purposes. May I please speak with Sama?",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
@@ -499,7 +499,7 @@
         {
           "ts_ms": 1,
           "role": "agent",
-          "text": "Hi, this is Eva calling from San Diego ENT Associates. This call may be recorded for quality assurance purposes. May I please speak with Kadyn?",
+          "text": "Hi, this is Eva calling from Bayview ENT Specialty Clinic. This call may be recorded for quality assurance purposes. May I please speak with Kadyn?",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
@@ -755,7 +755,7 @@
         {
           "ts_ms": 0,
           "role": "agent",
-          "text": "Hi, this is Eva calling from San Diego ENT Associates. This call may be recorded for quality assurance purposes. May I please speak with Corazon?",
+          "text": "Hi, this is Eva calling from Bayview ENT Specialty Clinic. This call may be recorded for quality assurance purposes. May I please speak with Corazon?",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
@@ -921,7 +921,7 @@
         {
           "ts_ms": 4,
           "role": "agent",
-          "text": "Hi Ramon, this is Eva calling from San Diego ENT Associates. We received a referral from your doctor and wanted to help you schedule an appointment. You can reach us at six one nine - four six four - three three five three, Monday through Friday, eight AM to four forty-five PM.Have a great day!",
+          "text": "Hi Ramon, this is Eva calling from Bayview ENT Specialty Clinic. We received a referral from your doctor and wanted to help you schedule an appointment. You can reach us at six one nine - four six four - three three five three, Monday through Friday, eight AM to four forty-five PM.Have a great day!",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
