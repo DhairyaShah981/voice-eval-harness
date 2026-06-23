@@ -3,12 +3,21 @@
     {
       "case_id": "greeting_happy_path",
       "passed": false,
-      "duration_ms": 409,
+      "duration_ms": 1413,
       "transcript": [
         {
           "ts_ms": 0,
           "role": "user",
           "text": "Hi, I'm calling about my appointment.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 1413,
+          "role": "agent",
+          "text": "Sure! How can I assist you with your appointment? Would you like to book, reschedule, or cancel?",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
@@ -19,7 +28,7 @@
         {
           "kind": "contains",
           "passed": false,
-          "detail": "missing in agent text: ['help', 'appointment']"
+          "detail": "missing in agent text: ['help']"
         },
         {
           "kind": "no_crash",
@@ -28,17 +37,196 @@
         }
       ],
       "cost_usd": 0.0,
-      "error": "HTTPStatusError: Client error '402 Payment Required' for url 'https://api.vapi.ai/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402"
+      "error": null
     },
     {
       "case_id": "impatient_reschedule",
       "passed": false,
-      "duration_ms": 502,
+      "duration_ms": 33601,
       "transcript": [
         {
-          "ts_ms": 11,
+          "ts_ms": 14,
           "role": "user",
           "text": "Skip the intro. I need an appointment tomorrow.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 2015,
+          "role": "tool",
+          "text": null,
+          "tool_name": "get_available_slots",
+          "tool_args": {
+            "raw": "{\"day_of_week\": \"monday\"}"
+          },
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 2015,
+          "role": "agent",
+          "text": "I'm sorry, but it looks like we don't have any available appointment slots for tomorrow. Would you like to check for another day?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 5364,
+          "role": "user",
+          "text": "Ugh, come on. What about today?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 9784,
+          "role": "tool",
+          "text": null,
+          "tool_name": "get_available_slots",
+          "tool_args": {
+            "raw": "{\"day_of_week\": \"friday\"}"
+          },
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 9784,
+          "role": "agent",
+          "text": "It seems there are no available appointments for today either. Would you like me to check availability for another day this week?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 10813,
+          "role": "user",
+          "text": "Seriously? Just find me a slot, any slot, this week!",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 16747,
+          "role": "tool",
+          "text": null,
+          "tool_name": "get_available_slots",
+          "tool_args": {
+            "raw": "{\"day_of_week\": \"next_week\"}"
+          },
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 16747,
+          "role": "agent",
+          "text": "Unfortunately, I couldn't find any available appointment slots for this week or next week. Please let me know if you'd like me to assist you with anything else.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 18968,
+          "role": "user",
+          "text": "Ugh, no! Just give me a date, any date! Do it now or I'm hanging up!",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 20899,
+          "role": "tool",
+          "text": null,
+          "tool_name": "get_available_slots",
+          "tool_args": {
+            "raw": "{\"day_of_week\": \"tuesday\"}"
+          },
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 20899,
+          "role": "agent",
+          "text": "I apologize for the inconvenience, but it seems our system is currently unable to retrieve available appointment slots. Please hold on while I try to resolve this or assist you in another way.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 21691,
+          "role": "user",
+          "text": "Come on! Just give me a date! I don\u2019t have time for this!",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 25253,
+          "role": "agent",
+          "text": "I understand your urgency. Our clinic hours are Mon-Fri 8am-6pm at 221 Bayview Ave. If you want, I can connect you to a staff member who might assist you further.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 26409,
+          "role": "user",
+          "text": "Ugh, just find me a date already! No more details, just a slot!",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 27533,
+          "role": "agent",
+          "text": "I\u2019m really sorry, but I can\u2019t access appointment slots right now. Would you like me to take your contact info so someone can call you back?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 28422,
+          "role": "user",
+          "text": "No! Just find a date! I\u2019m about to hang up!",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 29687,
+          "role": "agent",
+          "text": "I understand, but I'm unable to access appointment slots at the moment. Please call back shortly or visit the clinic directly at 221 Bayview Ave for immediate assistance.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 30684,
+          "role": "user",
+          "text": "Ugh, seriously? This is ridiculous! Just find a date or I'm hanging up!",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 32044,
+          "role": "agent",
+          "text": "I apologize for the frustration. Unfortunately, I can't access available slots right now. Would you like me to transfer you to our billing department or take a message?",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
@@ -53,22 +241,22 @@
         },
         {
           "kind": "latency_ms",
-          "passed": true,
-          "detail": ""
+          "passed": false,
+          "detail": "p95=5933.9897078461945 >= 4000"
         },
         {
           "kind": "llm_judge",
           "passed": false,
-          "detail": "judge_call_failed: ModuleNotFoundError: No module named 'openai'"
+          "detail": "The agent did not propose a Thursday afternoon slot and engaged in unnecessary small talk."
         }
       ],
       "cost_usd": 0.0,
-      "error": "HTTPStatusError: Client error '402 Payment Required' for url 'https://api.vapi.ai/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402"
+      "error": "persona[impatient] failed: exit_fail marker 'transfer' matched in agent reply"
     },
     {
       "case_id": "insurance_intent_judge",
-      "passed": false,
-      "duration_ms": 429,
+      "passed": true,
+      "duration_ms": 6571,
       "transcript": [
         {
           "ts_ms": 0,
@@ -78,13 +266,33 @@
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
+        },
+        {
+          "ts_ms": 5351,
+          "role": "tool",
+          "text": null,
+          "tool_name": "check_insurance_coverage",
+          "tool_args": {
+            "raw": "{\n  \"service\": \"wellness visit\",\n  \"plan_name\": \"Blue Cross PPO\"\n}"
+          },
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 5351,
+          "role": "agent",
+          "text": "I couldn't find the coverage details for Blue Cross PPO and wellness visits. Would you like me to transfer you to our billing department for more information?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
         }
       ],
       "assertion_results": [
         {
           "kind": "llm_judge",
-          "passed": false,
-          "detail": "judge_call_failed: ModuleNotFoundError: No module named 'openai'"
+          "passed": true,
+          "detail": ""
         },
         {
           "kind": "no_crash",
@@ -93,12 +301,12 @@
         }
       ],
       "cost_usd": 0.0,
-      "error": "HTTPStatusError: Client error '402 Payment Required' for url 'https://api.vapi.ai/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402"
+      "error": null
     },
     {
       "case_id": "book_slot_calls_tool",
-      "passed": false,
-      "duration_ms": 398,
+      "passed": true,
+      "duration_ms": 6571,
       "transcript": [
         {
           "ts_ms": 0,
@@ -108,13 +316,33 @@
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
+        },
+        {
+          "ts_ms": 6571,
+          "role": "tool",
+          "text": null,
+          "tool_name": "get_available_slots",
+          "tool_args": {
+            "raw": "{\"day_of_week\": \"next_week\"}"
+          },
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 6571,
+          "role": "agent",
+          "text": "I didn't get the available slots for next week. Could you please specify a day or if you prefer morning or afternoon?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
         }
       ],
       "assertion_results": [
         {
           "kind": "tool_called",
-          "passed": false,
-          "detail": "expected tool 'get_available_slots', saw: []"
+          "passed": true,
+          "detail": ""
         },
         {
           "kind": "no_crash",
@@ -123,17 +351,124 @@
         }
       ],
       "cost_usd": 0.0,
-      "error": "HTTPStatusError: Client error '402 Payment Required' for url 'https://api.vapi.ai/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402"
+      "error": null
     },
     {
       "case_id": "spanish_english_code_switch",
       "passed": false,
-      "duration_ms": 475,
+      "duration_ms": 21326,
       "transcript": [
         {
           "ts_ms": 0,
           "role": "user",
           "text": "Buenas, can you check si Dr. Smith is available next Tuesday?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 5174,
+          "role": "tool",
+          "text": null,
+          "tool_name": "get_available_slots",
+          "tool_args": {
+            "raw": "{\"day_of_week\": \"tuesday\"}"
+          },
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 5174,
+          "role": "agent",
+          "text": "Lo siento, no pude encontrar la disponibilidad para el pr\u00f3ximo martes. \u00bfLe gustar\u00eda que revise otros d\u00edas o semanas para una cita con el Dr. Smith?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 6583,
+          "role": "user",
+          "text": "Claro, can you see if there are any openings el jueves por la tarde?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 9403,
+          "role": "tool",
+          "text": null,
+          "tool_name": "get_available_slots",
+          "tool_args": {
+            "raw": "{\n  \"day_of_week\": \"thursday\",\n  \"time_of_day\": \"afternoon\"\n}"
+          },
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 9403,
+          "role": "agent",
+          "text": "No pude encontrar horarios disponibles el jueves por la tarde. \u00bfDesea que revise otro d\u00eda o parte del d\u00eda?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 10858,
+          "role": "user",
+          "text": "\u00bfPodr\u00edas verificar si hay disponibilidad el viernes por la ma\u00f1ana?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 12726,
+          "role": "tool",
+          "text": null,
+          "tool_name": "get_available_slots",
+          "tool_args": {
+            "raw": "{\"day_of_week\": \"friday\", \"time_of_day\": \"morning\"}"
+          },
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 12726,
+          "role": "agent",
+          "text": "Lo siento, no encontr\u00e9 disponibilidad para el viernes por la ma\u00f1ana. \u00bfLe gustar\u00eda que revisara otro d\u00eda o en otro horario?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 15333,
+          "role": "user",
+          "text": "Entiendo, can you check si hay alguna cita disponible el viernes por la tarde?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 20281,
+          "role": "tool",
+          "text": null,
+          "tool_name": "get_available_slots",
+          "tool_args": {
+            "raw": "{\n  \"day_of_week\": \"friday\",\n  \"time_of_day\": \"afternoon\"\n}"
+          },
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 20281,
+          "role": "agent",
+          "text": "No hay citas disponibles el viernes por la tarde. \u00bfQuiere que busque en otro d\u00eda o horario?",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
@@ -154,11 +489,11 @@
         {
           "kind": "llm_judge",
           "passed": false,
-          "detail": "judge_call_failed: ModuleNotFoundError: No module named 'openai'"
+          "detail": "The agent repeated itself multiple times without providing new information."
         }
       ],
       "cost_usd": 0.0,
-      "error": "HTTPStatusError: Client error '402 Payment Required' for url 'https://api.vapi.ai/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402"
+      "error": null
     }
   ],
   "total_cost_usd": 0.0009,

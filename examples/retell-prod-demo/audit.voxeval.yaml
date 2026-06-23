@@ -1,0 +1,22 @@
+# Read-only audit suite for Eva (ENT-SD Scheduling).
+# `voxeval audit` pulls the last N prod calls from Retell via /list-calls
+# (read-only) and scores them against the assertions in this YAML.
+# No edits to the agent, no new chat sessions — pure replay-on-history.
+
+provider:
+  name: retell
+  api_key: ${RETELL_API_KEY}
+  agent_id: agent_f8237696783530e9599ec6a6ba  # ENT-SD Scheduling — Eva (published)
+
+defaults:
+  judge_model: gpt-4o-mini-2024-07-18
+
+cases:
+  # Each case here is an assertion bundle applied to historical calls.
+  - id: production_call_audit
+    description: Audit Eva's last 50 production calls.
+    suite_asserts:
+      - assert_no_crash
+      - assert_llm_judge: "Agent stayed on-topic for an ENT scheduling call. Wandering into unrelated topics or hallucinating clinical advice is a fail."
+      - assert_not_contains: ["I'm an AI", "I cannot help", "as a language model"]
+      - assert_latency_ms: { p95_lt: 6000 }

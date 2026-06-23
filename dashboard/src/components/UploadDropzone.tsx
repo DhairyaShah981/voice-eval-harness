@@ -58,17 +58,20 @@ export function UploadDropzone({ onParsed }: Props) {
     [ingestReport],
   );
 
-  const loadSample = useCallback(async () => {
-    setError(null);
-    try {
-      const res = await fetch("/sample-report.json", { cache: "no-store" });
-      if (!res.ok) throw new Error(`sample fetch failed: ${res.status}`);
-      const report = (await res.json()) as SuiteResult;
-      ingestReport(report, "demo");
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "failed to load sample");
-    }
-  }, [ingestReport]);
+  const loadSampleFrom = useCallback(
+    async (url: string, label: string) => {
+      setError(null);
+      try {
+        const res = await fetch(url, { cache: "no-store" });
+        if (!res.ok) throw new Error(`sample fetch failed: ${res.status}`);
+        const report = (await res.json()) as SuiteResult;
+        ingestReport(report, label);
+      } catch (e) {
+        setError(e instanceof Error ? e.message : "failed to load sample");
+      }
+    },
+    [ingestReport],
+  );
 
   return (
     <div
@@ -107,14 +110,22 @@ export function UploadDropzone({ onParsed }: Props) {
         </label>
         <button
           type="button"
-          onClick={() => void loadSample()}
+          onClick={() => void loadSampleFrom("/sample-report-vapi.json", "vapi-demo")}
           className="inline-block cursor-pointer rounded-md border border-neutral-300 bg-white px-3 py-1.5 text-xs font-medium text-neutral-900 hover:bg-neutral-100"
         >
-          Load demo run ▶
+          Vapi live demo ▶
+        </button>
+        <button
+          type="button"
+          onClick={() => void loadSampleFrom("/sample-report-retell.json", "retell-audit")}
+          className="inline-block cursor-pointer rounded-md border border-neutral-300 bg-white px-3 py-1.5 text-xs font-medium text-neutral-900 hover:bg-neutral-100"
+        >
+          Retell prod audit ▶
         </button>
       </div>
       <p className="mt-2 text-[11px] text-neutral-400">
-        Demo run = 5-case live evaluation against a real Vapi front-desk assistant. No real PHI.
+        Vapi demo: 5-case live eval against a Bayview Clinic assistant (synthetic).<br />
+        Retell audit: 18 real production calls from an ENT scheduling agent (read-only, last 7 days).
       </p>
       {error && <p className="mt-2 text-xs text-red-600">{error}</p>}
     </div>

@@ -13,6 +13,7 @@ audit answers "did the last 24 hours of real calls pass our quality bar?"
 from __future__ import annotations
 
 import asyncio
+import json
 import sys
 from pathlib import Path
 
@@ -61,6 +62,7 @@ async def _score_one(call: dict, suite_asserts: list) -> list[AssertionResult]:
 
 async def _run(
     config: Path, since: str, statuses: list[str] | None, max_calls: int,
+    json_out: Path | None = None,
 ) -> int:
     suite = load_suite(config)
     # The auditor only uses suite-level asserts (case-level scripts don't
@@ -86,6 +88,7 @@ async def _run(
     table.add_column("first failure")
 
     failed_calls = 0
+    json_cases: list[dict] = []
     for call in calls:
         results = await _score_one(call, suite_asserts)
         passes = sum(1 for r in results if r.passed)
@@ -101,12 +104,49 @@ async def _run(
             (f"{first_fail.kind}: {first_fail.detail[:60]}"
              if first_fail else ""),
         )
+        if json_out is not None:
+            # Convert each prod call into a "case" the dashboard can render.
+            transcript_events: list[dict] = []
+            for i, (role, text) in enumerate(
+                parse_transcript(call.get("transcript") or "")
+            ):
+                transcript_events.append({
+                    "ts_ms": i,
+                    "role": role,
+                    "text": text,
+                    "tool_name": None,
+                    "tool_args": None,
+                    "audio_uri": None,
+                    "extra": {},
+                })
+            json_cases.append({
+                "case_id": call.get("call_id", "unknown"),
+                "passed": ok,
+                "duration_ms": call.get("duration_ms") or 0,
+                "transcript": transcript_events,
+                "assertion_results": [
+                    {"kind": r.kind, "passed": r.passed, "detail": r.detail}
+                    for r in results
+                ],
+                "cost_usd": 0.0,  # audit uses cached transcripts; no chat cost
+                "error": (
+                    None if call.get("disconnection_reason") in (None, "user_hangup", "agent_hangup")
+                    else f"disconnect: {call.get('disconnection_reason')}"
+                ),
+            })
 
     console.print(table)
     console.print(
         f"\n[bold]{len(calls) - failed_calls} of {len(calls)} calls passed[/bold] "
         f"all suite_asserts."
     )
+    if json_out is not None:
+        json_out.parent.mkdir(parents=True, exist_ok=True)
+        json_out.write_text(json.dumps({
+            "cases": json_cases,
+            "total_cost_usd": 0.0,
+        }, indent=2))
+        console.print(f"\n[dim]wrote JSON report → {json_out}[/dim]")
     return 0 if failed_calls == 0 else 1
 
 
@@ -119,6 +159,9 @@ def run(
     status: list[str] = typer.Option([], "--status",
                                      help="Filter on disconnection_reason (repeatable)."),
     max_calls: int = typer.Option(50, "--max-calls"),
+    json_out: Path = typer.Option(
+        None, "--json", help="Write a SuiteResult-shaped JSON report to this path.",
+    ),
 ) -> None:
-    code = asyncio.run(_run(config, since, status or None, max_calls))
+    code = asyncio.run(_run(config, since, status or None, max_calls, json_out))
     sys.exit(code)

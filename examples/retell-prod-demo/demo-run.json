@@ -1,0 +1,66 @@
+{
+  "cases": [
+    {
+      "case_id": "greeting_intent",
+      "passed": false,
+      "duration_ms": 1000,
+      "transcript": [],
+      "assertion_results": [],
+      "cost_usd": 0.0,
+      "error": "start_session failed: RuntimeError: Retell rejected text-chat session for agent 'agent_f8237696783530e9599ec6a6ba' (HTTP 422). Most common cause: the agent is registered as channel=voice and does not accept text chat. Fix options: (1) register a parallel chat-channel agent in the Retell dashboard with the same prompt/tools, or (2) wait for voxeval v0.2 audio-mode. Server said: {\"status\":\"error\",\"message\":\"Cannot start a chat session with selected agent.\"}"
+    },
+    {
+      "case_id": "tool_check_availability",
+      "passed": false,
+      "duration_ms": 1054,
+      "transcript": [],
+      "assertion_results": [],
+      "cost_usd": 0.0,
+      "error": "start_session failed: RuntimeError: Retell rejected text-chat session for agent 'agent_f8237696783530e9599ec6a6ba' (HTTP 422). Most common cause: the agent is registered as channel=voice and does not accept text chat. Fix options: (1) register a parallel chat-channel agent in the Retell dashboard with the same prompt/tools, or (2) wait for voxeval v0.2 audio-mode. Server said: {\"status\":\"error\",\"message\":\"Cannot start a chat session with selected agent.\"}"
+    },
+    {
+      "case_id": "urgent_symptom_triage",
+      "passed": false,
+      "duration_ms": 997,
+      "transcript": [],
+      "assertion_results": [],
+      "cost_usd": 0.0,
+      "error": "start_session failed: RuntimeError: Retell rejected text-chat session for agent 'agent_f8237696783530e9599ec6a6ba' (HTTP 422). Most common cause: the agent is registered as channel=voice and does not accept text chat. Fix options: (1) register a parallel chat-channel agent in the Retell dashboard with the same prompt/tools, or (2) wait for voxeval v0.2 audio-mode. Server said: {\"status\":\"error\",\"message\":\"Cannot start a chat session with selected agent.\"}"
+    },
+    {
+      "case_id": "insurance_no_hallucination",
+      "passed": false,
+      "duration_ms": 1002,
+      "transcript": [],
+      "assertion_results": [],
+      "cost_usd": 0.0,
+      "error": "start_session failed: RuntimeError: Retell rejected text-chat session for agent 'agent_f8237696783530e9599ec6a6ba' (HTTP 422). Most common cause: the agent is registered as channel=voice and does not accept text chat. Fix options: (1) register a parallel chat-channel agent in the Retell dashboard with the same prompt/tools, or (2) wait for voxeval v0.2 audio-mode. Server said: {\"status\":\"error\",\"message\":\"Cannot start a chat session with selected agent.\"}"
+    },
+    {
+      "case_id": "wrong_number",
+      "passed": false,
+      "duration_ms": 539,
+      "transcript": [],
+      "assertion_results": [],
+      "cost_usd": 0.0,
+      "error": "start_session failed: RuntimeError: Retell rejected text-chat session for agent 'agent_f8237696783530e9599ec6a6ba' (HTTP 422). Most common cause: the agent is registered as channel=voice and does not accept text chat. Fix options: (1) register a parallel chat-channel agent in the Retell dashboard with the same prompt/tools, or (2) wait for voxeval v0.2 audio-mode. Server said: {\"status\":\"error\",\"message\":\"Cannot start a chat session with selected agent.\"}"
+    },
+    {
+      "case_id": "impatient_caller",
+      "passed": false,
+      "duration_ms": 264,
+      "transcript": [],
+      "assertion_results": [],
+      "cost_usd": 0.0,
+      "error": "start_session failed: RuntimeError: Retell rejected text-chat session for agent 'agent_f8237696783530e9599ec6a6ba' (HTTP 422). Most common cause: the agent is registered as channel=voice and does not accept text chat. Fix options: (1) register a parallel chat-channel agent in the Retell dashboard with the same prompt/tools, or (2) wait for voxeval v0.2 audio-mode. Server said: {\"status\":\"error\",\"message\":\"Cannot start a chat session with selected agent.\"}"
+    }
+  ],
+  "total_cost_usd": 0.0,
+  "cost_by_persona": {
+    "impatient": {
+      "cost_usd": 0.0,
+      "cases": 1,
+      "passed": 0
+    }
+  }
+}

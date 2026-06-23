@@ -1,0 +1,1315 @@
+{
+  "cases": [
+    {
+      "case_id": "call_36e2987822d0ecb8ad22c2b3be3",
+      "passed": false,
+      "duration_ms": 4566,
+      "transcript": [
+        {
+          "ts_ms": 0,
+          "role": "agent",
+          "text": "Welcome to Metro Dermatology, this call may be",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        }
+      ],
+      "assertion_results": [
+        {
+          "kind": "no_crash",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "kind": "llm_judge",
+          "passed": false,
+          "detail": "The agent did not provide enough context to determine if it stayed on-topic for an ENT scheduling call."
+        },
+        {
+          "kind": "not_contains",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "kind": "latency_ms",
+          "passed": true,
+          "detail": ""
+        }
+      ],
+      "cost_usd": 0.0,
+      "error": null
+    },
+    {
+      "case_id": "call_d1867c198ee8b160a4b5daa08b9",
+      "passed": false,
+      "duration_ms": 0,
+      "transcript": [],
+      "assertion_results": [
+        {
+          "kind": "no_crash",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "kind": "llm_judge",
+          "passed": false,
+          "detail": "The agent wandered into unrelated topics during the scheduling call."
+        },
+        {
+          "kind": "not_contains",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "kind": "latency_ms",
+          "passed": true,
+          "detail": ""
+        }
+      ],
+      "cost_usd": 0.0,
+      "error": "disconnect: dial_no_answer"
+    },
+    {
+      "case_id": "call_f8595d80729d1f1d59bb554a27e",
+      "passed": false,
+      "duration_ms": 0,
+      "transcript": [],
+      "assertion_results": [
+        {
+          "kind": "no_crash",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "kind": "llm_judge",
+          "passed": false,
+          "detail": "The agent wandered into unrelated topics during the scheduling call."
+        },
+        {
+          "kind": "not_contains",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "kind": "latency_ms",
+          "passed": true,
+          "detail": ""
+        }
+      ],
+      "cost_usd": 0.0,
+      "error": "disconnect: dial_no_answer"
+    },
+    {
+      "case_id": "call_92795fd582c2f71d1720844204c",
+      "passed": true,
+      "duration_ms": 320507,
+      "transcript": [
+        {
+          "ts_ms": 0,
+          "role": "agent",
+          "text": "Hi, this is Eva calling from San Diego ENT Associates. This call may be recorded for quality assurance purposes. May I please speak with Sama?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 1,
+          "role": "user",
+          "text": "Yes.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 2,
+          "role": "agent",
+          "text": "Wonderful, so glad I reached you, Sama! We received a referral from Family Health Centers of San Diego and I'd like to help you get an appointment scheduled. Before I go into the details, could you tell me your date of birth?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 3,
+          "role": "user",
+          "text": "July third two thousand and five.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 4,
+          "role": "agent",
+          "text": "Great, are you still interested in getting that appointment scheduled with us?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 5,
+          "role": "user",
+          "text": "Yes.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 6,
+          "role": "agent",
+          "text": "Perfect \u2014 I\u2019d love to get you scheduled. Do you have a few minutes now, or would another time work better?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 7,
+          "role": "user",
+          "text": "Yeah. Go ahead.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 8,
+          "role": "agent",
+          "text": "Do you have a preference on location, or would you like the first available?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 9,
+          "role": "user",
+          "text": "In San Diego. Al Qahran.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 10,
+          "role": "agent",
+          "text": "Um, just to clarify, our offices are in La Mesa, Chula Vista, and Escondido. Would any of those locations work for you?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 11,
+          "role": "user",
+          "text": "Lamesa.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 12,
+          "role": "agent",
+          "text": "Thanks for clarifying. Could I confirm your current address and the best phone number to reach you?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 13,
+          "role": "user",
+          "text": "Eight three four. Lady Smith Drive, Al Cajon, California nine two zero two zero. Six one nine seven one five seven eight one one.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 14,
+          "role": "agent",
+          "text": "Besides CHG PHP CAP, do you have any other insurances we should know about?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 15,
+          "role": "user",
+          "text": "No.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 16,
+          "role": "agent",
+          "text": "I see your referral is for a hearing test for a patient with a history of cerebral palsy and severe intellectual disability. Could you tell me a little about what you\u2019ve been experiencing?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 17,
+          "role": "user",
+          "text": "This test need to be done for school. The transition to school for for summer, asking always the to do the hearing test before graduation.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 18,
+          "role": "agent",
+          "text": "Thanks for explaining. Let me check our soonest openings in La Mesa for a hearing test.One moment, okay?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 19,
+          "role": "user",
+          "text": "Okay.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 20,
+          "role": "agent",
+          "text": "Our first available in La Mesa is with Anna on Monday, July sixth at eleven thirty AM. Would that work for you?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 21,
+          "role": "user",
+          "text": "May you repeat, please?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 22,
+          "role": "agent",
+          "text": "Sure, our first available in La Mesa is with Anna on Monday, July sixth at eleven thirty AM. Would that work for you?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 23,
+          "role": "user",
+          "text": "No. I need something afternoon.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 24,
+          "role": "agent",
+          "text": "No problem. I also have Anna in La Mesa on Monday, July sixth at one forty-five PM, or two fifteen PM. Which works better for you?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 25,
+          "role": "user",
+          "text": "Please just exclude Monday and Tuesday.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 26,
+          "role": "agent",
+          "text": "The next available after Tuesday in La Mesa is with Anna on Wednesday, July eighth at nine AM, nine thirty AM, or ten AM. Do any of those work, or would you like something later in the day?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 27,
+          "role": "user",
+          "text": "I need the latest appointment on Wednesday, Thursday, or Friday.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 28,
+          "role": "agent",
+          "text": "The latest available with Anna in La Mesa on Wednesday, Thursday, or Friday is ten AM on Wednesday, July eighth. Would you like me to check for later times with another provider, or does that work for you?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 29,
+          "role": "user",
+          "text": "Another provider.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 30,
+          "role": "agent",
+          "text": "The latest available with Kyle in La Mesa is ten AM on Wednesday, July eighth. Would you like that slot, or should I check for a doctor at a different office with later times?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 31,
+          "role": "user",
+          "text": "Another of these in later later time.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 32,
+          "role": "agent",
+          "text": "There aren\u2019t any later times with Anna or Kyle in La Mesa that week. Would you like me to check for afternoon appointments with a doctor at our Escondido or Chula Vista offices instead?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 33,
+          "role": "user",
+          "text": "No. Check-in Lanissa for another week. For the latest time, afternoon.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 34,
+          "role": "agent",
+          "text": "The latest available in La Mesa for the following week is nine fifteen AM with Kyle on Wednesday, July fifteenth. There aren\u2019t any afternoon slots. Would you like to try a different office for later times, or should I note your request for a team member to follow up if something opens up?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 35,
+          "role": "user",
+          "text": "Yes, please.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 36,
+          "role": "agent",
+          "text": "All right, I\u2019ve noted your request for a later afternoon appointment in La Mesa. Our team will reach out if something opens up. Is there anything else I can help you with?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 37,
+          "role": "user",
+          "text": "No. Thank you so much.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 38,
+          "role": "agent",
+          "text": "Got it \u2014 we\u2019ll reach back out then. Have a great day.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        }
+      ],
+      "assertion_results": [
+        {
+          "kind": "no_crash",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "kind": "llm_judge",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "kind": "not_contains",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "kind": "latency_ms",
+          "passed": true,
+          "detail": ""
+        }
+      ],
+      "cost_usd": 0.0,
+      "error": null
+    },
+    {
+      "case_id": "call_201287907d058ec264be9d93d1d",
+      "passed": true,
+      "duration_ms": 198732,
+      "transcript": [
+        {
+          "ts_ms": 0,
+          "role": "user",
+          "text": "Hello?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 1,
+          "role": "agent",
+          "text": "Hi, this is Eva calling from San Diego ENT Associates. This call may be recorded for quality assurance purposes. May I please speak with Kadyn?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 2,
+          "role": "user",
+          "text": "Yes.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 3,
+          "role": "agent",
+          "text": "Wonderful, so glad I reached you, Kadyn! We received a referral from Family Health Centers of San Diego and I'd like to help you get an appointment scheduled. Before I go into the details, could you tell me your date of birth?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 4,
+          "role": "user",
+          "text": "Ten six ninety four.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 5,
+          "role": "agent",
+          "text": "Great, are you still interested in getting that appointment scheduled with us?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 6,
+          "role": "user",
+          "text": "Depends on when it is because I already have I made an appointment.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 7,
+          "role": "agent",
+          "text": "Okay, just to clarify, are you looking to reschedule or cancel your existing appointment, or are you hoping to see if we have something sooner?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 8,
+          "role": "user",
+          "text": "Something thinner.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 9,
+          "role": "agent",
+          "text": "Um, just so I understand, are you hoping to move your current appointment to an earlier date, or are you looking to cancel it and book a new one?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 10,
+          "role": "user",
+          "text": "Move it to an earlier date if possible.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 11,
+          "role": "agent",
+          "text": "All right, I can help with that. Could you tell me the date, time, and provider for your current appointment? That way, I can look for something sooner.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 12,
+          "role": "user",
+          "text": "It's on July first. I'm not sure exactly the time.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 13,
+          "role": "agent",
+          "text": "No problem, thanks for letting me know. Do you remember which office or provider your July first appointment is with, or should I just look for the earliest available slot at any location?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 14,
+          "role": "user",
+          "text": "Dyla Mesa location.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 15,
+          "role": "agent",
+          "text": "Thanks, so you\u2019d like to move your July first appointment to an earlier date at the La Mesa location. Do you remember which provider your appointment is with, or should I just look for the first available?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 16,
+          "role": "user",
+          "text": "Just the first available.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 17,
+          "role": "agent",
+          "text": "Okay, I\u2019ll look for the first available at La Mesa, starting with Anna or Kyle. Could I confirm your current address and the best phone number to reach you?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 18,
+          "role": "user",
+          "text": "Thirty six seventy Warren Street. And six one nine five eight one seven four one eight.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 19,
+          "role": "agent",
+          "text": "Thanks for that. Besides MOLINA PHP CAP, do you have any other insurances we should know about?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 20,
+          "role": "user",
+          "text": "No.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 21,
+          "role": "agent",
+          "text": "I see, just MOLINA PHP CAP. I see your referral is for left ear muffling and hearing issues. Could you tell me a little about what you\u2019ve been experiencing?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 22,
+          "role": "user",
+          "text": "Just that I it's been hard to hear out of my left ear. It's been completely clogged.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 23,
+          "role": "agent",
+          "text": "Our first available in La Mesa is with Anna on Monday, July sixth at eleven thirty AM. Would that work for you?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 24,
+          "role": "user",
+          "text": "No. Just keep my existing appointment.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 25,
+          "role": "agent",
+          "text": "All right, I\u2019ll leave your July first appointment as is. If you change your mind or need anything else, just let us know.Have a great day!",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        }
+      ],
+      "assertion_results": [
+        {
+          "kind": "no_crash",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "kind": "llm_judge",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "kind": "not_contains",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "kind": "latency_ms",
+          "passed": true,
+          "detail": ""
+        }
+      ],
+      "cost_usd": 0.0,
+      "error": null
+    },
+    {
+      "case_id": "call_3e7cf03d1d9ea26fec391e7d86f",
+      "passed": true,
+      "duration_ms": 71041,
+      "transcript": [
+        {
+          "ts_ms": 0,
+          "role": "agent",
+          "text": "Hi, this is Eva calling from San Diego ENT Associates. This call may be recorded for quality assurance purposes. May I please speak with Corazon?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 1,
+          "role": "user",
+          "text": "This is her.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 2,
+          "role": "agent",
+          "text": "Wonderful, so glad I reached you, Corazon! We received a referral from Family Health Centers of San Diego and I'd like to help you get an appointment scheduled. Before I go into the details, could you tell me your date of birth?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 3,
+          "role": "user",
+          "text": "Zero six zero nine. Nineteen sixty one.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 4,
+          "role": "agent",
+          "text": "Great, are you still interested in getting that appointment scheduled with us?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 5,
+          "role": "user",
+          "text": "Okay.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 6,
+          "role": "agent",
+          "text": "Perfect \u2014 I'd love to get you scheduled. Do you have a few minutes now, or would another time work better?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 7,
+          "role": "user",
+          "text": "Uh, no.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 8,
+          "role": "agent",
+          "text": "No problem. What day and time generally works for you for a callback?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 9,
+          "role": "user",
+          "text": "In the morning, please.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 10,
+          "role": "agent",
+          "text": "Got it \u2014 we'll reach back out then. Have a great day.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        }
+      ],
+      "assertion_results": [
+        {
+          "kind": "no_crash",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "kind": "llm_judge",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "kind": "not_contains",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "kind": "latency_ms",
+          "passed": true,
+          "detail": ""
+        }
+      ],
+      "cost_usd": 0.0,
+      "error": null
+    },
+    {
+      "case_id": "call_8afa16ada4980652ab1b19b6671",
+      "passed": false,
+      "duration_ms": 86153,
+      "transcript": [
+        {
+          "ts_ms": 0,
+          "role": "agent",
+          "text": "Hi, this is Eva calling from San",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 1,
+          "role": "user",
+          "text": "Please leave your message",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 2,
+          "role": "agent",
+          "text": "Diego ENT Associates.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 3,
+          "role": "user",
+          "text": "for",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 4,
+          "role": "agent",
+          "text": "Hi Ramon, this is Eva calling from San Diego ENT Associates. We received a referral from your doctor and wanted to help you schedule an appointment. You can reach us at six one nine - four six four - three three five three, Monday through Friday, eight AM to four forty-five PM.Have a great day!",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 5,
+          "role": "agent",
+          "text": "Um, just checking in \u2014 are you still there, Ramon? Let me know if you\u2019d like to schedule or need more time.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 6,
+          "role": "user",
+          "text": "To replay your message, press one. To continue recording, press two. To delete and re record your message, press three. For delivery options, press four. To send a fax, press six. To cancel this message, press star. To send this message now, press pound, or hang up.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 7,
+          "role": "agent",
+          "text": "Message left. Ending the call now. Have a great day.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        }
+      ],
+      "assertion_results": [
+        {
+          "kind": "no_crash",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "kind": "llm_judge",
+          "passed": false,
+          "detail": "The agent did not stay on-topic as it left a voicemail instead of engaging in a scheduling conversation."
+        },
+        {
+          "kind": "not_contains",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "kind": "latency_ms",
+          "passed": true,
+          "detail": ""
+        }
+      ],
+      "cost_usd": 0.0,
+      "error": null
+    },
+    {
+      "case_id": "call_0064cc521f972651bec8457c730",
+      "passed": false,
+      "duration_ms": 0,
+      "transcript": [],
+      "assertion_results": [
+        {
+          "kind": "no_crash",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "kind": "llm_judge",
+          "passed": false,
+          "detail": "The agent wandered into unrelated topics during the scheduling call."
+        },
+        {
+          "kind": "not_contains",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "kind": "latency_ms",
+          "passed": true,
+          "detail": ""
+        }
+      ],
+      "cost_usd": 0.0,
+      "error": "disconnect: dial_no_answer"
+    },
+    {
+      "case_id": "call_2058c3723308390d8a8f42f77f5",
+      "passed": false,
+      "duration_ms": 0,
+      "transcript": [],
+      "assertion_results": [
+        {
+          "kind": "no_crash",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "kind": "llm_judge",
+          "passed": false,
+          "detail": "The agent wandered into unrelated topics during the scheduling call."
+        },
+        {
+          "kind": "not_contains",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "kind": "latency_ms",
+          "passed": true,
+          "detail": ""
+        }
+      ],
+      "cost_usd": 0.0,
+      "error": "disconnect: dial_no_answer"
+    },
+    {
+      "case_id": "call_c562d2b37fbecbbfd59fbdc6095",
+      "passed": false,
+      "duration_ms": 0,
+      "transcript": [],
+      "assertion_results": [
+        {
+          "kind": "no_crash",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "kind": "llm_judge",
+          "passed": false,
+          "detail": "The agent wandered into unrelated topics during the scheduling call."
+        },
+        {
+          "kind": "not_contains",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "kind": "latency_ms",
+          "passed": true,
+          "detail": ""
+        }
+      ],
+      "cost_usd": 0.0,
+      "error": "disconnect: dial_no_answer"
+    },
+    {
+      "case_id": "call_cfb588062b0b20511ea3b46e24b",
+      "passed": false,
+      "duration_ms": 0,
+      "transcript": [],
+      "assertion_results": [
+        {
+          "kind": "no_crash",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "kind": "llm_judge",
+          "passed": false,
+          "detail": "The agent wandered into unrelated topics during the scheduling call."
+        },
+        {
+          "kind": "not_contains",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "kind": "latency_ms",
+          "passed": true,
+          "detail": ""
+        }
+      ],
+      "cost_usd": 0.0,
+      "error": "disconnect: dial_no_answer"
+    },
+    {
+      "case_id": "call_f434ef8ff16e482f1aed224392e",
+      "passed": false,
+      "duration_ms": 0,
+      "transcript": [],
+      "assertion_results": [
+        {
+          "kind": "no_crash",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "kind": "llm_judge",
+          "passed": false,
+          "detail": "The agent wandered into unrelated topics during the scheduling call."
+        },
+        {
+          "kind": "not_contains",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "kind": "latency_ms",
+          "passed": true,
+          "detail": ""
+        }
+      ],
+      "cost_usd": 0.0,
+      "error": "disconnect: dial_no_answer"
+    },
+    {
+      "case_id": "call_e9fb0b46f0626e22273e9bbc1ff",
+      "passed": false,
+      "duration_ms": 0,
+      "transcript": [],
+      "assertion_results": [
+        {
+          "kind": "no_crash",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "kind": "llm_judge",
+          "passed": false,
+          "detail": "The agent wandered into unrelated topics during the scheduling call."
+        },
+        {
+          "kind": "not_contains",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "kind": "latency_ms",
+          "passed": true,
+          "detail": ""
+        }
+      ],
+      "cost_usd": 0.0,
+      "error": "disconnect: dial_no_answer"
+    },
+    {
+      "case_id": "call_a28153c47318a4657c9fca53310",
+      "passed": false,
+      "duration_ms": 0,
+      "transcript": [],
+      "assertion_results": [
+        {
+          "kind": "no_crash",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "kind": "llm_judge",
+          "passed": false,
+          "detail": "The agent wandered into unrelated topics during the scheduling call."
+        },
+        {
+          "kind": "not_contains",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "kind": "latency_ms",
+          "passed": true,
+          "detail": ""
+        }
+      ],
+      "cost_usd": 0.0,
+      "error": "disconnect: dial_no_answer"
+    },
+    {
+      "case_id": "call_18b0f1f9052734dd8c767518eda",
+      "passed": false,
+      "duration_ms": 0,
+      "transcript": [],
+      "assertion_results": [
+        {
+          "kind": "no_crash",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "kind": "llm_judge",
+          "passed": false,
+          "detail": "The agent wandered into unrelated topics during the scheduling call."
+        },
+        {
+          "kind": "not_contains",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "kind": "latency_ms",
+          "passed": true,
+          "detail": ""
+        }
+      ],
+      "cost_usd": 0.0,
+      "error": "disconnect: dial_no_answer"
+    },
+    {
+      "case_id": "call_9749b7a4362bc82bfd1f678715a",
+      "passed": false,
+      "duration_ms": 0,
+      "transcript": [],
+      "assertion_results": [
+        {
+          "kind": "no_crash",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "kind": "llm_judge",
+          "passed": false,
+          "detail": "The agent wandered into unrelated topics during the scheduling call."
+        },
+        {
+          "kind": "not_contains",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "kind": "latency_ms",
+          "passed": true,
+          "detail": ""
+        }
+      ],
+      "cost_usd": 0.0,
+      "error": "disconnect: dial_no_answer"
+    },
+    {
+      "case_id": "call_ff81e4dee6a39f0654365cab207",
+      "passed": false,
+      "duration_ms": 0,
+      "transcript": [],
+      "assertion_results": [
+        {
+          "kind": "no_crash",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "kind": "llm_judge",
+          "passed": false,
+          "detail": "The agent wandered into unrelated topics during the scheduling call."
+        },
+        {
+          "kind": "not_contains",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "kind": "latency_ms",
+          "passed": true,
+          "detail": ""
+        }
+      ],
+      "cost_usd": 0.0,
+      "error": "disconnect: dial_no_answer"
+    },
+    {
+      "case_id": "call_6e42ba10b2a2aefa81189562609",
+      "passed": false,
+      "duration_ms": 0,
+      "transcript": [],
+      "assertion_results": [
+        {
+          "kind": "no_crash",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "kind": "llm_judge",
+          "passed": false,
+          "detail": "The agent wandered into unrelated topics during the scheduling call."
+        },
+        {
+          "kind": "not_contains",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "kind": "latency_ms",
+          "passed": true,
+          "detail": ""
+        }
+      ],
+      "cost_usd": 0.0,
+      "error": "disconnect: dial_no_answer"
+    }
+  ],
+  "total_cost_usd": 0.0
+}
