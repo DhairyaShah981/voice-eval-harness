@@ -1,0 +1,177 @@
+{
+  "cases": [
+    {
+      "case_id": "greeting_happy_path",
+      "passed": false,
+      "duration_ms": 409,
+      "transcript": [
+        {
+          "ts_ms": 0,
+          "role": "user",
+          "text": "Hi, I'm calling about my appointment.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        }
+      ],
+      "assertion_results": [
+        {
+          "kind": "contains",
+          "passed": false,
+          "detail": "missing in agent text: ['help', 'appointment']"
+        },
+        {
+          "kind": "no_crash",
+          "passed": true,
+          "detail": ""
+        }
+      ],
+      "cost_usd": 0.0,
+      "error": "HTTPStatusError: Client error '402 Payment Required' for url 'https://api.vapi.ai/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402"
+    },
+    {
+      "case_id": "impatient_reschedule",
+      "passed": false,
+      "duration_ms": 502,
+      "transcript": [
+        {
+          "ts_ms": 11,
+          "role": "user",
+          "text": "Skip the intro. I need an appointment tomorrow.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        }
+      ],
+      "assertion_results": [
+        {
+          "kind": "no_crash",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "kind": "latency_ms",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "kind": "llm_judge",
+          "passed": false,
+          "detail": "judge_call_failed: ModuleNotFoundError: No module named 'openai'"
+        }
+      ],
+      "cost_usd": 0.0,
+      "error": "HTTPStatusError: Client error '402 Payment Required' for url 'https://api.vapi.ai/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402"
+    },
+    {
+      "case_id": "insurance_intent_judge",
+      "passed": false,
+      "duration_ms": 429,
+      "transcript": [
+        {
+          "ts_ms": 0,
+          "role": "user",
+          "text": "Does my Blue Cross PPO cover the wellness visit?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        }
+      ],
+      "assertion_results": [
+        {
+          "kind": "llm_judge",
+          "passed": false,
+          "detail": "judge_call_failed: ModuleNotFoundError: No module named 'openai'"
+        },
+        {
+          "kind": "no_crash",
+          "passed": true,
+          "detail": ""
+        }
+      ],
+      "cost_usd": 0.0,
+      "error": "HTTPStatusError: Client error '402 Payment Required' for url 'https://api.vapi.ai/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402"
+    },
+    {
+      "case_id": "book_slot_calls_tool",
+      "passed": false,
+      "duration_ms": 398,
+      "transcript": [
+        {
+          "ts_ms": 0,
+          "role": "user",
+          "text": "I'd like to book a new patient visit next week.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        }
+      ],
+      "assertion_results": [
+        {
+          "kind": "tool_called",
+          "passed": false,
+          "detail": "expected tool 'get_available_slots', saw: []"
+        },
+        {
+          "kind": "no_crash",
+          "passed": true,
+          "detail": ""
+        }
+      ],
+      "cost_usd": 0.0,
+      "error": "HTTPStatusError: Client error '402 Payment Required' for url 'https://api.vapi.ai/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402"
+    },
+    {
+      "case_id": "spanish_english_code_switch",
+      "passed": false,
+      "duration_ms": 475,
+      "transcript": [
+        {
+          "ts_ms": 0,
+          "role": "user",
+          "text": "Buenas, can you check si Dr. Smith is available next Tuesday?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        }
+      ],
+      "assertion_results": [
+        {
+          "kind": "no_crash",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "kind": "not_contains",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "kind": "llm_judge",
+          "passed": false,
+          "detail": "judge_call_failed: ModuleNotFoundError: No module named 'openai'"
+        }
+      ],
+      "cost_usd": 0.0,
+      "error": "HTTPStatusError: Client error '402 Payment Required' for url 'https://api.vapi.ai/chat'\nFor more information check: https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/402"
+    }
+  ],
+  "total_cost_usd": 0.0009,
+  "cost_by_persona": {
+    "impatient": {
+      "cost_usd": 0.0,
+      "cases": 1,
+      "passed": 0
+    },
+    "code_switching": {
+      "cost_usd": 0.0,
+      "cases": 1,
+      "passed": 0
+    }
+  }
+}
