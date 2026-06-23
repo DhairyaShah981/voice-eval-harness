@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import asyncio
 import time
+from typing import Any
 
 from voice_eval_harness.assertions.base import build_assertion
 from voice_eval_harness.connectors.base import BaseConnector
@@ -42,9 +43,25 @@ async def _run_once(connector: BaseConnector, case: TestCase) -> RunResult:
         )
     try:
         if case.persona is not None:
+            from dataclasses import replace
             from voice_eval_harness.personas.profiles import get_profile
             from voice_eval_harness.personas.simulator import run_persona
             profile = get_profile(case.persona.type)
+            # Merge case-level overrides from YAML (goal, max_turns, params).
+            # PersonaProfile is a dataclass; build a kwargs-only override dict
+            # so we only touch fields the YAML actually supplied.
+            overrides: dict[str, Any] = {}
+            p = case.persona.params or {}
+            if "goal" in p:
+                overrides["goal"] = p["goal"]
+            if "max_turns" in p:
+                overrides["max_turns"] = int(p["max_turns"])
+            # Pass through any other params (lang, accent, etc) merged with builtin defaults.
+            merged_params = {**profile.params, **{k: v for k, v in p.items() if k not in {"goal", "max_turns"}}}
+            if merged_params:
+                overrides["params"] = merged_params
+            if overrides:
+                profile = replace(profile, **overrides)
             persona_result = await run_persona(session, profile)
         else:
             for turn in case.script:

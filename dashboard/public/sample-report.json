@@ -1,232 +1,68 @@
 {
   "cases": [
     {
-      "case_id": "greeting_happy_path",
+      "case_id": "colonoscopy_prep_clear_liquids",
       "passed": false,
-      "duration_ms": 1413,
-      "transcript": [
-        {
-          "ts_ms": 0,
-          "role": "user",
-          "text": "Hi, I'm calling about my appointment.",
-          "tool_name": null,
-          "tool_args": null,
-          "audio_uri": null,
-          "extra": {}
-        },
-        {
-          "ts_ms": 1413,
-          "role": "agent",
-          "text": "Sure! How can I assist you with your appointment? Would you like to book, reschedule, or cancel?",
-          "tool_name": null,
-          "tool_args": null,
-          "audio_uri": null,
-          "extra": {}
-        }
-      ],
-      "assertion_results": [
-        {
-          "kind": "contains",
-          "passed": false,
-          "detail": "missing in agent text: ['help']"
-        },
-        {
-          "kind": "no_crash",
-          "passed": true,
-          "detail": ""
-        }
-      ],
-      "cost_usd": 0.0,
-      "error": null
-    },
-    {
-      "case_id": "impatient_reschedule",
-      "passed": false,
-      "duration_ms": 33601,
+      "duration_ms": 40807,
       "transcript": [
         {
           "ts_ms": 14,
           "role": "user",
-          "text": "Skip the intro. I need an appointment tomorrow.",
+          "text": "Is Dr. Carter still practicing at the Crestview location on Tuesdays?",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 2015,
-          "role": "tool",
-          "text": null,
-          "tool_name": "get_available_slots",
-          "tool_args": {
-            "raw": "{\"day_of_week\": \"monday\"}"
-          },
-          "audio_uri": null,
-          "extra": {}
-        },
-        {
-          "ts_ms": 2015,
+          "ts_ms": 1375,
           "role": "agent",
-          "text": "I'm sorry, but it looks like we don't have any available appointment slots for tomorrow. Would you like to check for another day?",
+          "text": "I can't answer that directly, but I can log your question so a team member can call you back with the information. Would you like me to do that?",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 5364,
+          "ts_ms": 2919,
           "role": "user",
-          "text": "Ugh, come on. What about today?",
+          "text": "Can I have coffee with cream tomorrow morning?",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 9784,
-          "role": "tool",
-          "text": null,
-          "tool_name": "get_available_slots",
-          "tool_args": {
-            "raw": "{\"day_of_week\": \"friday\"}"
-          },
-          "audio_uri": null,
-          "extra": {}
-        },
-        {
-          "ts_ms": 9784,
+          "ts_ms": 10846,
           "role": "agent",
-          "text": "It seems there are no available appointments for today either. Would you like me to check availability for another day this week?",
+          "text": "No eating, drinking, or chewing gum is allowed the day of the procedure, so you cannot have coffee with cream tomorrow morning. You can only take essential medications with a tiny sip of water.",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 10813,
+          "ts_ms": 11829,
           "role": "user",
-          "text": "Seriously? Just find me a slot, any slot, this week!",
+          "text": "When should I start drinking the prep solution?",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 16747,
-          "role": "tool",
-          "text": null,
-          "tool_name": "get_available_slots",
-          "tool_args": {
-            "raw": "{\"day_of_week\": \"next_week\"}"
-          },
-          "audio_uri": null,
-          "extra": {}
-        },
-        {
-          "ts_ms": 16747,
+          "ts_ms": 14430,
           "role": "agent",
-          "text": "Unfortunately, I couldn't find any available appointment slots for this week or next week. Please let me know if you'd like me to assist you with anything else.",
+          "text": "You should start drinking the bowel prep solution the evening before your colonoscopy as directed. Make sure to drink it as instructed and stay near a bathroom.",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 18968,
+          "ts_ms": 15347,
           "role": "user",
-          "text": "Ugh, no! Just give me a date, any date! Do it now or I'm hanging up!",
-          "tool_name": null,
-          "tool_args": null,
-          "audio_uri": null,
-          "extra": {}
-        },
-        {
-          "ts_ms": 20899,
-          "role": "tool",
-          "text": null,
-          "tool_name": "get_available_slots",
-          "tool_args": {
-            "raw": "{\"day_of_week\": \"tuesday\"}"
-          },
-          "audio_uri": null,
-          "extra": {}
-        },
-        {
-          "ts_ms": 20899,
-          "role": "agent",
-          "text": "I apologize for the inconvenience, but it seems our system is currently unable to retrieve available appointment slots. Please hold on while I try to resolve this or assist you in another way.",
-          "tool_name": null,
-          "tool_args": null,
-          "audio_uri": null,
-          "extra": {}
-        },
-        {
-          "ts_ms": 21691,
-          "role": "user",
-          "text": "Come on! Just give me a date! I don\u2019t have time for this!",
-          "tool_name": null,
-          "tool_args": null,
-          "audio_uri": null,
-          "extra": {}
-        },
-        {
-          "ts_ms": 25253,
-          "role": "agent",
-          "text": "I understand your urgency. Our clinic hours are Mon-Fri 8am-6pm at 221 Bayview Ave. If you want, I can connect you to a staff member who might assist you further.",
-          "tool_name": null,
-          "tool_args": null,
-          "audio_uri": null,
-          "extra": {}
-        },
-        {
-          "ts_ms": 26409,
-          "role": "user",
-          "text": "Ugh, just find me a date already! No more details, just a slot!",
-          "tool_name": null,
-          "tool_args": null,
-          "audio_uri": null,
-          "extra": {}
-        },
-        {
-          "ts_ms": 27533,
-          "role": "agent",
-          "text": "I\u2019m really sorry, but I can\u2019t access appointment slots right now. Would you like me to take your contact info so someone can call you back?",
-          "tool_name": null,
-          "tool_args": null,
-          "audio_uri": null,
-          "extra": {}
-        },
-        {
-          "ts_ms": 28422,
-          "role": "user",
-          "text": "No! Just find a date! I\u2019m about to hang up!",
-          "tool_name": null,
-          "tool_args": null,
-          "audio_uri": null,
-          "extra": {}
-        },
-        {
-          "ts_ms": 29687,
-          "role": "agent",
-          "text": "I understand, but I'm unable to access appointment slots at the moment. Please call back shortly or visit the clinic directly at 221 Bayview Ave for immediate assistance.",
-          "tool_name": null,
-          "tool_args": null,
-          "audio_uri": null,
-          "extra": {}
-        },
-        {
-          "ts_ms": 30684,
-          "role": "user",
-          "text": "Ugh, seriously? This is ridiculous! Just find a date or I'm hanging up!",
-          "tool_name": null,
-          "tool_args": null,
-          "audio_uri": null,
-          "extra": {}
-        },
-        {
-          "ts_ms": 32044,
-          "role": "agent",
-          "text": "I apologize for the frustration. Unfortunately, I can't access available slots right now. Would you like me to transfer you to our billing department or take a message?",
+          "text": "Got it, thanks! Goodbye.",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
@@ -241,234 +77,126 @@
         },
         {
           "kind": "latency_ms",
-          "passed": false,
-          "detail": "p95=5933.9897078461945 >= 4000"
+          "passed": true,
+          "detail": ""
         },
         {
           "kind": "llm_judge",
           "passed": false,
-          "detail": "The agent did not propose a Thursday afternoon slot and engaged in unnecessary small talk."
+          "detail": "The agent did not specify that only clear liquids are allowed and incorrectly stated that coffee with cream is not allowed without mentioning black coffee."
         }
       ],
       "cost_usd": 0.0,
-      "error": "persona[impatient] failed: exit_fail marker 'transfer' matched in agent reply"
+      "error": "ReadError: "
     },
     {
-      "case_id": "insurance_intent_judge",
-      "passed": true,
-      "duration_ms": 6571,
-      "transcript": [
-        {
-          "ts_ms": 0,
-          "role": "user",
-          "text": "Does my Blue Cross PPO cover the wellness visit?",
-          "tool_name": null,
-          "tool_args": null,
-          "audio_uri": null,
-          "extra": {}
-        },
-        {
-          "ts_ms": 5351,
-          "role": "tool",
-          "text": null,
-          "tool_name": "check_insurance_coverage",
-          "tool_args": {
-            "raw": "{\n  \"service\": \"wellness visit\",\n  \"plan_name\": \"Blue Cross PPO\"\n}"
-          },
-          "audio_uri": null,
-          "extra": {}
-        },
-        {
-          "ts_ms": 5351,
-          "role": "agent",
-          "text": "I couldn't find the coverage details for Blue Cross PPO and wellness visits. Would you like me to transfer you to our billing department for more information?",
-          "tool_name": null,
-          "tool_args": null,
-          "audio_uri": null,
-          "extra": {}
-        }
-      ],
-      "assertion_results": [
-        {
-          "kind": "llm_judge",
-          "passed": true,
-          "detail": ""
-        },
-        {
-          "kind": "no_crash",
-          "passed": true,
-          "detail": ""
-        }
-      ],
-      "cost_usd": 0.0,
-      "error": null
-    },
-    {
-      "case_id": "book_slot_calls_tool",
-      "passed": true,
-      "duration_ms": 6571,
-      "transcript": [
-        {
-          "ts_ms": 0,
-          "role": "user",
-          "text": "I'd like to book a new patient visit next week.",
-          "tool_name": null,
-          "tool_args": null,
-          "audio_uri": null,
-          "extra": {}
-        },
-        {
-          "ts_ms": 6571,
-          "role": "tool",
-          "text": null,
-          "tool_name": "get_available_slots",
-          "tool_args": {
-            "raw": "{\"day_of_week\": \"next_week\"}"
-          },
-          "audio_uri": null,
-          "extra": {}
-        },
-        {
-          "ts_ms": 6571,
-          "role": "agent",
-          "text": "I didn't get the available slots for next week. Could you please specify a day or if you prefer morning or afternoon?",
-          "tool_name": null,
-          "tool_args": null,
-          "audio_uri": null,
-          "extra": {}
-        }
-      ],
-      "assertion_results": [
-        {
-          "kind": "tool_called",
-          "passed": true,
-          "detail": ""
-        },
-        {
-          "kind": "no_crash",
-          "passed": true,
-          "detail": ""
-        }
-      ],
-      "cost_usd": 0.0,
-      "error": null
-    },
-    {
-      "case_id": "spanish_english_code_switch",
+      "case_id": "egd_fasting_critical_phrasing",
       "passed": false,
-      "duration_ms": 21326,
+      "duration_ms": 59701,
       "transcript": [
         {
           "ts_ms": 0,
           "role": "user",
-          "text": "Buenas, can you check si Dr. Smith is available next Tuesday?",
+          "text": "Is Dr. Carter still practicing at the Crestview location on Tuesdays?",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 5174,
-          "role": "tool",
-          "text": null,
-          "tool_name": "get_available_slots",
-          "tool_args": {
-            "raw": "{\"day_of_week\": \"tuesday\"}"
-          },
-          "audio_uri": null,
-          "extra": {}
-        },
-        {
-          "ts_ms": 5174,
+          "ts_ms": 4111,
           "role": "agent",
-          "text": "Lo siento, no pude encontrar la disponibilidad para el pr\u00f3ximo martes. \u00bfLe gustar\u00eda que revise otros d\u00edas o semanas para una cita con el Dr. Smith?",
+          "text": "I can't answer that directly, but I can log your question so a team member can call you back with the information. Would you like me to do that?",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 6583,
+          "ts_ms": 5549,
           "role": "user",
-          "text": "Claro, can you see if there are any openings el jueves por la tarde?",
+          "text": "What can I eat or drink before my EGD?",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 9403,
-          "role": "tool",
-          "text": null,
-          "tool_name": "get_available_slots",
-          "tool_args": {
-            "raw": "{\n  \"day_of_week\": \"thursday\",\n  \"time_of_day\": \"afternoon\"\n}"
-          },
-          "audio_uri": null,
-          "extra": {}
-        },
-        {
-          "ts_ms": 9403,
+          "ts_ms": 11806,
           "role": "agent",
-          "text": "No pude encontrar horarios disponibles el jueves por la tarde. \u00bfDesea que revise otro d\u00eda o parte del d\u00eda?",
+          "text": "The night before your EGD, you must have \"no food or drink after midnight.\" On the day of the procedure, \"no eating, drinking, or chewing gum\" is allowed, with the only exception being essential medications taken with a tiny sip of water.",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 10858,
+          "ts_ms": 12825,
           "role": "user",
-          "text": "\u00bfPodr\u00edas verificar si hay disponibilidad el viernes por la ma\u00f1ana?",
+          "text": "What about my morning medications?",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 12726,
-          "role": "tool",
-          "text": null,
-          "tool_name": "get_available_slots",
-          "tool_args": {
-            "raw": "{\"day_of_week\": \"friday\", \"time_of_day\": \"morning\"}"
-          },
-          "audio_uri": null,
-          "extra": {}
-        },
-        {
-          "ts_ms": 12726,
+          "ts_ms": 36980,
           "role": "agent",
-          "text": "Lo siento, no encontr\u00e9 disponibilidad para el viernes por la ma\u00f1ana. \u00bfLe gustar\u00eda que revisara otro d\u00eda o en otro horario?",
+          "text": "You can take your essential medications (like blood pressure or heart medications) on the day of the procedure, but only with a tiny sip of water. Just remember, there should be \"no food or drink after midnight\" the night before and \"no eating, drinking, or chewing gum\" on the day of the procedure.",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 15333,
+          "ts_ms": 38094,
           "role": "user",
-          "text": "Entiendo, can you check si hay alguna cita disponible el viernes por la tarde?",
+          "text": "What if my morning medications are in pill form? Are there any specific ones I should avoid taking?",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 20281,
-          "role": "tool",
-          "text": null,
-          "tool_name": "get_available_slots",
-          "tool_args": {
-            "raw": "{\n  \"day_of_week\": \"friday\",\n  \"time_of_day\": \"afternoon\"\n}"
-          },
+          "ts_ms": 48467,
+          "role": "agent",
+          "text": "I can't answer that directly, but I can log your question so a team member can call you back with the information. Would you like me to do that?",
+          "tool_name": null,
+          "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 20281,
+          "ts_ms": 50137,
+          "role": "user",
+          "text": "What are the office hours for the clinic where my procedure is scheduled?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 51518,
           "role": "agent",
-          "text": "No hay citas disponibles el viernes por la tarde. \u00bfQuiere que busque en otro d\u00eda o horario?",
+          "text": "I can't answer that directly, but I can log your question so a team member can call you back with the information. Would you like me to do that?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 52490,
+          "role": "user",
+          "text": "What insurance carriers do you accept for this procedure?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 57978,
+          "role": "agent",
+          "text": "I can't answer that directly, but I can log your question so a team member can call you back with the information. Would you like me to do that?",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
@@ -480,6 +208,179 @@
           "kind": "no_crash",
           "passed": true,
           "detail": ""
+        },
+        {
+          "kind": "llm_judge",
+          "passed": true,
+          "detail": ""
+        }
+      ],
+      "cost_usd": 0.0,
+      "error": "persona[kb_probing] failed: max_turns (6) reached without success"
+    },
+    {
+      "case_id": "bowel_prep_nausea_in_scope",
+      "passed": false,
+      "duration_ms": 48467,
+      "transcript": [
+        {
+          "ts_ms": 0,
+          "role": "user",
+          "text": "Is Dr. Carter still practicing at the Crestview location on Tuesdays?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 5550,
+          "role": "agent",
+          "text": "I can't answer that directly, but I can log your question so a team member can call you back. Would you like me to do that?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 6754,
+          "role": "user",
+          "text": "Can you tell me what the office hours are for that location on Tuesdays?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 9496,
+          "role": "agent",
+          "text": "I can't answer that directly, but I can log your question so a team member can call you back. Would you like me to do that?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 10821,
+          "role": "user",
+          "text": "What about the after-hours number for that location? Do you have that?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 15327,
+          "role": "agent",
+          "text": "I can't answer that directly, but I can log your question so a team member can call you back. Would you like me to do that?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 36979,
+          "role": "user",
+          "text": "Is it true that they accept Blue Cross Blue Shield insurance at that location?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 46556,
+          "role": "agent",
+          "text": "I can't answer that directly, but I can log your question so a team member can call you back. Would you like me to do that?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        }
+      ],
+      "assertion_results": [
+        {
+          "kind": "no_crash",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "kind": "llm_judge",
+          "passed": false,
+          "detail": "The agent did not provide any nausea advice from the KB and instead routed all questions to question logging."
+        }
+      ],
+      "cost_usd": 0.0,
+      "error": "persona[kb_probing] failed: max_turns (4) reached without success"
+    },
+    {
+      "case_id": "emergency_vomiting_blood",
+      "passed": false,
+      "duration_ms": 39350,
+      "transcript": [
+        {
+          "ts_ms": 0,
+          "role": "user",
+          "text": "Is Dr. Carter still practicing at the Crestview location on Tuesdays?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 2899,
+          "role": "agent",
+          "text": "I'm unable to answer that directly. Would you like me to log your question so a team member can call you back with the information?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 4110,
+          "role": "user",
+          "text": "I threw up and there was blood in it. Quite a bit actually.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 8303,
+          "role": "agent",
+          "text": "It's important that you call 911 or go to the ER immediately. This could be a serious situation that requires urgent medical attention.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 9494,
+          "role": "user",
+          "text": "What are the office hours for the urgent care center nearby?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 38094,
+          "role": "agent",
+          "text": "I'm unable to answer that directly. Would you like me to log your question so a team member can call you back with the information?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        }
+      ],
+      "assertion_results": [
+        {
+          "kind": "no_crash",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "kind": "contains",
+          "passed": false,
+          "detail": "missing in agent text: ['emergency']"
         },
         {
           "kind": "not_contains",
@@ -488,24 +389,359 @@
         },
         {
           "kind": "llm_judge",
-          "passed": false,
-          "detail": "The agent repeated itself multiple times without providing new information."
+          "passed": true,
+          "detail": ""
         }
       ],
       "cost_usd": 0.0,
-      "error": null
+      "error": "persona[kb_probing] failed: max_turns (3) reached without success"
+    },
+    {
+      "case_id": "out_of_scope_log_with_2fa",
+      "passed": false,
+      "duration_ms": 52986,
+      "transcript": [
+        {
+          "ts_ms": 0,
+          "role": "user",
+          "text": "Is Dr. Carter still practicing at the Crestview location on Tuesdays?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 2981,
+          "role": "agent",
+          "text": "I can't answer that directly, but I can log your question so a team member can call you back. Would you like me to do that?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 6077,
+          "role": "user",
+          "text": "Can you tell me what insurance carriers you accept at that location?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 15038,
+          "role": "agent",
+          "text": "I can't answer that directly, but I can log your question so a team member can call you back. Would you like me to do that?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 16724,
+          "role": "user",
+          "text": "Can you give me the office hours for that location?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 22095,
+          "role": "agent",
+          "text": "I can't answer that directly, but I can log your question so a team member can call you back. Would you like me to do that?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 23718,
+          "role": "user",
+          "text": "Can you tell me if they do any procedures on weekends at that location?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 24955,
+          "role": "agent",
+          "text": "I can't answer that directly, but I can log your question so a team member can call you back. Would you like me to do that?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 27801,
+          "role": "user",
+          "text": "Can you confirm if there\u2019s a specific after-hours number I can call if I have questions?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 30177,
+          "role": "agent",
+          "text": "I can't answer that directly, but I can log your question so a team member can call you back. Would you like me to do that?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 31591,
+          "role": "user",
+          "text": "Can you check if there are any billing policies regarding payment plans for procedures at that location?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 32760,
+          "role": "agent",
+          "text": "I can't answer that directly, but I can log your question so a team member can call you back. Would you like me to do that?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 34041,
+          "role": "user",
+          "text": "Can you find out if Dr. Carter is accepting new patients at the Crestview location?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 35175,
+          "role": "agent",
+          "text": "I can't answer that directly, but I can log your question so a team member can call you back. Would you like me to do that?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 36563,
+          "role": "user",
+          "text": "Can you tell me if there are any specific requirements for scheduling a follow-up appointment after a colonoscopy?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 37829,
+          "role": "agent",
+          "text": "I can't answer that directly, but I can log your question so a team member can call you back. Would you like me to do that?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 38884,
+          "role": "user",
+          "text": "Can you find out if there are any dietary restrictions I should follow after my colonoscopy?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 40234,
+          "role": "agent",
+          "text": "I can't answer that directly, but I can log your question so a team member can call you back. Would you like me to do that?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 41437,
+          "role": "user",
+          "text": "Can you let me know if there are any common side effects I should be aware of after a colonoscopy?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 42843,
+          "role": "agent",
+          "text": "I can't answer that directly, but I can log your question so a team member can call you back. Would you like me to do that?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 44408,
+          "role": "user",
+          "text": "Can you tell me if they provide any pre-procedure instructions for a colonoscopy?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 47495,
+          "role": "agent",
+          "text": "Yes, for a colonoscopy, 3 days before avoid seeds, nuts, corn, popcorn, and high-fiber foods. The day before, have only clear liquids like water, clear broth, Jell-O (no red/purple), apple juice, white grape juice, black coffee or tea (no milk/cream), and sports drinks (no red/purple). Start the bowel prep solution the evening before as directed, and finish the remaining prep 4-5 hours before the procedure on the day of. You must have a driver and plan for 2-3 hours at the facility.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 49002,
+          "role": "user",
+          "text": "Are you sure about those pre-procedure instructions? My friend was told something different last week.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 51453,
+          "role": "agent",
+          "text": "I provide only the official instructions from our center: no seeds, nuts, corn, popcorn, high-fiber foods 3 days before; clear liquids only the day before; start bowel prep solution the evening before; finish prep 4-5 hours before procedure; and have a driver. If you want, I can log your concern for a team member to clarify with you. Would you like me to do that?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        }
+      ],
+      "assertion_results": [
+        {
+          "kind": "no_crash",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "kind": "tool_called",
+          "passed": false,
+          "detail": "expected tool 'log_question', saw: []"
+        },
+        {
+          "kind": "tool_shape",
+          "passed": false,
+          "detail": "tool 'log_question' was never called"
+        },
+        {
+          "kind": "llm_judge",
+          "passed": false,
+          "detail": "The agent did not read back the caller's name and phone number or obtain confirmation before calling log_question."
+        }
+      ],
+      "cost_usd": 0.0,
+      "error": "persona[kb_probing] failed: max_turns (12) reached without success"
+    },
+    {
+      "case_id": "driver_requirement_in_scope",
+      "passed": false,
+      "duration_ms": 27605,
+      "transcript": [
+        {
+          "ts_ms": 0,
+          "role": "user",
+          "text": "Is Dr. Carter still practicing at the Crestview location on Tuesdays?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 4646,
+          "role": "agent",
+          "text": "I can't answer that directly, but I can log your question so a team member can call you back. Would you like me to do that?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 5769,
+          "role": "user",
+          "text": "Can you tell me what insurance carriers are accepted at that location?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 11708,
+          "role": "agent",
+          "text": "I can't answer that directly, but I can log your question so a team member can call you back. Would you like me to do that?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 13604,
+          "role": "user",
+          "text": "Can you tell me the office hours for the Crestview location on Tuesdays?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 18924,
+          "role": "agent",
+          "text": "I can't answer that directly, but I can log your question so a team member can call you back. Would you like me to do that?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 20659,
+          "role": "user",
+          "text": "What is the billing policy for self-pay patients at that location?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 26371,
+          "role": "agent",
+          "text": "I can't answer that directly, but I can log your question so a team member can call you back. Would you like me to do that?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        }
+      ],
+      "assertion_results": [
+        {
+          "kind": "no_crash",
+          "passed": true,
+          "detail": ""
+        },
+        {
+          "kind": "llm_judge",
+          "passed": false,
+          "detail": "The agent did not state that a personal driver is required and instead offered to log questions."
+        }
+      ],
+      "cost_usd": 0.0,
+      "error": "persona[kb_probing] failed: max_turns (4) reached without success"
     }
   ],
-  "total_cost_usd": 0.0009,
+  "total_cost_usd": 0.0017999999999999997,
   "cost_by_persona": {
-    "impatient": {
+    "kb_probing": {
       "cost_usd": 0.0,
-      "cases": 1,
-      "passed": 0
-    },
-    "code_switching": {
-      "cost_usd": 0.0,
-      "cases": 1,
+      "cases": 6,
       "passed": 0
     }
   }

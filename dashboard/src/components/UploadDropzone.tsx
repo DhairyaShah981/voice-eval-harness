@@ -124,8 +124,8 @@ export function UploadDropzone({ onParsed }: Props) {
         </button>
       </div>
       <p className="mt-2 text-[11px] text-neutral-400">
-        Vapi demo: 5-case live eval against a Bayview Clinic assistant (synthetic).<br />
-        Retell audit: 18 real production calls from an ENT scheduling agent (read-only, last 7 days).
+        Vapi GI suite: 6 multi-turn persona-driven cases vs a Bayview Endoscopy assistant — KB grounding, critical-phrasing, emergency triage, 2FA log-question flow.<br />
+        Retell prod audit: <code>voxeval audit</code> read-only against 18 real production calls from a Trifetch ENT scheduling agent (last 7 days, clinic names anonymised).
       </p>
       {error && <p className="mt-2 text-xs text-red-600">{error}</p>}
     </div>

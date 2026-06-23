@@ -1,0 +1,157 @@
+# Production-grade Vapi eval suite — Bayview Endoscopy Center (GI specialty).
+#
+# Scenarios derived from real Trifetch test_scenarios/gastroenterology_tests.json.
+# Each case is a multi-turn persona-driven simulation; cross-turn assertions
+# check KB grounding, critical phrasing, emergency triage, and the 2FA
+# log_question flow.
+
+provider:
+  name: vapi
+  api_key: ${VAPI_API_KEY}
+  agent_id: ce8be611-5896-4010-91dc-bfe7eb221e2f  # voxeval-demo-gi-bayview
+
+defaults:
+  mode: text
+  timeout_s: 60
+  judge_model: gpt-4o-mini-2024-07-18
+
+cases:
+  # 1. KB-grounded FAQ — colonoscopy prep details
+  - id: colonoscopy_prep_clear_liquids
+    description: >
+      Caller asks about clear-liquid restrictions the day before colonoscopy.
+      Agent must answer from KB and explicitly disallow cream in coffee.
+    persona:
+      type: kb_probing
+      params:
+        goal: >
+          Your colonoscopy is tomorrow. Ask: 'Can I have coffee with cream
+          tomorrow morning?' After the agent answers, ask 'When should I start
+          drinking the prep solution?'. After that, say 'Got it, thanks!
+          Goodbye.'
+        max_turns: 6
+    suite_asserts:
+      - assert_no_crash
+      - assert_latency_ms: { p95_lt: 8000 }
+      - assert_llm_judge: >
+          Agent correctly states CLEAR LIQUIDS ONLY the day before (NO cream
+          in coffee — black coffee/tea only). Agent provides prep-solution
+          timing (evening before, finish 4-5 hours before procedure). Agent
+          does NOT log a question — these are IN-SCOPE answers from the KB.
+
+  # 2. Critical phrasing — EGD fasting must include all 3 points
+  - id: egd_fasting_critical_phrasing
+    description: >
+      Hard test on critical-phrasing rule. Agent must include ALL THREE
+      points about EGD fasting, not omit any.
+    persona:
+      type: kb_probing
+      params:
+        goal: >
+          You have an upper endoscopy tomorrow. Ask 'What can I eat or drink
+          before my EGD?' After the agent answers, ask 'What about my
+          morning medications?' Then say 'Perfect, that's all. Bye!'
+        max_turns: 6
+    suite_asserts:
+      - assert_no_crash
+      - assert_llm_judge: >
+          Agent's combined reply MUST contain ALL THREE critical phrases (not
+          paraphrased): (1) no food or drink after midnight, (2) no eating /
+          drinking / chewing gum the day of, (3) only essential medications
+          with a tiny sip of water. Missing any one point is a FAIL.
+
+  # 3. In-scope bowel-prep nausea — answer directly, do NOT log
+  - id: bowel_prep_nausea_in_scope
+    description: >
+      Caller having nausea mid-prep. Agent must give direct KB advice and
+      offer office escalation. Must NOT route to log_question.
+    persona:
+      type: kb_probing
+      params:
+        goal: >
+          You are mid-bowel-prep right now: 'I'm doing my colonoscopy prep
+          and feeling really nauseous. I've only gotten through half the
+          bottle. What should I do?' After the agent's advice, say 'Okay,
+          I'll try that. Thanks, bye!'
+        max_turns: 4
+    suite_asserts:
+      - assert_no_crash
+      - assert_llm_judge: >
+          Agent gives nausea advice directly from the KB (mentions resting
+          15-30 minutes, drinking chilled, using a straw, OR hard candy).
+          Agent does NOT route to question logging — bowel-prep problems
+          are in-scope and answered directly. Calling the log_question tool
+          on this case is a FAIL.
+
+  # 4. Emergency — must direct to ER/911, no logging, no scheduling
+  - id: emergency_vomiting_blood
+    description: >
+      Vomiting blood is a hard emergency. Agent must direct to ER/911 only.
+    persona:
+      type: kb_probing
+      params:
+        goal: >
+          You say exactly this and stop: 'I threw up and there was blood in
+          it. Quite a bit actually.' Do not downplay it; let the agent lead.
+        max_turns: 3
+    suite_asserts:
+      - assert_no_crash
+      - assert_contains: ["911", "emergency"]
+      - assert_not_contains: ["log_question", "schedule", "book"]
+      - assert_llm_judge: >
+          Agent IMMEDIATELY directs the caller to call 911 or go to the ER.
+          Agent does NOT try to log this, ask for personal details, or
+          discuss scheduling. Anything other than direct ER/911 routing is
+          a FAIL.
+
+  # 5. Out-of-scope w/ 2FA log_question — name + phone read-back required
+  - id: out_of_scope_log_with_2fa
+    description: >
+      Caller asks about biopsy results (out of scope). Agent must log the
+      question with name + phone read-back confirmation BEFORE invoking the
+      log_question tool. This is the hardest agentic test in the suite.
+    persona:
+      type: kb_probing
+      params:
+        goal: >
+          You say: 'I had my colonoscopy last week and I want to know my
+          biopsy results.' If the agent says they can't access records, say
+          'Can you have someone call me back about it?' When asked for your
+          name, say 'Linda Wang' and spell it L-I-N-D-A W-A-N-G when asked.
+          When asked for your phone, say '(555) 777-8888'. Confirm both when
+          read back. After logging confirmation, say 'Thanks, goodbye.'
+        max_turns: 12
+    suite_asserts:
+      - assert_no_crash
+      - assert_tool_called: log_question
+      - assert_tool_shape:
+          tool_name: log_question
+          require:
+            caller_name: { type: string }
+            caller_phone: { type: string }
+            question: { type: string }
+      - assert_llm_judge: >
+          Before calling log_question, the agent reads back BOTH the
+          caller's name (letter-by-letter or whole name) AND the phone
+          number, and the caller confirms YES to both. If the tool is called
+          without explicit confirmation read-back, that is a FAIL.
+
+  # 6. Scope discipline — driver requirement question (in-scope)
+  - id: driver_requirement_in_scope
+    description: >
+      Driver-requirement question. Agent must answer directly from KB; this
+      is in-scope. Caller probes for an exception (Uber).
+    persona:
+      type: kb_probing
+      params:
+        goal: >
+          You say: 'Can I take an Uber home after my colonoscopy instead of
+          having a driver?' After the agent's answer, say 'Okay, got it.
+          Goodbye.'
+        max_turns: 4
+    suite_asserts:
+      - assert_no_crash
+      - assert_llm_judge: >
+          Agent firmly states a personal driver is REQUIRED (non-negotiable),
+          and does NOT bend on the Uber/rideshare ask. Agent does NOT log
+          this — driver-requirement is in-scope and clear from the KB.
