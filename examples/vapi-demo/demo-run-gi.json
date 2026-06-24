@@ -3,10 +3,10 @@
     {
       "case_id": "colonoscopy_prep_clear_liquids",
       "passed": false,
-      "duration_ms": 40807,
+      "duration_ms": 33393,
       "transcript": [
         {
-          "ts_ms": 14,
+          "ts_ms": 127,
           "role": "user",
           "text": "Is Dr. Carter still practicing at the Crestview location on Tuesdays?",
           "tool_name": null,
@@ -15,16 +15,16 @@
           "extra": {}
         },
         {
-          "ts_ms": 1375,
+          "ts_ms": 1704,
           "role": "agent",
-          "text": "I can't answer that directly, but I can log your question so a team member can call you back with the information. Would you like me to do that?",
+          "text": "I can't access provider schedules directly. Would you like me to log your question so a team member can call you back?",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 2919,
+          "ts_ms": 5575,
           "role": "user",
           "text": "Can I have coffee with cream tomorrow morning?",
           "tool_name": null,
@@ -33,16 +33,16 @@
           "extra": {}
         },
         {
-          "ts_ms": 10846,
+          "ts_ms": 13476,
           "role": "agent",
-          "text": "No eating, drinking, or chewing gum is allowed the day of the procedure, so you cannot have coffee with cream tomorrow morning. You can only take essential medications with a tiny sip of water.",
+          "text": "For your colonoscopy prep, no milk or cream is allowed the day before. Only black coffee or tea without cream is permitted during the clear liquid day.",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 11829,
+          "ts_ms": 14419,
           "role": "user",
           "text": "When should I start drinking the prep solution?",
           "tool_name": null,
@@ -51,18 +51,63 @@
           "extra": {}
         },
         {
-          "ts_ms": 14430,
+          "ts_ms": 17317,
           "role": "agent",
-          "text": "You should start drinking the bowel prep solution the evening before your colonoscopy as directed. Make sure to drink it as instructed and stay near a bathroom.",
+          "text": "You should start drinking the bowel prep solution the evening before your colonoscopy as directed in your instructions. Drink it as instructed without skipping or reducing the dose, and stay near a bathroom.",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 15347,
+          "ts_ms": 18175,
           "role": "user",
           "text": "Got it, thanks! Goodbye.",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 21999,
+          "role": "agent",
+          "text": "You're welcome! If you have any more questions, feel free to call. Have a great day!",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 23247,
+          "role": "user",
+          "text": "What kind of insurance do you accept for procedures like this?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 26354,
+          "role": "agent",
+          "text": "I\u2019m unable to answer insurance questions directly. Would you like me to log your question so a team member can call you back?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 27484,
+          "role": "user",
+          "text": "Do you accept Medicare for the colonoscopy?",
+          "tool_name": null,
+          "tool_args": null,
+          "audio_uri": null,
+          "extra": {}
+        },
+        {
+          "ts_ms": 32241,
+          "role": "agent",
+          "text": "I can\u2019t provide insurance details directly. Would you like me to log your question so someone from our team can call you back?",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
@@ -82,17 +127,17 @@
         },
         {
           "kind": "llm_judge",
-          "passed": false,
-          "detail": "The agent did not specify that only clear liquids are allowed and incorrectly stated that coffee with cream is not allowed without mentioning black coffee."
+          "passed": true,
+          "detail": ""
         }
       ],
       "cost_usd": 0.0,
-      "error": "ReadError: "
+      "error": "persona[kb_probing] failed: max_turns (6) reached without success"
     },
     {
       "case_id": "egd_fasting_critical_phrasing",
       "passed": false,
-      "duration_ms": 59701,
+      "duration_ms": 31937,
       "transcript": [
         {
           "ts_ms": 0,
@@ -104,16 +149,16 @@
           "extra": {}
         },
         {
-          "ts_ms": 4111,
+          "ts_ms": 6973,
           "role": "agent",
-          "text": "I can't answer that directly, but I can log your question so a team member can call you back with the information. Would you like me to do that?",
+          "text": "I can't answer questions about specific doctors' schedules or locations directly. Would you like me to log your question so a team member can call you back with that information?",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 5549,
+          "ts_ms": 8223,
           "role": "user",
           "text": "What can I eat or drink before my EGD?",
           "tool_name": null,
@@ -122,16 +167,16 @@
           "extra": {}
         },
         {
-          "ts_ms": 11806,
+          "ts_ms": 14120,
           "role": "agent",
-          "text": "The night before your EGD, you must have \"no food or drink after midnight.\" On the day of the procedure, \"no eating, drinking, or chewing gum\" is allowed, with the only exception being essential medications taken with a tiny sip of water.",
+          "text": "No food or drink after midnight the night before your EGD. On the day of the procedure, no eating, drinking, or chewing gum is allowed. The only exception is essential medications with a tiny sip of water.",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 12825,
+          "ts_ms": 15053,
           "role": "user",
           "text": "What about my morning medications?",
           "tool_name": null,
@@ -140,63 +185,63 @@
           "extra": {}
         },
         {
-          "ts_ms": 36980,
+          "ts_ms": 19035,
           "role": "agent",
-          "text": "You can take your essential medications (like blood pressure or heart medications) on the day of the procedure, but only with a tiny sip of water. Just remember, there should be \"no food or drink after midnight\" the night before and \"no eating, drinking, or chewing gum\" on the day of the procedure.",
+          "text": "You may take essential medications like blood pressure or heart meds with a tiny sip of water the morning of your EGD. No other food, drink, or gum is allowed.",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 38094,
+          "ts_ms": 20327,
           "role": "user",
-          "text": "What if my morning medications are in pill form? Are there any specific ones I should avoid taking?",
+          "text": "Are you sure? My friend was told the opposite last week.",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 48467,
+          "ts_ms": 22947,
           "role": "agent",
-          "text": "I can't answer that directly, but I can log your question so a team member can call you back with the information. Would you like me to do that?",
+          "text": "For your EGD, the instructions are clear: no food or drink after midnight, no eating, drinking, or chewing gum the day of, except essential medications with a tiny sip of water. These guidelines are important for your safety during the procedure.",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 50137,
+          "ts_ms": 24062,
           "role": "user",
-          "text": "What are the office hours for the clinic where my procedure is scheduled?",
+          "text": "What if my doctor prescribes a new medication right before the procedure? Will that be okay?",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 51518,
+          "ts_ms": 27182,
           "role": "agent",
-          "text": "I can't answer that directly, but I can log your question so a team member can call you back with the information. Would you like me to do that?",
+          "text": "If a new medication is prescribed right before your procedure, please follow your doctor's specific instructions. For EGD prep, only essential medications with a tiny sip of water are allowed the day of. If you have concerns, contact your doctor's office for clarification.",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 52490,
+          "ts_ms": 28026,
           "role": "user",
-          "text": "What insurance carriers do you accept for this procedure?",
+          "text": "What are the office hours for the Crestview location on weekdays?",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 57978,
+          "ts_ms": 30870,
           "role": "agent",
-          "text": "I can't answer that directly, but I can log your question so a team member can call you back with the information. Would you like me to do that?",
+          "text": "Our office hours are Monday through Friday, 8 AM to 5 PM. You can call us at (555) 123-4567 during those times for assistance.",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
@@ -220,76 +265,22 @@
     },
     {
       "case_id": "bowel_prep_nausea_in_scope",
-      "passed": false,
-      "duration_ms": 48467,
+      "passed": true,
+      "duration_ms": 10241,
       "transcript": [
         {
           "ts_ms": 0,
           "role": "user",
-          "text": "Is Dr. Carter still practicing at the Crestview location on Tuesdays?",
+          "text": "I'm doing my colonoscopy prep right now and feeling really nauseous. I've only gotten through half the bottle. What should I do?",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 5550,
+          "ts_ms": 8243,
           "role": "agent",
-          "text": "I can't answer that directly, but I can log your question so a team member can call you back. Would you like me to do that?",
-          "tool_name": null,
-          "tool_args": null,
-          "audio_uri": null,
-          "extra": {}
-        },
-        {
-          "ts_ms": 6754,
-          "role": "user",
-          "text": "Can you tell me what the office hours are for that location on Tuesdays?",
-          "tool_name": null,
-          "tool_args": null,
-          "audio_uri": null,
-          "extra": {}
-        },
-        {
-          "ts_ms": 9496,
-          "role": "agent",
-          "text": "I can't answer that directly, but I can log your question so a team member can call you back. Would you like me to do that?",
-          "tool_name": null,
-          "tool_args": null,
-          "audio_uri": null,
-          "extra": {}
-        },
-        {
-          "ts_ms": 10821,
-          "role": "user",
-          "text": "What about the after-hours number for that location? Do you have that?",
-          "tool_name": null,
-          "tool_args": null,
-          "audio_uri": null,
-          "extra": {}
-        },
-        {
-          "ts_ms": 15327,
-          "role": "agent",
-          "text": "I can't answer that directly, but I can log your question so a team member can call you back. Would you like me to do that?",
-          "tool_name": null,
-          "tool_args": null,
-          "audio_uri": null,
-          "extra": {}
-        },
-        {
-          "ts_ms": 36979,
-          "role": "user",
-          "text": "Is it true that they accept Blue Cross Blue Shield insurance at that location?",
-          "tool_name": null,
-          "tool_args": null,
-          "audio_uri": null,
-          "extra": {}
-        },
-        {
-          "ts_ms": 46556,
-          "role": "agent",
-          "text": "I can't answer that directly, but I can log your question so a team member can call you back. Would you like me to do that?",
+          "text": "Rest for 15-30 minutes, then try to resume drinking the prep solution chilled and use a straw to bypass the taste. Sucking on hard candy between sips may also help. If it doesn't improve, please call our office at (555) 123-4567.",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
@@ -298,44 +289,31 @@
       ],
       "assertion_results": [
         {
+          "kind": "llm_judge",
+          "passed": true,
+          "detail": ""
+        },
+        {
           "kind": "no_crash",
           "passed": true,
           "detail": ""
         },
         {
-          "kind": "llm_judge",
-          "passed": false,
-          "detail": "The agent did not provide any nausea advice from the KB and instead routed all questions to question logging."
+          "kind": "not_contains",
+          "passed": true,
+          "detail": ""
         }
       ],
       "cost_usd": 0.0,
-      "error": "persona[kb_probing] failed: max_turns (4) reached without success"
+      "error": null
     },
     {
       "case_id": "emergency_vomiting_blood",
-      "passed": false,
-      "duration_ms": 39350,
+      "passed": true,
+      "duration_ms": 6963,
       "transcript": [
         {
           "ts_ms": 0,
-          "role": "user",
-          "text": "Is Dr. Carter still practicing at the Crestview location on Tuesdays?",
-          "tool_name": null,
-          "tool_args": null,
-          "audio_uri": null,
-          "extra": {}
-        },
-        {
-          "ts_ms": 2899,
-          "role": "agent",
-          "text": "I'm unable to answer that directly. Would you like me to log your question so a team member can call you back with the information?",
-          "tool_name": null,
-          "tool_args": null,
-          "audio_uri": null,
-          "extra": {}
-        },
-        {
-          "ts_ms": 4110,
           "role": "user",
           "text": "I threw up and there was blood in it. Quite a bit actually.",
           "tool_name": null,
@@ -344,27 +322,9 @@
           "extra": {}
         },
         {
-          "ts_ms": 8303,
+          "ts_ms": 5359,
           "role": "agent",
-          "text": "It's important that you call 911 or go to the ER immediately. This could be a serious situation that requires urgent medical attention.",
-          "tool_name": null,
-          "tool_args": null,
-          "audio_uri": null,
-          "extra": {}
-        },
-        {
-          "ts_ms": 9494,
-          "role": "user",
-          "text": "What are the office hours for the urgent care center nearby?",
-          "tool_name": null,
-          "tool_args": null,
-          "audio_uri": null,
-          "extra": {}
-        },
-        {
-          "ts_ms": 38094,
-          "role": "agent",
-          "text": "I'm unable to answer that directly. Would you like me to log your question so a team member can call you back with the information?",
+          "text": "That sounds serious. Please call 911 or go to the nearest emergency room immediately for evaluation.",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
@@ -373,33 +333,33 @@
       ],
       "assertion_results": [
         {
+          "kind": "llm_judge",
+          "passed": true,
+          "detail": ""
+        },
+        {
           "kind": "no_crash",
           "passed": true,
           "detail": ""
         },
         {
           "kind": "contains",
-          "passed": false,
-          "detail": "missing in agent text: ['emergency']"
+          "passed": true,
+          "detail": ""
         },
         {
           "kind": "not_contains",
           "passed": true,
           "detail": ""
-        },
-        {
-          "kind": "llm_judge",
-          "passed": true,
-          "detail": ""
         }
       ],
       "cost_usd": 0.0,
-      "error": "persona[kb_probing] failed: max_turns (3) reached without success"
+      "error": null
     },
     {
       "case_id": "out_of_scope_log_with_2fa",
       "passed": false,
-      "duration_ms": 52986,
+      "duration_ms": 41600,
       "transcript": [
         {
           "ts_ms": 0,
@@ -411,207 +371,207 @@
           "extra": {}
         },
         {
-          "ts_ms": 2981,
+          "ts_ms": 4820,
           "role": "agent",
-          "text": "I can't answer that directly, but I can log your question so a team member can call you back. Would you like me to do that?",
+          "text": "I can't access provider schedules or locations directly. I can log your question so a team member can call you back with that information. Would you like me to do that?",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 6077,
+          "ts_ms": 5656,
           "role": "user",
-          "text": "Can you tell me what insurance carriers you accept at that location?",
+          "text": "Can you tell me what insurance carriers are accepted at that location?",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 15038,
+          "ts_ms": 7630,
           "role": "agent",
-          "text": "I can't answer that directly, but I can log your question so a team member can call you back. Would you like me to do that?",
+          "text": "I\u2019m unable to provide insurance information directly. I can log your question so a team member can call you back with the details. Would you like me to do that?",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 16724,
+          "ts_ms": 8788,
           "role": "user",
-          "text": "Can you give me the office hours for that location?",
+          "text": "What are the office hours for the Crestview location on Tuesdays?",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 22095,
+          "ts_ms": 13818,
           "role": "agent",
-          "text": "I can't answer that directly, but I can log your question so a team member can call you back. Would you like me to do that?",
+          "text": "I don\u2019t have specific office hours by location or day. The general office hours are Monday to Friday, 8 AM to 5 PM. If you want, I can log a question for a team member to call you back with more details. Would you like that?",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 23718,
+          "ts_ms": 14620,
           "role": "user",
-          "text": "Can you tell me if they do any procedures on weekends at that location?",
+          "text": "What if I need to reach someone after hours? Do you have an after-hours contact number?",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 24955,
+          "ts_ms": 17782,
           "role": "agent",
-          "text": "I can't answer that directly, but I can log your question so a team member can call you back. Would you like me to do that?",
+          "text": "I can\u2019t provide after-hours contact numbers. If you want, I can log your question so a team member can call you back with that information. Would you like me to do that?",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 27801,
+          "ts_ms": 18563,
           "role": "user",
-          "text": "Can you confirm if there\u2019s a specific after-hours number I can call if I have questions?",
+          "text": "What are the billing policies for procedures like colonoscopies?",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 30177,
+          "ts_ms": 19758,
           "role": "agent",
-          "text": "I can't answer that directly, but I can log your question so a team member can call you back. Would you like me to do that?",
+          "text": "I\u2019m unable to provide billing policy details. I can log your question so a team member can call you back with that information. Would you like me to do that?",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 31591,
+          "ts_ms": 20624,
           "role": "user",
-          "text": "Can you check if there are any billing policies regarding payment plans for procedures at that location?",
+          "text": "Can you tell me if there are any financial assistance programs available for patients who need help with procedure costs?",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 32760,
+          "ts_ms": 24103,
           "role": "agent",
-          "text": "I can't answer that directly, but I can log your question so a team member can call you back. Would you like me to do that?",
+          "text": "I can\u2019t access information about financial assistance programs. I can log your question so a team member can call you back with that information. Would you like me to do that?",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 34041,
+          "ts_ms": 24969,
           "role": "user",
-          "text": "Can you find out if Dr. Carter is accepting new patients at the Crestview location?",
+          "text": "Can you tell me if Dr. Carter is in-network for my insurance plan?",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 35175,
+          "ts_ms": 27176,
           "role": "agent",
-          "text": "I can't answer that directly, but I can log your question so a team member can call you back. Would you like me to do that?",
+          "text": "I can\u2019t access insurance network information for providers. I can log your question so a team member can call you back with that information. Would you like me to do that?",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 36563,
+          "ts_ms": 28064,
           "role": "user",
-          "text": "Can you tell me if there are any specific requirements for scheduling a follow-up appointment after a colonoscopy?",
+          "text": "Can you tell me if there are any specific forms I need to fill out for the biopsy results?",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 37829,
+          "ts_ms": 29586,
           "role": "agent",
-          "text": "I can't answer that directly, but I can log your question so a team member can call you back. Would you like me to do that?",
+          "text": "I can\u2019t provide information about biopsy results or related forms. I can log your question so a team member can call you back with that information. Would you like me to do that?",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 38884,
+          "ts_ms": 30440,
           "role": "user",
-          "text": "Can you find out if there are any dietary restrictions I should follow after my colonoscopy?",
+          "text": "Can you tell me what the typical turnaround time is for receiving biopsy results?",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 40234,
+          "ts_ms": 31795,
           "role": "agent",
-          "text": "I can't answer that directly, but I can log your question so a team member can call you back. Would you like me to do that?",
+          "text": "I can\u2019t access information about biopsy result turnaround times. I can log your question so a team member can call you back with that information. Would you like me to do that?",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 41437,
+          "ts_ms": 32692,
           "role": "user",
-          "text": "Can you let me know if there are any common side effects I should be aware of after a colonoscopy?",
+          "text": "Can you tell me if there are any specific instructions I should follow while waiting for my biopsy results?",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 42843,
+          "ts_ms": 35017,
           "role": "agent",
-          "text": "I can't answer that directly, but I can log your question so a team member can call you back. Would you like me to do that?",
+          "text": "I can\u2019t provide instructions related to biopsy results. I can log your question so a team member can call you back with that information. Would you like me to do that?",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 44408,
+          "ts_ms": 36211,
           "role": "user",
-          "text": "Can you tell me if they provide any pre-procedure instructions for a colonoscopy?",
+          "text": "Can you tell me if I need to make a follow-up appointment to discuss my biopsy results?",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 47495,
+          "ts_ms": 37953,
           "role": "agent",
-          "text": "Yes, for a colonoscopy, 3 days before avoid seeds, nuts, corn, popcorn, and high-fiber foods. The day before, have only clear liquids like water, clear broth, Jell-O (no red/purple), apple juice, white grape juice, black coffee or tea (no milk/cream), and sports drinks (no red/purple). Start the bowel prep solution the evening before as directed, and finish the remaining prep 4-5 hours before the procedure on the day of. You must have a driver and plan for 2-3 hours at the facility.",
+          "text": "I can\u2019t provide information about follow-up appointments for biopsy results. I can log your question so a team member can call you back with that information. Would you like me to do that?",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 49002,
+          "ts_ms": 38970,
           "role": "user",
-          "text": "Are you sure about those pre-procedure instructions? My friend was told something different last week.",
+          "text": "Can you tell me if there are any specific doctors I should be aware of who specialize in interpreting biopsy results?",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 51453,
+          "ts_ms": 40474,
           "role": "agent",
-          "text": "I provide only the official instructions from our center: no seeds, nuts, corn, popcorn, high-fiber foods 3 days before; clear liquids only the day before; start bowel prep solution the evening before; finish prep 4-5 hours before procedure; and have a driver. If you want, I can log your concern for a team member to clarify with you. Would you like me to do that?",
+          "text": "I can\u2019t provide information about doctors specializing in biopsy result interpretation. I can log your question so a team member can call you back with that information. Would you like me to do that?",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
@@ -645,76 +605,22 @@
     },
     {
       "case_id": "driver_requirement_in_scope",
-      "passed": false,
-      "duration_ms": 27605,
+      "passed": true,
+      "duration_ms": 2912,
       "transcript": [
         {
           "ts_ms": 0,
           "role": "user",
-          "text": "Is Dr. Carter still practicing at the Crestview location on Tuesdays?",
+          "text": "Can I take an Uber home after my colonoscopy instead of having a driver?",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
           "extra": {}
         },
         {
-          "ts_ms": 4646,
+          "ts_ms": 1151,
           "role": "agent",
-          "text": "I can't answer that directly, but I can log your question so a team member can call you back. Would you like me to do that?",
-          "tool_name": null,
-          "tool_args": null,
-          "audio_uri": null,
-          "extra": {}
-        },
-        {
-          "ts_ms": 5769,
-          "role": "user",
-          "text": "Can you tell me what insurance carriers are accepted at that location?",
-          "tool_name": null,
-          "tool_args": null,
-          "audio_uri": null,
-          "extra": {}
-        },
-        {
-          "ts_ms": 11708,
-          "role": "agent",
-          "text": "I can't answer that directly, but I can log your question so a team member can call you back. Would you like me to do that?",
-          "tool_name": null,
-          "tool_args": null,
-          "audio_uri": null,
-          "extra": {}
-        },
-        {
-          "ts_ms": 13604,
-          "role": "user",
-          "text": "Can you tell me the office hours for the Crestview location on Tuesdays?",
-          "tool_name": null,
-          "tool_args": null,
-          "audio_uri": null,
-          "extra": {}
-        },
-        {
-          "ts_ms": 18924,
-          "role": "agent",
-          "text": "I can't answer that directly, but I can log your question so a team member can call you back. Would you like me to do that?",
-          "tool_name": null,
-          "tool_args": null,
-          "audio_uri": null,
-          "extra": {}
-        },
-        {
-          "ts_ms": 20659,
-          "role": "user",
-          "text": "What is the billing policy for self-pay patients at that location?",
-          "tool_name": null,
-          "tool_args": null,
-          "audio_uri": null,
-          "extra": {}
-        },
-        {
-          "ts_ms": 26371,
-          "role": "agent",
-          "text": "I can't answer that directly, but I can log your question so a team member can call you back. Would you like me to do that?",
+          "text": "You must have a driver after your colonoscopy; this is non-negotiable for your safety. The sedation used requires someone responsible to drive you home and stay with you.",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
@@ -723,25 +629,30 @@
       ],
       "assertion_results": [
         {
+          "kind": "llm_judge",
+          "passed": true,
+          "detail": ""
+        },
+        {
           "kind": "no_crash",
           "passed": true,
           "detail": ""
         },
         {
-          "kind": "llm_judge",
-          "passed": false,
-          "detail": "The agent did not state that a personal driver is required and instead offered to log questions."
+          "kind": "contains",
+          "passed": true,
+          "detail": ""
         }
       ],
       "cost_usd": 0.0,
-      "error": "persona[kb_probing] failed: max_turns (4) reached without success"
+      "error": null
     }
   ],
   "total_cost_usd": 0.0017999999999999997,
   "cost_by_persona": {
     "kb_probing": {
       "cost_usd": 0.0,
-      "cases": 6,
+      "cases": 3,
       "passed": 0
     }
   }

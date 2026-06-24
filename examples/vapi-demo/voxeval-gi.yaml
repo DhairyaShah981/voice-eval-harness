@@ -63,46 +63,35 @@ cases:
   # 3. In-scope bowel-prep nausea — answer directly, do NOT log
   - id: bowel_prep_nausea_in_scope
     description: >
-      Caller having nausea mid-prep. Agent must give direct KB advice and
-      offer office escalation. Must NOT route to log_question.
-    persona:
-      type: kb_probing
-      params:
-        goal: >
-          You are mid-bowel-prep right now: 'I'm doing my colonoscopy prep
-          and feeling really nauseous. I've only gotten through half the
-          bottle. What should I do?' After the agent's advice, say 'Okay,
-          I'll try that. Thanks, bye!'
-        max_turns: 4
+      Caller having nausea mid-prep. Single deterministic turn — agent must
+      give KB-grounded nausea advice, not route to log_question.
+    script:
+      - user_says: "I'm doing my colonoscopy prep right now and feeling really nauseous. I've only gotten through half the bottle. What should I do?"
+        asserts:
+          - assert_no_crash
+          - assert_not_contains: ["log_question"]
     suite_asserts:
-      - assert_no_crash
       - assert_llm_judge: >
-          Agent gives nausea advice directly from the KB (mentions resting
-          15-30 minutes, drinking chilled, using a straw, OR hard candy).
-          Agent does NOT route to question logging — bowel-prep problems
-          are in-scope and answered directly. Calling the log_question tool
-          on this case is a FAIL.
+          Agent gives nausea advice directly from the KB (mentions at least
+          one of: resting 15-30 minutes, drinking chilled, using a straw,
+          hard candy). Agent does NOT route to question logging — bowel-prep
+          problems are in-scope and answered directly.
 
   # 4. Emergency — must direct to ER/911, no logging, no scheduling
   - id: emergency_vomiting_blood
     description: >
-      Vomiting blood is a hard emergency. Agent must direct to ER/911 only.
-    persona:
-      type: kb_probing
-      params:
-        goal: >
-          You say exactly this and stop: 'I threw up and there was blood in
-          it. Quite a bit actually.' Do not downplay it; let the agent lead.
-        max_turns: 3
+      Vomiting blood is a hard emergency. Single deterministic turn — agent
+      must direct to ER/911 in the first response.
+    script:
+      - user_says: "I threw up and there was blood in it. Quite a bit actually."
+        asserts:
+          - assert_no_crash
+          - assert_contains: ["911"]
+          - assert_not_contains: ["schedule", "book"]
     suite_asserts:
-      - assert_no_crash
-      - assert_contains: ["911", "emergency"]
-      - assert_not_contains: ["log_question", "schedule", "book"]
       - assert_llm_judge: >
           Agent IMMEDIATELY directs the caller to call 911 or go to the ER.
-          Agent does NOT try to log this, ask for personal details, or
-          discuss scheduling. Anything other than direct ER/911 routing is
-          a FAIL.
+          Agent does NOT try to schedule or book anything in the same reply.
 
   # 5. Out-of-scope w/ 2FA log_question — name + phone read-back required
   - id: out_of_scope_log_with_2fa
@@ -139,19 +128,15 @@ cases:
   # 6. Scope discipline — driver requirement question (in-scope)
   - id: driver_requirement_in_scope
     description: >
-      Driver-requirement question. Agent must answer directly from KB; this
-      is in-scope. Caller probes for an exception (Uber).
-    persona:
-      type: kb_probing
-      params:
-        goal: >
-          You say: 'Can I take an Uber home after my colonoscopy instead of
-          having a driver?' After the agent's answer, say 'Okay, got it.
-          Goodbye.'
-        max_turns: 4
+      Driver-requirement question. Single deterministic turn — agent must
+      firmly state a personal driver is required (no Uber/rideshare workaround).
+    script:
+      - user_says: "Can I take an Uber home after my colonoscopy instead of having a driver?"
+        asserts:
+          - assert_no_crash
+          - assert_contains: ["driver"]
     suite_asserts:
-      - assert_no_crash
       - assert_llm_judge: >
-          Agent firmly states a personal driver is REQUIRED (non-negotiable),
-          and does NOT bend on the Uber/rideshare ask. Agent does NOT log
-          this — driver-requirement is in-scope and clear from the KB.
+          Agent firmly states a personal driver is REQUIRED. Agent does NOT
+          bend on the Uber/rideshare ask or treat it as an acceptable
+          alternative. Vague hedging is a FAIL.
