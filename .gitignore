@@ -53,3 +53,4 @@ Thumbs.db
 # Local clinic_suites output (real transcripts — may contain PHI)
 clinic_suites/
 clinic_suites_*/
+.vercel

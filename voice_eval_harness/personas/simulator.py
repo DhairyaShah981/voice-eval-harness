@@ -103,9 +103,12 @@ def _render_transcript(events: list[TranscriptEvent]) -> str:
 def _openai_user_roller(prompt: str) -> str:  # pragma: no cover
     from openai import OpenAI
     client = OpenAI()
+    # temperature=0: persona rollouts must be deterministic so regressions
+    # in agent behavior are detectable across runs. If adversarial sampling
+    # is desired, set VOXEVAL_PERSONA_TEMP env var (left as future work).
     resp = client.chat.completions.create(
         model=DEFAULT_PERSONA_MODEL,
-        temperature=0.7,
+        temperature=0,
         messages=[{"role": "user", "content": prompt}],
     )
     return (resp.choices[0].message.content or "").strip()

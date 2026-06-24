@@ -54,7 +54,7 @@
         {
           "kind": "llm_judge",
           "passed": false,
-          "detail": "The agent wandered into unrelated topics during the scheduling call."
+          "detail": "skipped: empty_transcript (dial_no_answer)"
         },
         {
           "kind": "not_contains",
@@ -84,7 +84,7 @@
         {
           "kind": "llm_judge",
           "passed": false,
-          "detail": "The agent wandered into unrelated topics during the scheduling call."
+          "detail": "skipped: empty_transcript (dial_no_answer)"
         },
         {
           "kind": "not_contains",
@@ -225,7 +225,7 @@
         {
           "ts_ms": 13,
           "role": "user",
-          "text": "Eight three four. Lady Smith Drive, Al Cajon, California nine two zero two zero. Six one nine seven one five seven eight one one.",
+          "text": "Eight three four. Lady Smith Drive, Al Cajon, California nine two zero two zero. [SPOKEN-DIGITS].",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
@@ -652,7 +652,7 @@
         {
           "ts_ms": 18,
           "role": "user",
-          "text": "Thirty six seventy Warren Street. And six one nine five eight one seven four one eight.",
+          "text": "Thirty six seventy Warren Street. And [SPOKEN-DIGITS].",
           "tool_name": null,
           "tool_args": null,
           "audio_uri": null,
@@ -994,7 +994,7 @@
         {
           "kind": "llm_judge",
           "passed": false,
-          "detail": "The agent wandered into unrelated topics during the scheduling call."
+          "detail": "skipped: empty_transcript (dial_no_answer)"
         },
         {
           "kind": "not_contains",
@@ -1024,7 +1024,7 @@
         {
           "kind": "llm_judge",
           "passed": false,
-          "detail": "The agent wandered into unrelated topics during the scheduling call."
+          "detail": "skipped: empty_transcript (dial_no_answer)"
         },
         {
           "kind": "not_contains",
@@ -1054,7 +1054,7 @@
         {
           "kind": "llm_judge",
           "passed": false,
-          "detail": "The agent wandered into unrelated topics during the scheduling call."
+          "detail": "skipped: empty_transcript (dial_no_answer)"
         },
         {
           "kind": "not_contains",
@@ -1084,7 +1084,7 @@
         {
           "kind": "llm_judge",
           "passed": false,
-          "detail": "The agent wandered into unrelated topics during the scheduling call."
+          "detail": "skipped: empty_transcript (dial_no_answer)"
         },
         {
           "kind": "not_contains",
@@ -1114,7 +1114,7 @@
         {
           "kind": "llm_judge",
           "passed": false,
-          "detail": "The agent wandered into unrelated topics during the scheduling call."
+          "detail": "skipped: empty_transcript (dial_no_answer)"
         },
         {
           "kind": "not_contains",
@@ -1144,7 +1144,7 @@
         {
           "kind": "llm_judge",
           "passed": false,
-          "detail": "The agent wandered into unrelated topics during the scheduling call."
+          "detail": "skipped: empty_transcript (dial_no_answer)"
         },
         {
           "kind": "not_contains",
@@ -1174,7 +1174,7 @@
         {
           "kind": "llm_judge",
           "passed": false,
-          "detail": "The agent wandered into unrelated topics during the scheduling call."
+          "detail": "skipped: empty_transcript (dial_no_answer)"
         },
         {
           "kind": "not_contains",
@@ -1204,7 +1204,7 @@
         {
           "kind": "llm_judge",
           "passed": false,
-          "detail": "The agent wandered into unrelated topics during the scheduling call."
+          "detail": "skipped: empty_transcript (dial_no_answer)"
         },
         {
           "kind": "not_contains",
@@ -1234,7 +1234,7 @@
         {
           "kind": "llm_judge",
           "passed": false,
-          "detail": "The agent wandered into unrelated topics during the scheduling call."
+          "detail": "skipped: empty_transcript (dial_no_answer)"
         },
         {
           "kind": "not_contains",
@@ -1264,7 +1264,7 @@
         {
           "kind": "llm_judge",
           "passed": false,
-          "detail": "The agent wandered into unrelated topics during the scheduling call."
+          "detail": "skipped: empty_transcript (dial_no_answer)"
         },
         {
           "kind": "not_contains",
@@ -1294,7 +1294,7 @@
         {
           "kind": "llm_judge",
           "passed": false,
-          "detail": "The agent wandered into unrelated topics during the scheduling call."
+          "detail": "skipped: empty_transcript (dial_no_answer)"
         },
         {
           "kind": "not_contains",

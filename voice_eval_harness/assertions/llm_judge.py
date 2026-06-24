@@ -124,6 +124,15 @@ class LLMJudgeAssertion(Assertion):
                 kind=self.kind, passed=False,
                 detail="llm_judge: missing 'criterion' in spec",
             )
+        # Skip judge on empty transcripts (e.g. dial_no_answer / disconnect
+        # before any turn). Calling the judge on no content produces
+        # hallucinated verdicts; better to mark explicitly skipped.
+        if not transcript:
+            reason = summary.disconnect_reason or "no_transcript"
+            return AssertionResult(
+                kind=self.kind, passed=False,
+                detail=f"skipped: empty_transcript ({reason})",
+            )
         # The legacy assertion code uses _agent_text just for the contains
         # family; the judge sees the full transcript so it can reason about
         # tool calls + user turns.
