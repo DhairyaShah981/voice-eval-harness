@@ -44,6 +44,7 @@ async def _run_once(connector: BaseConnector, case: TestCase) -> RunResult:
     try:
         if case.persona is not None:
             from dataclasses import replace
+
             from voice_eval_harness.personas.profiles import get_profile
             from voice_eval_harness.personas.simulator import run_persona
             profile = get_profile(case.persona.type)
